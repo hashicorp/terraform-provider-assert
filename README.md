@@ -1,64 +1,75 @@
-# Terraform Provider Scaffolding (Terraform Plugin Framework)
+# Terraform Provider: Assert
 
-_This template repository is built on the [Terraform Plugin Framework](https://github.com/hashicorp/terraform-plugin-framework). The template repository built on the [Terraform Plugin SDK](https://github.com/hashicorp/terraform-plugin-sdk) can be found at [terraform-provider-scaffolding](https://github.com/hashicorp/terraform-provider-scaffolding). See [Which SDK Should I Use?](https://developer.hashicorp.com/terraform/plugin/framework-benefits) in the Terraform documentation for additional information._
+The Assert provider is a provider for Terraform that allows you to assert values in your Terraform configuration to ensure that they meet certain criteria.
 
-This repository is a *template* for a [Terraform](https://www.terraform.io) provider. It is intended as a starting point for creating Terraform providers, containing:
+## Documentation, questions and discussions
 
-- A resource and a data source (`internal/provider/`),
-- Examples (`examples/`) and generated documentation (`docs/`),
-- Miscellaneous meta files.
-
-These files contain boilerplate code that you will need to edit to create your own Terraform provider. Tutorials for creating Terraform providers can be found on the [HashiCorp Developer](https://developer.hashicorp.com/terraform/tutorials/providers-plugin-framework) platform. _Terraform Plugin Framework specific guides are titled accordingly._
-
-Please see the [GitHub template repository documentation](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template) for how to create a new repository from this template on GitHub.
-
-Once you've written your provider, you'll want to [publish it on the Terraform Registry](https://developer.hashicorp.com/terraform/registry/providers/publishing) so that others can use it.
+Official documentation on how to use this provider can be found on the 
+[Terraform Registry](https://registry.terraform.io/providers/bschaatsbergen/assert/latest/docs).
+In case of specific questions or discussions, please use the
+HashiCorp [Terraform Providers Discuss forums](https://discuss.hashicorp.com/c/terraform-providers/31),
+in accordance with HashiCorp [Community Guidelines](https://www.hashicorp.com/community-guidelines).
 
 ## Requirements
 
-- [Terraform](https://developer.hashicorp.com/terraform/downloads) >= 1.0
-- [Go](https://golang.org/doc/install) >= 1.21
+* [Terraform](https://www.terraform.io/downloads)
+* [Go](https://go.dev/doc/install) (1.21)
+* [GNU Make](https://www.gnu.org/software/make/)
+* [golangci-lint](https://golangci-lint.run/usage/install/#local-installation) (optional)
 
-## Building The Provider
+## Development
 
-1. Clone the repository
-1. Enter the repository directory
-1. Build the provider using the Go `install` command:
+### Building
 
-```shell
-go install
-```
+1. `git clone` this repository and `cd` into its directory
+2. `make` will trigger the Golang build
 
-## Adding Dependencies
+The provided `GNUmakefile` defines additional commands generally useful during development,
+like for running tests, generating documentation, code formatting and linting.
+Taking a look at it's content is recommended.
 
-This provider uses [Go modules](https://github.com/golang/go/wiki/Modules).
-Please see the Go documentation for the most up to date information about using Go modules.
+### Testing
 
-To add a new dependency `github.com/author/dependency` to your Terraform provider:
+In order to test the provider, you can run
 
-```shell
-go get github.com/author/dependency
-go mod tidy
-```
+* `make test` to run provider tests
+* `make testacc` to run provider acceptance tests
 
-Then commit the changes to `go.mod` and `go.sum`.
+It's important to note that acceptance tests (`testacc`) will actually spawn
+`terraform` and the provider. Read more about they work on the
+[official page](https://www.terraform.io/plugin/sdkv2/testing/acceptance-tests).
 
-## Using the provider
+### Generating documentation
 
-Fill this in for each provider
+This provider uses [terraform-plugin-docs](https://github.com/hashicorp/terraform-plugin-docs/)
+to generate documentation and store it in the `docs/` directory.
+Once a release is cut, the Terraform Registry will download the documentation from `docs/`
+and associate it with the release version. Read more about how this works on the
+[official page](https://www.terraform.io/registry/providers/docs).
 
-## Developing the Provider
+Use `make generate` to ensure the documentation is regenerated with any changes.
 
-If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (see [Requirements](#requirements) above).
+### Using a development build
 
-To compile the provider, run `go install`. This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
+If [running tests and acceptance tests](#testing) isn't enough, it's possible to set up a local terraform configuration
+to use a development builds of the provider. This can be achieved by leveraging the Terraform CLI
+[configuration file development overrides](https://www.terraform.io/cli/config/config-file#development-overrides-for-provider-developers).
 
-To generate or update documentation, run `go generate`.
+First, use `make install` to place a fresh development build of the provider in your
+[`${GOBIN}`](https://pkg.go.dev/cmd/go#hdr-Compile_and_install_packages_and_dependencies)
+(defaults to `${GOPATH}/bin` or `${HOME}/go/bin` if `${GOPATH}` is not set). Repeat
+this every time you make changes to the provider locally.
 
-In order to run the full suite of Acceptance tests, run `make testacc`.
+Then, setup your environment following [these instructions](https://www.terraform.io/plugin/debugging#terraform-cli-development-overrides)
+to make your local terraform use your local build.
 
-*Note:* Acceptance tests create real resources, and often cost money to run.
+## Releasing
 
-```shell
-make testacc
-```
+The release process is automated via GitHub Actions, and it's defined in the Workflow
+[release.yml](./.github/workflows/release.yml).
+
+Each release is cut by pushing a [semantically versioned](https://semver.org/) tag to the default branch.
+
+## License
+
+[Mozilla Public License v2.0](./LICENSE)
