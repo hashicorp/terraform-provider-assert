@@ -1,6 +1,6 @@
 # Terraform Provider: Assert
 
-The Assert provider is a provider for Terraform that allows you to assert values in your Terraform configuration to ensure that they meet certain criteria.
+The Assert provider is a Terraform provider that lets you verify values in your Terraform configuration to make sure they meet specific criteria. The provider only contains functions to assert values, and does not manage any resources.
 
 ## Documentation, questions and discussions
 
