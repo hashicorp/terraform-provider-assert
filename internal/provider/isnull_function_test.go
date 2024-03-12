@@ -11,7 +11,31 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestNotNullFunction_basic(t *testing.T) {
+func TestIsNullFunction_basic(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+				locals {
+					person = null
+				}
+				output "test" {
+					value = provider::assert::isnull(local.person)
+				}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestIsNullFunction_notNull(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -27,31 +51,7 @@ func TestNotNullFunction_basic(t *testing.T) {
 					}
 				}
 				output "test" {
-					value = provider::assert::notnull(local.person)
-				}
-				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckOutput("test", "true"),
-				),
-			},
-		},
-	})
-}
-
-func TestNotNullFunction_null(t *testing.T) {
-	resource.UnitTest(t, resource.TestCase{
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: `
-				locals {
-					person = null
-				}
-				output "test" {
-					value = provider::assert::notnull(local.person)
+					value = provider::assert::isnull(local.person)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
