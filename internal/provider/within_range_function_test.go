@@ -20,15 +20,33 @@ func TestWithinRangeFunction_basic(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				locals {
-					numbers = [1, 2, 3, 4, 5]
-				}
 				output "test" {
-					value = provider::assert::within_range(local.numbers, 4)
+					value = provider::assert::within_range(1, 10, 5)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestWithinRangeFunction_NotInRange(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+				output "test" {
+					value = provider::assert::within_range(1, 10, 11)
+				}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
 				),
 			},
 		},

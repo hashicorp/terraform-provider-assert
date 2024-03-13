@@ -7,7 +7,6 @@ import (
 	"context"
 
 	"github.com/hashicorp/terraform-plugin-framework/function"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var (
@@ -20,11 +19,6 @@ func NewWithinRangeFunction() function.Function {
 
 type WithinRangeFunction struct{}
 
-type WithinRangeFunctioneModel struct {
-	Input int64   `cty:"input"`
-	Range []int64 `cty:"range"`
-}
-
 func (r WithinRangeFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
 	resp.Name = "within_range"
 }
@@ -34,18 +28,23 @@ func (r WithinRangeFunction) Definition(_ context.Context, _ function.Definition
 		Summary:             "Within range function",
 		MarkdownDescription: "Checks whether the input is within the range",
 		Parameters: []function.Parameter{
-			function.SetParameter{
+			function.NumberParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The range to check if the input is within",
-				Name:               "range",
-				ElementType:        types.Int64Type,
+				Description:        "The beginning of the range",
+				Name:               "begin",
 			},
-			function.Int64Parameter{
+			function.NumberParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The input to check if it is within the range",
-				Name:               "input",
+				Description:        "The end of the range",
+				Name:               "end",
+			},
+			function.NumberParameter{
+				AllowNullValue:     false,
+				AllowUnknownValues: false,
+				Description:        "The number to check if it is within the range",
+				Name:               "number",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -53,20 +52,19 @@ func (r WithinRangeFunction) Definition(_ context.Context, _ function.Definition
 }
 
 func (r WithinRangeFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var data WithinRangeFunctioneModel
+	var begin int
+	var end int
+	var number int
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &data))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &begin, &end, &number))
 
 	if resp.Error != nil {
 		return
 	}
 
-	for _, i := range data.Range {
-		if data.Input == i {
-			resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, true))
-			return
-		}
+	isInRange := func(number, start, end int) bool {
+		return number >= start && number <= end
 	}
 
-	resp.Error = function.ConcatFuncErrors()
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isInRange(number, begin, end)))
 }
