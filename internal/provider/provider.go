@@ -69,6 +69,7 @@ func (p *AssertProvider) Functions(ctx context.Context) []func() function.Functi
 		NewNotNullFunction,
 		NewIsNullFunction,
 		NewWithinRangeFunction,
+		NewIsHTTP2XXStatusCodeFunction,
 	}
 }
 
