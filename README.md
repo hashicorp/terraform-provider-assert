@@ -6,9 +6,7 @@ The Assert provider is a Terraform provider that lets you verify values in your 
 
 Official documentation on how to use this provider can be found on the 
 [Terraform Registry](https://registry.terraform.io/providers/bschaatsbergen/assert/latest/docs).
-In case of specific questions or discussions, please use the
-HashiCorp [Terraform Providers Discuss forums](https://discuss.hashicorp.com/c/terraform-providers/31),
-in accordance with HashiCorp [Community Guidelines](https://www.hashicorp.com/community-guidelines).
+In case of specific questions or discussions, please [open an issue](https://github.com/bschaatsbergen/terraform-provider-assert/issues/new) in this repository.
 
 ## Requirements
 
