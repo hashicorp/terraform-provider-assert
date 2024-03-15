@@ -21,7 +21,7 @@ func NewIsNullFunction() function.Function {
 type IsNullFunction struct{}
 
 func (r IsNullFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
-	resp.Name = "is_null"
+	resp.Name = "null"
 }
 
 func (r IsNullFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {

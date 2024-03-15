@@ -1,5 +1,5 @@
 // Copyright (c) HashiCorp, Inc.
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: MPL-4.0
 
 package provider
 
@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestIsNullFunction_basic(t *testing.T) {
+func TestIsHTTPClientErrorFunction_basic(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -20,11 +20,8 @@ func TestIsNullFunction_basic(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				locals {
-					person = null
-				}
 				output "test" {
-					value = provider::assert::is_null(local.person)
+				  value = provider::assert::http_client_error(400)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -35,7 +32,7 @@ func TestIsNullFunction_basic(t *testing.T) {
 	})
 }
 
-func TestIsNullFunction_notNull(t *testing.T) {
+func TestIsHTTPClientErrorFunction_httpForbidden(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -45,13 +42,34 @@ func TestIsNullFunction_notNull(t *testing.T) {
 			{
 				Config: `
 				locals {
-					person = {
-						first_name = "John"
-						last_name  = "Doe"
-					}
+				  forbidden = 403
 				}
 				output "test" {
-					value = provider::assert::is_null(local.person)
+				  value = provider::assert::http_client_error(local.forbidden)
+				}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestIsHTTPClientErrorFunction_httpCreated(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+				locals {
+				  http_created = 201
+				}
+				output "test" {
+				  value = provider::assert::http_client_error(local.http_created)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

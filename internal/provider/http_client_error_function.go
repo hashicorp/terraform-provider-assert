@@ -12,22 +12,22 @@ import (
 )
 
 var (
-	_ function.Function = IsHTTP4XXFunction{}
+	_ function.Function = IsHTTPClientErrorFunction{}
 )
 
-func NewIsHTTP4XXFunction() function.Function {
-	return IsHTTP4XXFunction{}
+func NewIsHTTPClientErrorFunction() function.Function {
+	return IsHTTPClientErrorFunction{}
 }
 
-type IsHTTP4XXFunction struct{}
+type IsHTTPClientErrorFunction struct{}
 
-func (r IsHTTP4XXFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
-	resp.Name = "is_http_4xx"
+func (r IsHTTPClientErrorFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
+	resp.Name = "http_client_error"
 }
 
-func (r IsHTTP4XXFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
+func (r IsHTTPClientErrorFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether the HTTP status code is a valid 4xx status code",
+		Summary: "Checks whether an HTTP status code is a client error status code",
 		Parameters: []function.Parameter{
 			function.Int64Parameter{
 				AllowNullValue:     false,
@@ -40,7 +40,7 @@ func (r IsHTTP4XXFunction) Definition(_ context.Context, _ function.DefinitionRe
 	}
 }
 
-func (r IsHTTP4XXFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
+func (r IsHTTPClientErrorFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var statusCode types.Int64
 
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &statusCode))
@@ -48,13 +48,14 @@ func (r IsHTTP4XXFunction) Run(ctx context.Context, req function.RunRequest, res
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, is4xxStatusCode(statusCode.ValueInt64())))
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isHTTPClientError(statusCode.ValueInt64())))
 }
 
-// isValid4xxStatusCode checks if an HTTP status code is within the 4xx range
-func is4xxStatusCode(statusCode int64) bool {
+// isHTTPClientError checks if an HTTP status code is within the 4xx range
+func isHTTPClientError(statusCode int64) bool {
 	switch statusCode {
 	case
+		// 4XX status codes
 		http.StatusBadRequest,
 		http.StatusUnauthorized,
 		http.StatusPaymentRequired,
@@ -83,7 +84,19 @@ func is4xxStatusCode(statusCode int64) bool {
 		http.StatusPreconditionRequired,
 		http.StatusTooManyRequests,
 		http.StatusRequestHeaderFieldsTooLarge,
-		http.StatusUnavailableForLegalReasons:
+		http.StatusUnavailableForLegalReasons,
+		// 5XX status codes
+		http.StatusInternalServerError,
+		http.StatusNotImplemented,
+		http.StatusBadGateway,
+		http.StatusServiceUnavailable,
+		http.StatusGatewayTimeout,
+		http.StatusHTTPVersionNotSupported,
+		http.StatusVariantAlsoNegotiates,
+		http.StatusInsufficientStorage,
+		http.StatusLoopDetected,
+		http.StatusNotExtended,
+		http.StatusNetworkAuthenticationRequired:
 		return true
 	default:
 		return false

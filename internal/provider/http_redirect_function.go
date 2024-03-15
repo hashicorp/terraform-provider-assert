@@ -12,22 +12,22 @@ import (
 )
 
 var (
-	_ function.Function = IsHTTP3XXFunction{}
+	_ function.Function = IsHTTPRedirectFunction{}
 )
 
-func NewIsHTTP3XXFunction() function.Function {
-	return IsHTTP3XXFunction{}
+func NewIsHTTPRedirectFunction() function.Function {
+	return IsHTTPRedirectFunction{}
 }
 
-type IsHTTP3XXFunction struct{}
+type IsHTTPRedirectFunction struct{}
 
-func (r IsHTTP3XXFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
-	resp.Name = "is_http_3xx"
+func (r IsHTTPRedirectFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
+	resp.Name = "http_redirect"
 }
 
-func (r IsHTTP3XXFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
+func (r IsHTTPRedirectFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether the HTTP status code is a valid 3xx status code",
+		Summary: "Checks whether an HTTP status code is a redirect status code",
 		Parameters: []function.Parameter{
 			function.Int64Parameter{
 				AllowNullValue:     false,
@@ -40,7 +40,7 @@ func (r IsHTTP3XXFunction) Definition(_ context.Context, _ function.DefinitionRe
 	}
 }
 
-func (r IsHTTP3XXFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
+func (r IsHTTPRedirectFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var statusCode types.Int64
 
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &statusCode))
@@ -48,11 +48,11 @@ func (r IsHTTP3XXFunction) Run(ctx context.Context, req function.RunRequest, res
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, is3xxStatusCode(statusCode.ValueInt64())))
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isRedirectStatusCode(statusCode.ValueInt64())))
 }
 
 // isValid3xxStatusCode checks if an HTTP status code is within the 3xx range
-func is3xxStatusCode(statusCode int64) bool {
+func isRedirectStatusCode(statusCode int64) bool {
 	switch statusCode {
 	case
 		http.StatusMultipleChoices,

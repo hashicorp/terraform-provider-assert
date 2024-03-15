@@ -12,22 +12,22 @@ import (
 )
 
 var (
-	_ function.Function = IsHTTP2XXFunction{}
+	_ function.Function = IsHTTPSuccessFunction{}
 )
 
-func NewIsHTTP2XXFunction() function.Function {
-	return IsHTTP2XXFunction{}
+func NewIsHTTPSuccessFunction() function.Function {
+	return IsHTTPSuccessFunction{}
 }
 
-type IsHTTP2XXFunction struct{}
+type IsHTTPSuccessFunction struct{}
 
-func (r IsHTTP2XXFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
-	resp.Name = "is_http_2xx"
+func (r IsHTTPSuccessFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
+	resp.Name = "http_success"
 }
 
-func (r IsHTTP2XXFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
+func (r IsHTTPSuccessFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether the HTTP status code is a valid 2xx status code",
+		Summary: "Checks whether an HTTP status code is a success status code",
 		Parameters: []function.Parameter{
 			function.Int64Parameter{
 				AllowNullValue:     false,
@@ -40,7 +40,7 @@ func (r IsHTTP2XXFunction) Definition(_ context.Context, _ function.DefinitionRe
 	}
 }
 
-func (r IsHTTP2XXFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
+func (r IsHTTPSuccessFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var statusCode types.Int64
 
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &statusCode))
@@ -48,11 +48,11 @@ func (r IsHTTP2XXFunction) Run(ctx context.Context, req function.RunRequest, res
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, is2xxStatusCode(statusCode.ValueInt64())))
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isSuccessStatusCode(statusCode.ValueInt64())))
 }
 
 // isValid2xxStatusCode checks if an HTTP status code is within the 2xx range
-func is2xxStatusCode(statusCode int64) bool {
+func isSuccessStatusCode(statusCode int64) bool {
 	switch statusCode {
 	case
 		http.StatusOK,

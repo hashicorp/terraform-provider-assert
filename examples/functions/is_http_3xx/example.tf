@@ -7,6 +7,6 @@ data "http" "example" {
   }
 }
 
-output "is_http_3xx" {
-  value = provider::assert::is_http_3xx(data.http.example.status_code)
+output "http_redirect" {
+  value = provider::assert::http_redirect(data.http.example.status_code)
 }

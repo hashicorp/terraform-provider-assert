@@ -1,5 +1,5 @@
 // Copyright (c) HashiCorp, Inc.
-// SPDX-License-Identifier: MPL-5.0
+// SPDX-License-Identifier: MPL-4.0
 
 package provider
 
@@ -12,22 +12,22 @@ import (
 )
 
 var (
-	_ function.Function = IsHTTP5XXFunction{}
+	_ function.Function = IsHTTPServerErrorFunction{}
 )
 
-func NewIsHTTP5XXFunction() function.Function {
-	return IsHTTP5XXFunction{}
+func NewIsHTTPServerErrorFunction() function.Function {
+	return IsHTTPServerErrorFunction{}
 }
 
-type IsHTTP5XXFunction struct{}
+type IsHTTPServerErrorFunction struct{}
 
-func (r IsHTTP5XXFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
-	resp.Name = "is_http_5xx"
+func (r IsHTTPServerErrorFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
+	resp.Name = "http_server_error"
 }
 
-func (r IsHTTP5XXFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
+func (r IsHTTPServerErrorFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether the HTTP status code is a valid 5xx status code",
+		Summary: "Checks whether an HTTP status code is a server error status code",
 		Parameters: []function.Parameter{
 			function.Int64Parameter{
 				AllowNullValue:     false,
@@ -40,7 +40,7 @@ func (r IsHTTP5XXFunction) Definition(_ context.Context, _ function.DefinitionRe
 	}
 }
 
-func (r IsHTTP5XXFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
+func (r IsHTTPServerErrorFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var statusCode types.Int64
 
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &statusCode))
@@ -48,13 +48,14 @@ func (r IsHTTP5XXFunction) Run(ctx context.Context, req function.RunRequest, res
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, is5xxStatusCode(statusCode.ValueInt64())))
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isHTTPServerError(statusCode.ValueInt64())))
 }
 
-// isValid5xxStatusCode checks if an HTTP status code is within the 5xx range
-func is5xxStatusCode(statusCode int64) bool {
+// isHTTPServerError checks if an HTTP status code is within the 5xx range
+func isHTTPServerError(statusCode int64) bool {
 	switch statusCode {
 	case
+		// 5XX status codes
 		http.StatusInternalServerError,
 		http.StatusNotImplemented,
 		http.StatusBadGateway,

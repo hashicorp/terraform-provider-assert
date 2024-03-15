@@ -7,6 +7,6 @@ data "http" "example" {
   }
 }
 
-output "is_http_4xx" {
-  value = provider::assert::is_http_4xx(data.http.example.status_code)
+output "http_client_error" {
+  value = provider::assert::http_client_error(data.http.example.status_code)
 }
