@@ -49,7 +49,7 @@ func TestIsHTTP3XXFunction_httpMovedPermanently(t *testing.T) {
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckOutput("test", "false"),
+					resource.TestCheckOutput("test", "true"),
 				),
 			},
 		},
@@ -97,7 +97,7 @@ func TestIsHTTP3XXFunction_httpCreated(t *testing.T) {
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckOutput("test", "true"),
+					resource.TestCheckOutput("test", "false"),
 				),
 			},
 		},
