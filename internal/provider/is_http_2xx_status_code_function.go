@@ -26,8 +26,7 @@ func (r IsHTTP2XXStatusCodeFunction) Metadata(_ context.Context, req function.Me
 
 func (r IsHTTP2XXStatusCodeFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary:             "Checks whether the HTTP status code is a valid 2xx status code",
-		MarkdownDescription: "Checks whether the HTTP status code is a valid 2xx status code",
+		Summary: "Checks whether the HTTP status code is a valid 2xx status code",
 		Parameters: []function.Parameter{
 			function.Int64Parameter{
 				AllowNullValue:     false,
@@ -42,9 +41,7 @@ func (r IsHTTP2XXStatusCodeFunction) Definition(_ context.Context, _ function.De
 
 func (r IsHTTP2XXStatusCodeFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var statusCode int
-
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &statusCode))
-
 	if resp.Error != nil {
 		return
 	}

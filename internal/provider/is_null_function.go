@@ -21,19 +21,18 @@ func NewIsNullFunction() function.Function {
 type IsNullFunction struct{}
 
 func (r IsNullFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
-	resp.Name = "isnull"
+	resp.Name = "is_null"
 }
 
 func (r IsNullFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary:             "Is null function",
-		MarkdownDescription: "Checks that the input is null",
+		Summary: "Checks whether a given object is null",
 		Parameters: []function.Parameter{
 			function.ObjectParameter{
 				AllowNullValue:     true,
 				AllowUnknownValues: true,
-				Description:        "The input to check",
-				Name:               "input",
+				Description:        "The object to check",
+				Name:               "object",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -42,9 +41,7 @@ func (r IsNullFunction) Definition(_ context.Context, _ function.DefinitionReque
 
 func (r IsNullFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var data types.Object
-
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &data))
-
 	if resp.Error != nil {
 		return
 	}

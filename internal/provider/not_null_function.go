@@ -21,19 +21,18 @@ func NewNotNullFunction() function.Function {
 type NotNullFunction struct{}
 
 func (r NotNullFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
-	resp.Name = "notnull"
+	resp.Name = "not_null"
 }
 
 func (r NotNullFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary:             "Not null function",
-		MarkdownDescription: "Checks that the input is not null",
+		Summary: "Checks whether a given object is not null",
 		Parameters: []function.Parameter{
 			function.ObjectParameter{
 				AllowNullValue:     true,
 				AllowUnknownValues: true,
-				Description:        "The input to check",
-				Name:               "input",
+				Description:        "The object to check",
+				Name:               "object",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -42,9 +41,7 @@ func (r NotNullFunction) Definition(_ context.Context, _ function.DefinitionRequ
 
 func (r NotNullFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var data types.Object
-
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &data))
-
 	if resp.Error != nil {
 		return
 	}

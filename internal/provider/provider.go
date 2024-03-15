@@ -5,7 +5,6 @@ package provider
 
 import (
 	"context"
-	"net/http"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/function"
@@ -26,10 +25,6 @@ type AssertProvider struct {
 	version string
 }
 
-// AssertProviderModel describes the provider data model.
-type AssertProviderModel struct {
-}
-
 func (p *AssertProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
 	resp.TypeName = "assert"
 	resp.Version = p.version
@@ -42,18 +37,6 @@ func (p *AssertProvider) Schema(ctx context.Context, req provider.SchemaRequest,
 }
 
 func (p *AssertProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
-	var data AssertProviderModel
-
-	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	// Example client configuration for data sources and resources
-	client := http.DefaultClient
-	resp.DataSourceData = client
-	resp.ResourceData = client
 }
 
 func (p *AssertProvider) Resources(ctx context.Context) []func() resource.Resource {

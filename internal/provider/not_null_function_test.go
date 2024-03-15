@@ -27,7 +27,7 @@ func TestNotNullFunction_basic(t *testing.T) {
 					}
 				}
 				output "test" {
-					value = provider::assert::notnull(local.person)
+					value = provider::assert::not_null(local.person)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -51,7 +51,7 @@ func TestNotNullFunction_null(t *testing.T) {
 					person = null
 				}
 				output "test" {
-					value = provider::assert::notnull(local.person)
+					value = provider::assert::not_null(local.person)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

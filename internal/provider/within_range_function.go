@@ -25,8 +25,7 @@ func (r WithinRangeFunction) Metadata(_ context.Context, req function.MetadataRe
 
 func (r WithinRangeFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary:             "Within range function",
-		MarkdownDescription: "Checks whether the input is within the range",
+		Summary: "Checks whether a number is within a given range",
 		Parameters: []function.Parameter{
 			function.NumberParameter{
 				AllowNullValue:     false,
@@ -43,7 +42,7 @@ func (r WithinRangeFunction) Definition(_ context.Context, _ function.Definition
 			function.NumberParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The number to check if it is within the range",
+				Description:        "The number to check",
 				Name:               "number",
 			},
 		},
@@ -52,19 +51,14 @@ func (r WithinRangeFunction) Definition(_ context.Context, _ function.Definition
 }
 
 func (r WithinRangeFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var begin int
-	var end int
-	var number int
-
+	var begin, end, number int
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &begin, &end, &number))
-
 	if resp.Error != nil {
 		return
 	}
-
-	isInRange := func(number, start, end int) bool {
-		return number >= start && number <= end
-	}
-
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isInRange(number, begin, end)))
+}
+
+func isInRange(number, start, end int) bool {
+	return number >= start && number <= end
 }
