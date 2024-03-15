@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/hashicorp/terraform-plugin-framework/function"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var (
@@ -40,17 +41,17 @@ func (r IsHTTP3XXFunction) Definition(_ context.Context, _ function.DefinitionRe
 }
 
 func (r IsHTTP3XXFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var statusCode int
+	var statusCode types.Int64
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &statusCode))
 	if resp.Error != nil {
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, is3xxStatusCode(statusCode)))
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, is3xxStatusCode(statusCode.ValueInt64())))
 }
 
 // isValid3xxStatusCode checks if an HTTP status code is within the 3xx range
-func is3xxStatusCode(statusCode int) bool {
+func is3xxStatusCode(statusCode int64) bool {
 	switch statusCode {
 	case
 		http.StatusMultipleChoices,

@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/hashicorp/terraform-plugin-framework/function"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var (
@@ -40,17 +41,17 @@ func (r IsHTTP2XXFunction) Definition(_ context.Context, _ function.DefinitionRe
 }
 
 func (r IsHTTP2XXFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var statusCode int
+	var statusCode types.Int64
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &statusCode))
 	if resp.Error != nil {
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, is2xxStatusCode(statusCode)))
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, is2xxStatusCode(statusCode.ValueInt64())))
 }
 
 // isValid2xxStatusCode checks if an HTTP status code is within the 2xx range
-func is2xxStatusCode(statusCode int) bool {
+func is2xxStatusCode(statusCode int64) bool {
 	switch statusCode {
 	case
 		http.StatusOK,
