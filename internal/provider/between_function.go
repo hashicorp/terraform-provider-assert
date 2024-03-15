@@ -11,20 +11,20 @@ import (
 )
 
 var (
-	_ function.Function = WithinRangeFunction{}
+	_ function.Function = BetweenFunction{}
 )
 
-func NewWithinRangeFunction() function.Function {
-	return WithinRangeFunction{}
+func NewBetweenFunction() function.Function {
+	return BetweenFunction{}
 }
 
-type WithinRangeFunction struct{}
+type BetweenFunction struct{}
 
-func (r WithinRangeFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
-	resp.Name = "within_range"
+func (r BetweenFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
+	resp.Name = "between"
 }
 
-func (r WithinRangeFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
+func (r BetweenFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
 		Summary: "Checks whether a number is within a given range",
 		Parameters: []function.Parameter{
@@ -51,7 +51,7 @@ func (r WithinRangeFunction) Definition(_ context.Context, _ function.Definition
 	}
 }
 
-func (r WithinRangeFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
+func (r BetweenFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var begin, end, number *big.Float
 
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &begin, &end, &number))

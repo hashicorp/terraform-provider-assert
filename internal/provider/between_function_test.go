@@ -21,7 +21,7 @@ func TestWithinRangeFunction_basic(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-					value = provider::assert::within_range(1, 10, 5)
+					value = provider::assert::between(1, 10, 5)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -42,7 +42,7 @@ func TestWithinRangeFunction_NotInRange(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-					value = provider::assert::within_range(1, 10, 11)
+					value = provider::assert::between(1, 10, 11)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
