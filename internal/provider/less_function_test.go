@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestGreaterThanFunction_basic(t *testing.T) {
+func TestLessFunction_basic(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -21,7 +21,7 @@ func TestGreaterThanFunction_basic(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::greater_than(500, 200)
+				  value = provider::assert::less(100, 200)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -32,7 +32,7 @@ func TestGreaterThanFunction_basic(t *testing.T) {
 	})
 }
 
-func TestGreaterThanFunction_fail(t *testing.T) {
+func TestLessFunction_fail(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -42,7 +42,7 @@ func TestGreaterThanFunction_fail(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::greater_than(100, 105)
+				  value = provider::assert::less(500, 300)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -53,7 +53,7 @@ func TestGreaterThanFunction_fail(t *testing.T) {
 	})
 }
 
-func TestGreaterThanFunction_float(t *testing.T) {
+func TestLessFunction_float(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -63,7 +63,7 @@ func TestGreaterThanFunction_float(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::greater_than(50.32132, 40.53443)
+				  value = provider::assert::less(50.32132, 55.53443)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -74,7 +74,7 @@ func TestGreaterThanFunction_float(t *testing.T) {
 	})
 }
 
-func TestGreaterThanFunction_minus(t *testing.T) {
+func TestLessFunction_minus(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -84,7 +84,7 @@ func TestGreaterThanFunction_minus(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::greater_than(-10, -20)
+				  value = provider::assert::less(-20, -10)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -95,7 +95,7 @@ func TestGreaterThanFunction_minus(t *testing.T) {
 	})
 }
 
-func TestGreaterThanFunction_minusFloat(t *testing.T) {
+func TestLessFunction_minusFloat(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -105,7 +105,7 @@ func TestGreaterThanFunction_minusFloat(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::greater_than(-10.43234, -20.2112132)
+				  value = provider::assert::less(-20.43234, -10.2112132)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

@@ -11,22 +11,22 @@ import (
 )
 
 var (
-	_ function.Function = LessThanOrEqualFunction{}
+	_ function.Function = LessFunction{}
 )
 
-func NewLessThanOrEqualFunction() function.Function {
-	return LessThanOrEqualFunction{}
+func NewLessFunction() function.Function {
+	return LessFunction{}
 }
 
-type LessThanOrEqualFunction struct{}
+type LessFunction struct{}
 
-func (r LessThanOrEqualFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
-	resp.Name = "less_than_or_equal"
+func (r LessFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
+	resp.Name = "less"
 }
 
-func (r LessThanOrEqualFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
+func (r LessFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether a number is less than or equal to a given number",
+		Summary: "Checks whether a number is less than a given number",
 		Parameters: []function.Parameter{
 			function.NumberParameter{
 				AllowNullValue:     true,
@@ -45,7 +45,7 @@ func (r LessThanOrEqualFunction) Definition(_ context.Context, _ function.Defini
 	}
 }
 
-func (r LessThanOrEqualFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
+func (r LessFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var number *big.Float
 	var compareAgainst *big.Float
 
@@ -53,9 +53,9 @@ func (r LessThanOrEqualFunction) Run(ctx context.Context, req function.RunReques
 	if resp.Error != nil {
 		return
 	}
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isLessThanOrEqual(number, compareAgainst)))
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isLessThan(number, compareAgainst)))
 }
 
-func isLessThanOrEqual(number, compareAgainst *big.Float) bool {
-	return number.Cmp(compareAgainst) <= 0
+func isLessThan(number, compareAgainst *big.Float) bool {
+	return number.Cmp(compareAgainst) == -1
 }

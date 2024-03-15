@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestGreaterThanOrEqualFunction_basic(t *testing.T) {
+func TestGreaterOrEqualFunction_basic(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -21,7 +21,7 @@ func TestGreaterThanOrEqualFunction_basic(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::greater_than_or_equal(500, 200)
+				  value = provider::assert::greater_or_equal(500, 200)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -32,7 +32,7 @@ func TestGreaterThanOrEqualFunction_basic(t *testing.T) {
 	})
 }
 
-func TestGreaterThanOrEqualFunction_equal(t *testing.T) {
+func TestGreaterOrEqualFunction_equal(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -42,7 +42,7 @@ func TestGreaterThanOrEqualFunction_equal(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::greater_than_or_equal(1000000, 1000000)
+				  value = provider::assert::greater_or_equal(1000000, 1000000)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -53,7 +53,7 @@ func TestGreaterThanOrEqualFunction_equal(t *testing.T) {
 	})
 }
 
-func TestGreaterThanOrEqualFunction_equalFloat(t *testing.T) {
+func TestGreaterOrEqualFunction_equalFloat(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -63,7 +63,7 @@ func TestGreaterThanOrEqualFunction_equalFloat(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::greater_than_or_equal(43234.43234, 43234.43234)
+				  value = provider::assert::greater_or_equal(43234.43234, 43234.43234)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -74,7 +74,7 @@ func TestGreaterThanOrEqualFunction_equalFloat(t *testing.T) {
 	})
 }
 
-func TestGreaterThanOrEqualFunction_fail(t *testing.T) {
+func TestGreaterOrEqualFunction_fail(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -84,7 +84,7 @@ func TestGreaterThanOrEqualFunction_fail(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::greater_than_or_equal(100, 105)
+				  value = provider::assert::greater_or_equal(100, 105)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -95,7 +95,7 @@ func TestGreaterThanOrEqualFunction_fail(t *testing.T) {
 	})
 }
 
-func TestGreaterThanOrEqualFunction_float(t *testing.T) {
+func TestGreaterOrEqualFunction_float(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -105,7 +105,7 @@ func TestGreaterThanOrEqualFunction_float(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::greater_than_or_equal(50.32132, 40.53443)
+				  value = provider::assert::greater_or_equal(50.32132, 40.53443)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -116,7 +116,7 @@ func TestGreaterThanOrEqualFunction_float(t *testing.T) {
 	})
 }
 
-func TestGreaterThanOrEqualFunction_minus(t *testing.T) {
+func TestGreaterOrEqualFunction_minus(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -126,7 +126,7 @@ func TestGreaterThanOrEqualFunction_minus(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::greater_than_or_equal(-10, -20)
+				  value = provider::assert::greater_or_equal(-10, -20)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -137,7 +137,7 @@ func TestGreaterThanOrEqualFunction_minus(t *testing.T) {
 	})
 }
 
-func TestGreaterThanOrEqualFunction_minusFloat(t *testing.T) {
+func TestGreaterOrEqualFunction_minusFloat(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -147,7 +147,7 @@ func TestGreaterThanOrEqualFunction_minusFloat(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::greater_than_or_equal(-10.43234, -20.2112132)
+				  value = provider::assert::greater_or_equal(-10.43234, -20.2112132)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

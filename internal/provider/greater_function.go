@@ -11,20 +11,20 @@ import (
 )
 
 var (
-	_ function.Function = GreaterThanFunction{}
+	_ function.Function = GreaterFunction{}
 )
 
-func NewGreaterThanFunction() function.Function {
-	return GreaterThanFunction{}
+func NewGreaterFunction() function.Function {
+	return GreaterFunction{}
 }
 
-type GreaterThanFunction struct{}
+type GreaterFunction struct{}
 
-func (r GreaterThanFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
-	resp.Name = "greater_than"
+func (r GreaterFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
+	resp.Name = "greater"
 }
 
-func (r GreaterThanFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
+func (r GreaterFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
 		Summary: "Checks whether a number is greater than a given number",
 		Parameters: []function.Parameter{
@@ -45,7 +45,7 @@ func (r GreaterThanFunction) Definition(_ context.Context, _ function.Definition
 	}
 }
 
-func (r GreaterThanFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
+func (r GreaterFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var number *big.Float
 	var compareAgainst *big.Float
 

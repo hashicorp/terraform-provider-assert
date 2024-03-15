@@ -11,20 +11,20 @@ import (
 )
 
 var (
-	_ function.Function = GreaterThanOrEqualFunction{}
+	_ function.Function = GreaterOrEqualFunction{}
 )
 
-func NewGreaterThanOrEqualFunction() function.Function {
-	return GreaterThanOrEqualFunction{}
+func NewGreaterOrEqualFunction() function.Function {
+	return GreaterOrEqualFunction{}
 }
 
-type GreaterThanOrEqualFunction struct{}
+type GreaterOrEqualFunction struct{}
 
-func (r GreaterThanOrEqualFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
-	resp.Name = "greater_than_or_equal"
+func (r GreaterOrEqualFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
+	resp.Name = "greater_or_equal"
 }
 
-func (r GreaterThanOrEqualFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
+func (r GreaterOrEqualFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
 		Summary: "Checks whether a number is greater than or equal to a given number",
 		Parameters: []function.Parameter{
@@ -45,7 +45,7 @@ func (r GreaterThanOrEqualFunction) Definition(_ context.Context, _ function.Def
 	}
 }
 
-func (r GreaterThanOrEqualFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
+func (r GreaterOrEqualFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var number *big.Float
 	var compareAgainst *big.Float
 
@@ -53,9 +53,9 @@ func (r GreaterThanOrEqualFunction) Run(ctx context.Context, req function.RunReq
 	if resp.Error != nil {
 		return
 	}
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isGreaterThanOrEqual(number, compareAgainst)))
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isGreaterOrEqual(number, compareAgainst)))
 }
 
-func isGreaterThanOrEqual(number, compareAgainst *big.Float) bool {
+func isGreaterOrEqual(number, compareAgainst *big.Float) bool {
 	return number.Cmp(compareAgainst) >= 0
 }

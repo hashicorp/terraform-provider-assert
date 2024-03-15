@@ -11,22 +11,22 @@ import (
 )
 
 var (
-	_ function.Function = LessThanFunction{}
+	_ function.Function = LessOrEqualFunction{}
 )
 
-func NewLessThanFunction() function.Function {
-	return LessThanFunction{}
+func NewLessOrEqualFunction() function.Function {
+	return LessOrEqualFunction{}
 }
 
-type LessThanFunction struct{}
+type LessOrEqualFunction struct{}
 
-func (r LessThanFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
-	resp.Name = "less_than"
+func (r LessOrEqualFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
+	resp.Name = "less_or_equal"
 }
 
-func (r LessThanFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
+func (r LessOrEqualFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether a number is less than a given number",
+		Summary: "Checks whether a number is less than or equal to a given number",
 		Parameters: []function.Parameter{
 			function.NumberParameter{
 				AllowNullValue:     true,
@@ -45,7 +45,7 @@ func (r LessThanFunction) Definition(_ context.Context, _ function.DefinitionReq
 	}
 }
 
-func (r LessThanFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
+func (r LessOrEqualFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var number *big.Float
 	var compareAgainst *big.Float
 
@@ -53,9 +53,9 @@ func (r LessThanFunction) Run(ctx context.Context, req function.RunRequest, resp
 	if resp.Error != nil {
 		return
 	}
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isLessThan(number, compareAgainst)))
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isLessOrEqual(number, compareAgainst)))
 }
 
-func isLessThan(number, compareAgainst *big.Float) bool {
-	return number.Cmp(compareAgainst) == -1
+func isLessOrEqual(number, compareAgainst *big.Float) bool {
+	return number.Cmp(compareAgainst) <= 0
 }

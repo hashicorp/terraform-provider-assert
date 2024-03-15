@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestLessThanOrEqualFunction_basic(t *testing.T) {
+func TestGreaterFunction_basic(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -21,7 +21,7 @@ func TestLessThanOrEqualFunction_basic(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::less_than_or_equal(100, 200)
+				  value = provider::assert::greater(500, 200)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -32,7 +32,7 @@ func TestLessThanOrEqualFunction_basic(t *testing.T) {
 	})
 }
 
-func TestLessThanOrEqualFunction_equal(t *testing.T) {
+func TestGreaterFunction_fail(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -42,49 +42,7 @@ func TestLessThanOrEqualFunction_equal(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::less_than_or_equal(1000000, 1000000)
-				}
-				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckOutput("test", "true"),
-				),
-			},
-		},
-	})
-}
-
-func TestLessThanOrEqualFunction_equalFloat(t *testing.T) {
-	resource.UnitTest(t, resource.TestCase{
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: `
-				output "test" {
-				  value = provider::assert::less_than_or_equal(43234.43234, 43234.43234)
-				}
-				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckOutput("test", "true"),
-				),
-			},
-		},
-	})
-}
-
-func TestLessThanOrEqualFunction_fail(t *testing.T) {
-	resource.UnitTest(t, resource.TestCase{
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: `
-				output "test" {
-				  value = provider::assert::less_than_or_equal(200, 100)
+				  value = provider::assert::greater(100, 105)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -95,7 +53,7 @@ func TestLessThanOrEqualFunction_fail(t *testing.T) {
 	})
 }
 
-func TestLessThanOrEqualFunction_float(t *testing.T) {
+func TestGreaterFunction_float(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -105,7 +63,7 @@ func TestLessThanOrEqualFunction_float(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::less_than_or_equal(40.32132, 50.53443)
+				  value = provider::assert::greater(50.32132, 40.53443)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -116,7 +74,7 @@ func TestLessThanOrEqualFunction_float(t *testing.T) {
 	})
 }
 
-func TestLessThanOrEqualFunction_minus(t *testing.T) {
+func TestGreaterFunction_minus(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -126,7 +84,7 @@ func TestLessThanOrEqualFunction_minus(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::less_than_or_equal(-20, -10)
+				  value = provider::assert::greater(-10, -20)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -137,7 +95,7 @@ func TestLessThanOrEqualFunction_minus(t *testing.T) {
 	})
 }
 
-func TestLessThanOrEqualFunction_minusFloat(t *testing.T) {
+func TestGreaterFunction_minusFloat(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -147,7 +105,7 @@ func TestLessThanOrEqualFunction_minusFloat(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-				  value = provider::assert::less_than_or_equal(-20.43234, -10.2112132)
+				  value = provider::assert::greater(-10.43234, -20.2112132)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
