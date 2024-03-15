@@ -11,27 +11,27 @@ import (
 )
 
 var (
-	_ function.Function = IsHTTP2XXStatusCodeFunction{}
+	_ function.Function = IsHTTP2XXFunction{}
 )
 
-func NewIsHTTP2XXStatusCodeFunction() function.Function {
-	return IsHTTP2XXStatusCodeFunction{}
+func NewIsHTTP2XXFunction() function.Function {
+	return IsHTTP2XXFunction{}
 }
 
-type IsHTTP2XXStatusCodeFunction struct{}
+type IsHTTP2XXFunction struct{}
 
-func (r IsHTTP2XXStatusCodeFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
-	resp.Name = "is_http_2xx_status_code"
+func (r IsHTTP2XXFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
+	resp.Name = "is_http_2xx"
 }
 
-func (r IsHTTP2XXStatusCodeFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
+func (r IsHTTP2XXFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
 		Summary: "Checks whether the HTTP status code is a valid 2xx status code",
 		Parameters: []function.Parameter{
 			function.Int64Parameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: true,
-				Description:        "The HTTP status code",
+				Description:        "The HTTP status code to check",
 				Name:               "status_code",
 			},
 		},
@@ -39,7 +39,7 @@ func (r IsHTTP2XXStatusCodeFunction) Definition(_ context.Context, _ function.De
 	}
 }
 
-func (r IsHTTP2XXStatusCodeFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
+func (r IsHTTP2XXFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var statusCode int
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &statusCode))
 	if resp.Error != nil {

@@ -1,5 +1,5 @@
 // Copyright (c) HashiCorp, Inc.
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: MPL-5.0
 
 package provider
 
@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestIsHTTP2XXStatusCodeFunction_basic(t *testing.T) {
+func TestIsHTTP5XXFunction_basic(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -21,7 +21,7 @@ func TestIsHTTP2XXStatusCodeFunction_basic(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-					value = provider::assert::is_http_2xx_status_code(200)
+				  value = provider::assert::is_http_5xx(500)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -32,7 +32,7 @@ func TestIsHTTP2XXStatusCodeFunction_basic(t *testing.T) {
 	})
 }
 
-func TestIsHTTP2XXStatusCodeFunction_httpCreated(t *testing.T) {
+func TestIsHTTP5XXFunction_httpBadGateway(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -42,10 +42,10 @@ func TestIsHTTP2XXStatusCodeFunction_httpCreated(t *testing.T) {
 			{
 				Config: `
 				locals {
-					http_created = 201
+				  bad_gateway = 502
 				}
 				output "test" {
-					value = provider::assert::is_http_2xx_status_code(local.http_created)
+				  value = provider::assert::is_http_5xx(local.bad_gateway)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -56,7 +56,7 @@ func TestIsHTTP2XXStatusCodeFunction_httpCreated(t *testing.T) {
 	})
 }
 
-func TestIsHTTP2XXStatusCodeFunction_imATeaPot(t *testing.T) {
+func TestIsHTTP5XXFunction_httpCreated(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -66,10 +66,34 @@ func TestIsHTTP2XXStatusCodeFunction_imATeaPot(t *testing.T) {
 			{
 				Config: `
 				locals {
-					im_a_teapot = 418
+				  http_created = 201
 				}
 				output "test" {
-					value = provider::assert::is_http_2xx_status_code(local.im_a_teapot)
+				  value = provider::assert::is_http_5xx(local.http_created)
+				}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+		},
+	})
+}
+
+func TestIsHTTP5XXFunction_httpForbidden(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+				locals {
+				  forbidden = 403
+				}
+				output "test" {
+				  value = provider::assert::is_http_5xx(local.forbidden)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

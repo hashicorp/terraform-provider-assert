@@ -52,7 +52,10 @@ func (p *AssertProvider) Functions(ctx context.Context) []func() function.Functi
 		NewNotNullFunction,
 		NewIsNullFunction,
 		NewWithinRangeFunction,
-		NewIsHTTP2XXStatusCodeFunction,
+		NewIsHTTP2XXFunction,
+		NewIsHTTP3XXFunction,
+		NewIsHTTP4XXFunction,
+		NewIsHTTP5XXFunction,
 	}
 }
 
