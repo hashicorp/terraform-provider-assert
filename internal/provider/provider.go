@@ -60,6 +60,8 @@ func (p *AssertProvider) Functions(ctx context.Context) []func() function.Functi
 		NewGreaterThanOrEqualFunction,
 		NewLessThanFunction,
 		NewLessThanOrEqualFunction,
+		NewEqualFunction,
+		NewNotEqualFunction,
 	}
 }
 
