@@ -56,6 +56,10 @@ func (p *AssertProvider) Functions(ctx context.Context) []func() function.Functi
 		NewIsHTTP3XXFunction,
 		NewIsHTTP4XXFunction,
 		NewIsHTTP5XXFunction,
+		NewGreaterThanFunction,
+		NewGreaterThanOrEqualFunction,
+		NewLessThanFunction,
+		NewLessThanOrEqualFunction,
 	}
 }
 
