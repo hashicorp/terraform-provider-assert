@@ -41,6 +41,7 @@ func (r IsNullFunction) Definition(_ context.Context, _ function.DefinitionReque
 
 func (r IsNullFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var data types.Object
+
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &data))
 	if resp.Error != nil {
 		return

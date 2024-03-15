@@ -5,9 +5,9 @@ package provider
 
 import (
 	"context"
+	"math/big"
 
 	"github.com/hashicorp/terraform-plugin-framework/function"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var (
@@ -52,7 +52,8 @@ func (r WithinRangeFunction) Definition(_ context.Context, _ function.Definition
 }
 
 func (r WithinRangeFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var begin, end, number types.Number
+	var begin, end, number *big.Float
+
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &begin, &end, &number))
 	if resp.Error != nil {
 		return
@@ -60,6 +61,6 @@ func (r WithinRangeFunction) Run(ctx context.Context, req function.RunRequest, r
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isInRange(number, begin, end)))
 }
 
-func isInRange(number, start, end types.Number) bool {
-	return number.ValueBigFloat().Cmp(start.ValueBigFloat()) != -1 && number.ValueBigFloat().Cmp(end.ValueBigFloat()) != 1
+func isInRange(number, start, end *big.Float) bool {
+	return number.Cmp(start) != -1 && number.Cmp(end) != 1
 }

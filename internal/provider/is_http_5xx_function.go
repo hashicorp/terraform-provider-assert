@@ -42,6 +42,7 @@ func (r IsHTTP5XXFunction) Definition(_ context.Context, _ function.DefinitionRe
 
 func (r IsHTTP5XXFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var statusCode types.Int64
+
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &statusCode))
 	if resp.Error != nil {
 		return

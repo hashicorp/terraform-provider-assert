@@ -5,9 +5,9 @@ package provider
 
 import (
 	"context"
+	"math/big"
 
 	"github.com/hashicorp/terraform-plugin-framework/function"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var (
@@ -46,8 +46,9 @@ func (r LessThanFunction) Definition(_ context.Context, _ function.DefinitionReq
 }
 
 func (r LessThanFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var number types.Number
-	var compareAgainst types.Number
+	var number *big.Float
+	var compareAgainst *big.Float
+
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &number, &compareAgainst))
 	if resp.Error != nil {
 		return
@@ -55,6 +56,6 @@ func (r LessThanFunction) Run(ctx context.Context, req function.RunRequest, resp
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isLessThan(number, compareAgainst)))
 }
 
-func isLessThan(number, compareAgainst types.Number) bool {
-	return number.ValueBigFloat().Cmp(compareAgainst.ValueBigFloat()) == -1
+func isLessThan(number, compareAgainst *big.Float) bool {
+	return number.Cmp(compareAgainst) == -1
 }
