@@ -50,7 +50,7 @@ func (r ValidYAMLFunction) Run(ctx context.Context, req function.RunRequest, res
 	isValidYAML, err := isValidYAML(YAML)
 	if err != nil {
 		resp.Error = function.ConcatFuncErrors(resp.Error, function.NewFuncError(err.Error()))
-		return
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
 	}
 
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isValidYAML))

@@ -29,7 +29,7 @@ func (r ValidJSONFunction) Definition(_ context.Context, _ function.DefinitionRe
 		Summary: "Checks whether a string is valid JSON",
 		Parameters: []function.Parameter{
 			function.StringParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: true,
 				Description:        "The JSON string to check",
 				Name:               "json",
@@ -50,7 +50,7 @@ func (r ValidJSONFunction) Run(ctx context.Context, req function.RunRequest, res
 	isValidJSON, err := isValidJSON(JSON)
 	if err != nil {
 		resp.Error = function.ConcatFuncErrors(resp.Error, function.NewFuncError(err.Error()))
-		return
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
 	}
 
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isValidJSON))
