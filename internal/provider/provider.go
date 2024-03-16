@@ -52,6 +52,7 @@ func (p *AssertProvider) Functions(ctx context.Context) []func() function.Functi
 		NewNotNullFunction,
 		NewIsNullFunction,
 		NewBetweenFunction,
+		NewContainsFunction,
 		NewIsHTTPSuccessFunction,
 		NewIsHTTPRedirectFunction,
 		NewIsHTTPClientErrorFunction,
