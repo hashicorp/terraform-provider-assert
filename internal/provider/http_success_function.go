@@ -51,7 +51,7 @@ func (r IsHTTPSuccessFunction) Run(ctx context.Context, req function.RunRequest,
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isSuccessStatusCode(statusCode.ValueInt64())))
 }
 
-// isValid2xxStatusCode checks if an HTTP status code is within the 2xx range
+// isValid2xxStatusCode checks if an HTTP status code is within the 2xx range.
 func isSuccessStatusCode(statusCode int64) bool {
 	switch statusCode {
 	case

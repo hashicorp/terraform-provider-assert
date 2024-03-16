@@ -51,7 +51,7 @@ func (r IsHTTPClientErrorFunction) Run(ctx context.Context, req function.RunRequ
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isHTTPClientError(statusCode.ValueInt64())))
 }
 
-// isHTTPClientError checks if an HTTP status code is within the 4xx range
+// isHTTPClientError checks if an HTTP status code is within the 4xx range.
 func isHTTPClientError(statusCode int64) bool {
 	switch statusCode {
 	case

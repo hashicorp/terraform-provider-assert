@@ -60,7 +60,7 @@ func isValidJSON(JSON *string) (bool, error) {
 	var js map[string]interface{}
 	err := json.Unmarshal([]byte(*JSON), &js)
 	if err != nil {
-		return false, nil
+		return false, err
 	}
 	return true, nil
 }

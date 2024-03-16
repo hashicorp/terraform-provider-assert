@@ -60,7 +60,7 @@ func isValidYAML(YAML *string) (bool, error) {
 	var js map[string]interface{}
 	err := yaml.Unmarshal([]byte(*YAML), &js)
 	if err != nil {
-		return false, nil
+		return false, err
 	}
 	return true, nil
 }
