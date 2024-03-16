@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestWithinRangeFunction_basic(t *testing.T) {
+func TestBetweenFunction_basic(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
@@ -32,7 +32,7 @@ func TestWithinRangeFunction_basic(t *testing.T) {
 	})
 }
 
-func TestWithinRangeFunction_NotInRange(t *testing.T) {
+func TestBetweenFunction_fail(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
