@@ -4,6 +4,7 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/go-version"
@@ -11,10 +12,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestValidJSONFunction_basic(t *testing.T) {
+func TestValidJSONFunction(t *testing.T) {
+	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
 		},
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
@@ -37,10 +39,11 @@ func TestValidJSONFunction_basic(t *testing.T) {
 	})
 }
 
-func TestValidJSONFunction_multiline(t *testing.T) {
+func TestValidJSONFunction_MultiLine(t *testing.T) {
+	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
 		},
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
@@ -65,22 +68,34 @@ func TestValidJSONFunction_multiline(t *testing.T) {
 	})
 }
 
-func TestValidJSONFunction_fail(t *testing.T) {
+func TestValidJSONFunction_EmptyJSON(t *testing.T) {
+	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
 		},
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: `
-				locals {
-				  not_json = "not json" 
-				}
-				output "test" {
-					value = provider::assert::valid_json(local.not_json)
-				}
-				`,
+				Config: testValidJSONFunctionConfig("{}"),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestValidJSONFunction_NotJSON(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testValidJSONFunctionConfig("not json"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),
 				),
@@ -89,26 +104,28 @@ func TestValidJSONFunction_fail(t *testing.T) {
 	})
 }
 
-func TestValidJSONFunction_emptyJSON(t *testing.T) {
+func TestValidJSONFunction_abc(t *testing.T) {
+	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
 		},
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: `
-				locals {
-				  empty = "{}" 
-				}
-				output "test" {
-					value = provider::assert::valid_json(local.empty)
-				}
-				`,
+				Config: testValidJSONFunctionConfig("abc"),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckOutput("test", "true"),
+					resource.TestCheckOutput("test", "false"),
 				),
 			},
 		},
 	})
+}
+
+func testValidJSONFunctionConfig(json string) string {
+	return fmt.Sprintf(`
+output "test" {
+  value = provider::assert::valid_json(%[1]q)
+}
+`, json)
 }

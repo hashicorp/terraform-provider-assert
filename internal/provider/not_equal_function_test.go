@@ -11,10 +11,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestNotnot_equalFunction_basic(t *testing.T) {
+func TestNotnot_equalFunction(t *testing.T) {
+	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
 		},
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
@@ -33,9 +34,10 @@ func TestNotnot_equalFunction_basic(t *testing.T) {
 }
 
 func TestNotnot_equalFunction_float(t *testing.T) {
+	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
 		},
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
@@ -53,10 +55,11 @@ func TestNotnot_equalFunction_float(t *testing.T) {
 	})
 }
 
-func TestNotnot_equalFunction_fail(t *testing.T) {
+func TestNotnot_equalFunction_errorCases(t *testing.T) {
+	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
 		},
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
@@ -74,10 +77,11 @@ func TestNotnot_equalFunction_fail(t *testing.T) {
 	})
 }
 
-func TestNotnot_equalFunction_failFloat(t *testing.T) {
+func TestNotnot_equalFunction_errorCasesFloat(t *testing.T) {
+	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
 		},
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
@@ -96,9 +100,10 @@ func TestNotnot_equalFunction_failFloat(t *testing.T) {
 }
 
 func TestNotnot_equalFunction_minus(t *testing.T) {
+	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
 		},
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
@@ -117,9 +122,10 @@ func TestNotnot_equalFunction_minus(t *testing.T) {
 }
 
 func TestNotnot_equalFunction_minusFloat(t *testing.T) {
+	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
 		},
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
