@@ -51,7 +51,7 @@ func TestValidJSONFunction_multiline(t *testing.T) {
 				  {
 					"foo": "bar"
 				  }
-				  EOF
+				EOF
 				}
 				output "test" {
 					value = provider::assert::valid_json(local.json)
@@ -59,6 +59,30 @@ func TestValidJSONFunction_multiline(t *testing.T) {
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestValidJSONFunction_fail(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion("1.8.0-beta1"))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+				locals {
+				  not_json = "not json" 
+				}
+				output "test" {
+					value = provider::assert::valid_json(local.not_json)
+				}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
 				),
 			},
 		},
