@@ -18,7 +18,7 @@ data "http" "example" {
   url = "https://developer.hashicorp.com"
 }
 
-output "was_redirected" {
+output "is_redirected" {
   value = provider::assert::http_redirect(data.http.example.status_code)
 }
 ```
