@@ -2,6 +2,27 @@
 
 The [Assert Terraform provider]((https://registry.terraform.io/providers/bschaatsbergen/assert/latest/docs)) is intended for use when writing [Terraform tests](https://developer.hashicorp.com/terraform/language/tests). It serves as a way to verify that the values in your Terraform configuration meet specific criteria. The provider only contains functions to assert values, and does not manage any resources.
 
+## Usage
+
+```hcl
+terraform {
+  required_providers {
+    assert = {
+      source = "bschaatsbergen/assert"
+      version = "0.1.0"
+    }
+  }
+}
+
+data "http" "example" {
+  url = "https://developer.hashicorp.com"
+}
+
+output "was_redirected" {
+  value = provider::assert::http_redirect(data.http.example.status_code)
+}
+```
+
 ## Documentation, questions and discussions
 
 Official documentation on how to use this provider can be found on the 
