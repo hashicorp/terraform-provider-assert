@@ -3,11 +3,10 @@ module github.com/bschaatsbergen/terraform-provider-assert
 go 1.21
 
 require (
-	github.com/YakDriver/regexache v0.23.0
 	github.com/hashicorp/copywrite v0.18.0
 	github.com/hashicorp/go-version v1.6.0
 	github.com/hashicorp/terraform-plugin-docs v0.18.0
-	github.com/hashicorp/terraform-plugin-framework v1.6.1
+	github.com/hashicorp/terraform-plugin-framework v1.7.0
 	github.com/hashicorp/terraform-plugin-go v0.22.1
 	github.com/hashicorp/terraform-plugin-testing v1.7.0
 	gopkg.in/yaml.v3 v3.0.1
