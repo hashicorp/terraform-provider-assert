@@ -237,6 +237,16 @@ output "test" {
 					resource.TestCheckOutput("test", "false"),
 				),
 			},
+			{
+				Config: `
+output "test" {
+  value = provider::assert::contains([true, true], false)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
 		},
 	})
 }
