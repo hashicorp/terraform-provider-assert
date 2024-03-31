@@ -26,20 +26,20 @@ func (r ContainsFunction) Metadata(_ context.Context, req function.MetadataReque
 
 func (r ContainsFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether a string is contained in a list",
+		Summary: "Checks whether an element is in a list",
 		Parameters: []function.Parameter{
 			function.ListParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The list of strings to check",
+				Description:        "The list to check",
 				Name:               "list",
 				ElementType:        tpftypes.StringType,
 			},
 			function.StringParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The string to check for",
-				Name:               "string",
+				Description:        "The element to check",
+				Name:               "element",
 			},
 		},
 		Return: function.BoolReturn{},
