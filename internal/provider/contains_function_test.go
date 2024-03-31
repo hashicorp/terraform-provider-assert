@@ -55,6 +55,138 @@ output "test" {
 	})
 }
 
+func TestContainsFunction_number(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+output "test" {
+  value = provider::assert::contains([1, 2, 3], 2)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestContainsFunction_numberFloat(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+output "test" {
+  value = provider::assert::contains([1.0, 2.0, 3.0], 2.0)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestContainsFunction_numberMinus(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+output "test" {
+  value = provider::assert::contains([-1, -2, -3], -2)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestContainsFunction_numberMinusFloat(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+output "test" {
+  value = provider::assert::contains([-1.0, -2.0, -3.0], -2.0)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestContainsFunction_numberFloatMixed(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+output "test" {
+  value = provider::assert::contains([-1.0, -2, -3.0], -2)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestContainsFunction_numberFloatMixed_TrailingZero(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+output "test" {
+  value = provider::assert::contains([-1.0, -2, -3.0], -2.0)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
 func TestContainsFunction_falseCases(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
@@ -67,6 +199,16 @@ func TestContainsFunction_falseCases(t *testing.T) {
 				Config: `
 output "test" {
   value = provider::assert::contains(["a", "b", "c"], "x")
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+			{
+				Config: `
+output "test" {
+  value = provider::assert::contains([1, 2, 3], 45)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
