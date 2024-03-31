@@ -44,10 +44,10 @@ func TestIsHTTPServerErrorFunction_httpForbidden(t *testing.T) {
 			{
 				Config: `
 				locals {
-				  forbidden = 503
+					status_code = 503
 				}
 				output "test" {
-				  value = provider::assert::http_server_error(local.forbidden)
+				  value = provider::assert::http_server_error(local.status_code)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

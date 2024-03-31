@@ -39,7 +39,7 @@ func TestValidJSONFunction(t *testing.T) {
 	})
 }
 
-func TestValidJSONFunction_MultiLine(t *testing.T) {
+func TestValidJSONFunction_multiLine(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -68,7 +68,7 @@ func TestValidJSONFunction_MultiLine(t *testing.T) {
 	})
 }
 
-func TestValidJSONFunction_EmptyJSON(t *testing.T) {
+func TestValidJSONFunction_emptyJSON(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{

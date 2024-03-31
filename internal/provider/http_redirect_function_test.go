@@ -44,10 +44,10 @@ func TestIsHTTP3XXFunction_httpMovedPermanently(t *testing.T) {
 			{
 				Config: `
 				locals {
-				  moved_permanently = 301
+				  status_code = 301
 				}
 				output "test" {
-				  value = provider::assert::http_redirect(local.moved_permanently)
+				  value = provider::assert::http_redirect(local.status_code)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
