@@ -22,13 +22,13 @@ func TestNotNullFunction(t *testing.T) {
 			{
 				Config: `
 				locals {
-					person = {
-						first_name = "John"
-						last_name  = "Doe"
+					obj = {
+					  foo = "Foo"
+					  bar = "Bar"
 					}
 				}
 				output "test" {
-					value = provider::assert::not_null(local.person)
+					value = provider::assert::not_null(local.obj)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -39,7 +39,7 @@ func TestNotNullFunction(t *testing.T) {
 	})
 }
 
-func TestNotNullFunction_Object(t *testing.T) {
+func TestNotNullFunction_object(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -50,13 +50,13 @@ func TestNotNullFunction_Object(t *testing.T) {
 			{
 				Config: `
 				locals {
-					person = {
-						first_name = "John"
-						last_name  = "Doe"
+					obj = {
+					  foo = "Foo"
+					  bar = "Bar"
 					}
 				}
 				output "test" {
-					value = provider::assert::not_null(local.person)
+					value = provider::assert::not_null(local.obj)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -67,7 +67,7 @@ func TestNotNullFunction_Object(t *testing.T) {
 	})
 }
 
-func TestNotNullFunction_String(t *testing.T) {
+func TestNotNullFunction_string(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -78,10 +78,10 @@ func TestNotNullFunction_String(t *testing.T) {
 			{
 				Config: `
 				locals {
-					person = "John Doe"
+				  name = "John Doe"
 				}
 				output "test" {
-					value = provider::assert::not_null(local.person)
+					value = provider::assert::not_null(local.name)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -92,7 +92,7 @@ func TestNotNullFunction_String(t *testing.T) {
 	})
 }
 
-func TestNotNullFunction_Int(t *testing.T) {
+func TestNotNullFunction_int(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -103,7 +103,7 @@ func TestNotNullFunction_Int(t *testing.T) {
 			{
 				Config: `
 				locals {
-					number = 14
+				  number = 14
 				}
 				output "test" {
 					value = provider::assert::not_null(local.number)
@@ -117,7 +117,7 @@ func TestNotNullFunction_Int(t *testing.T) {
 	})
 }
 
-func TestNotNullFunction_Function(t *testing.T) {
+func TestNotNullFunction_function(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -142,7 +142,7 @@ func TestNotNullFunction_Function(t *testing.T) {
 	})
 }
 
-func TestNotNullFunction_List(t *testing.T) {
+func TestNotNullFunction_list(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -167,7 +167,7 @@ func TestNotNullFunction_List(t *testing.T) {
 	})
 }
 
-func TestNotNullFunction_Map(t *testing.T) {
+func TestNotNullFunction_map(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -195,7 +195,7 @@ func TestNotNullFunction_Map(t *testing.T) {
 	})
 }
 
-func TestNotNullFunction_Set(t *testing.T) {
+func TestNotNullFunction_set(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{

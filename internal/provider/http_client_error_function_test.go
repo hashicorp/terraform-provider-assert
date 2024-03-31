@@ -44,10 +44,10 @@ func TestIsHTTPClientErrorFunction_httpForbidden(t *testing.T) {
 			{
 				Config: `
 				locals {
-				  forbidden = 403
+				  status_code = 403
 				}
 				output "test" {
-				  value = provider::assert::http_client_error(local.forbidden)
+				  value = provider::assert::http_client_error(local.status_code)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -69,7 +69,7 @@ func TestIsHTTPClientErrorFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 				locals {
-				  status_code = 201
+					status_code = 201
 				}
 				output "test" {
 				  value = provider::assert::http_client_error(local.status_code)

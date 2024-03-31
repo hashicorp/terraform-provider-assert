@@ -38,7 +38,7 @@ func TestValidYAMLFunction(t *testing.T) {
 	})
 }
 
-func TestValidYAMLFunction_MultiLine(t *testing.T) {
+func TestValidYAMLFunction_multiLine(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{

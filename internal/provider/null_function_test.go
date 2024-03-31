@@ -22,10 +22,10 @@ func TestIsNullFunction(t *testing.T) {
 			{
 				Config: `
 				locals {
-					person = null
+				  something = null
 				}
 				output "test" {
-					value = provider::assert::null(local.person)
+					value = provider::assert::null(local.something)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -47,13 +47,13 @@ func TestIsNullFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 				locals {
-					person = {
-						first_name = "John"
-						last_name  = "Doe"
+					obj = {
+					  foo = "Foo"
+					  bar = "Bar"
 					}
 				}
 				output "test" {
-					value = provider::assert::null(local.person)
+					value = provider::assert::null(local.obj)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -63,10 +63,10 @@ func TestIsNullFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 				locals {
-					person = "John Doe"
+				  name = "John Doe"
 				}
 				output "test" {
-					value = provider::assert::null(local.person)
+					value = provider::assert::null(local.name)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -76,20 +76,7 @@ func TestIsNullFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 				locals {
-					number = 14
-				}
-				output "test" {
-					value = provider::assert::null(local.number)
-				}
-				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckOutput("test", "false"),
-				),
-			},
-			{
-				Config: `
-				locals {
-					number = max(1, 2)
+				  number = 14
 				}
 				output "test" {
 					value = provider::assert::null(local.number)
@@ -102,7 +89,20 @@ func TestIsNullFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 				locals {
-					fruits = ["apple", "banana", "cherry"]
+				  number = max(1, 2)
+				}
+				output "test" {
+					value = provider::assert::null(local.number)
+				}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+			{
+				Config: `
+				locals {
+				  fruits = ["apple", "banana", "cherry"]
 				}
 				output "test" {
 					value = provider::assert::null(local.fruits)
@@ -115,10 +115,10 @@ func TestIsNullFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 				locals {
-					kvmap = {
-						"first_name" = "John"
-						"last_name"  = "Doe"
-					}
+				  kvmap = {
+					"first_name" = "John"
+					"last_name"  = "Doe"
+				  }
 				}
 				output "test" {
 					value = provider::assert::null(local.kvmap)
@@ -131,10 +131,10 @@ func TestIsNullFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 				locals {
-					set = toset(["apple", "banana", "cherry"])
+				  set = toset(["apple", "banana", "cherry"])
 				}
 				output "test" {
-					value = provider::assert::null(local.set)
+				  value = provider::assert::null(local.set)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

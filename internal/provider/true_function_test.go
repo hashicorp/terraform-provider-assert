@@ -44,10 +44,10 @@ func TestTrueFunction_stringComparison(t *testing.T) {
 			{
 				Config: `
 				locals {
-				  string_comparison = "abc" == "abc"
+				  comparison = "abc" == "abc"
 				}
 				output "test" {
-				  value = provider::assert::true(local.string_comparison)
+				  value = provider::assert::true(local.comparison)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -79,10 +79,10 @@ func TestTrueFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 				locals {
-				  string_comparison = "abc" == "def"
+				  comparison = "abc" == "def"
 				}
 				output "test" {
-				  value = provider::assert::true(local.string_comparison)
+				  value = provider::assert::true(local.comparison)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

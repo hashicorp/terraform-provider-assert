@@ -44,10 +44,10 @@ func TestFalseFunction_stringComparison(t *testing.T) {
 			{
 				Config: `
 				locals {
-					string_comparison = "abc" == "def"
+					comparison = "abc" == "def"
 				}
 				output "test" {
-				  value = provider::assert::false(local.string_comparison)
+				  value = provider::assert::false(local.comparison)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

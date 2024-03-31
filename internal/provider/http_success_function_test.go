@@ -44,10 +44,10 @@ func TestIsHTTP2XXFunction_httpCreated(t *testing.T) {
 			{
 				Config: `
 				locals {
-				  http_created = 201
+					status_code = 201
 				}
 				output "test" {
-				  value = provider::assert::http_success(local.http_created)
+				  value = provider::assert::http_success(local.status_code)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
