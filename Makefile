@@ -6,11 +6,9 @@ build:
 install: build
 	go install -v ./...
 
-# See https://golangci-lint.run/
 lint:
 	golangci-lint run
 
-# Generate docs and copywrite headers
 generate:
 	cd tools; go generate ./...
 
