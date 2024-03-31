@@ -91,6 +91,19 @@ output "test" {
 					resource.TestCheckOutput("test", "false"),
 				),
 			},
+			{
+				Config: `
+locals {
+  status_code_as_string = "201"
+}
+output "test" {
+  value = provider::assert::http_redirect(local.status_code_as_string)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
 		},
 	})
 }

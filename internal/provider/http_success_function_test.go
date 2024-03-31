@@ -79,6 +79,19 @@ output "test" {
 					resource.TestCheckOutput("test", "false"),
 				),
 			},
+			{
+				Config: `
+locals {
+  status_code_as_string = "403"
+}
+output "test" {
+  value = provider::assert::http_success(local.status_code_as_string)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
 		},
 	})
 }
