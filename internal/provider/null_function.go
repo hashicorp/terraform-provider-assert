@@ -26,13 +26,13 @@ func (r IsNullFunction) Metadata(_ context.Context, req function.MetadataRequest
 
 func (r IsNullFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether a given object is null",
+		Summary: "Checks whether a given argument is null",
 		Parameters: []function.Parameter{
 			function.DynamicParameter{
 				AllowNullValue:     true,
 				AllowUnknownValues: true,
-				Description:        "The object to check",
-				Name:               "object",
+				Description:        "The argument to check",
+				Name:               "argument",
 			},
 		},
 		Return: function.BoolReturn{},
