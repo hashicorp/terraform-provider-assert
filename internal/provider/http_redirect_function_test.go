@@ -21,9 +21,9 @@ func TestIsHTTP3XXFunction(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::http_redirect(300)
-				}
+output "test" {
+  value = provider::assert::http_redirect(300)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -43,12 +43,12 @@ func TestIsHTTP3XXFunction_httpMovedPermanently(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				locals {
-				  status_code = 301
-				}
-				output "test" {
-				  value = provider::assert::http_redirect(local.status_code)
-				}
+locals {
+  status_code = 301
+}
+output "test" {
+  value = provider::assert::http_redirect(local.status_code)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -67,12 +67,12 @@ func TestIsHTTP3XXFunction_falseCases(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				locals {
-					status_code = 403
-				}
-				output "test" {
-				  value = provider::assert::http_redirect(local.status_code)
-				}
+locals {
+  status_code = 403
+}
+output "test" {
+  value = provider::assert::http_redirect(local.status_code)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),
@@ -80,12 +80,12 @@ func TestIsHTTP3XXFunction_falseCases(t *testing.T) {
 			},
 			{
 				Config: `
-				locals {
-					status_code = 201
-				}
-				output "test" {
-				  value = provider::assert::http_redirect(local.status_code)
-				}
+locals {
+  status_code = 201
+}
+output "test" {
+  value = provider::assert::http_redirect(local.status_code)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),

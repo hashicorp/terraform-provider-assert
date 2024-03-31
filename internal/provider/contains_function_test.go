@@ -21,9 +21,9 @@ func TestContainsFunction(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-					value = provider::assert::contains(["a", "b", "c"], "b")
-				}
+output "test" {
+  value = provider::assert::contains(["a", "b", "c"], "b")
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -43,9 +43,9 @@ func TestContainsFunction_falseCases(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-					value = provider::assert::contains(["a", "b", "c"], "x")
-				}
+output "test" {
+  value = provider::assert::contains(["a", "b", "c"], "x")
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),

@@ -21,9 +21,9 @@ func TestEqualFunction(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::equal(1000000, 1000000)
-				}
+output "test" {
+  value = provider::assert::equal(1000000, 1000000)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -43,9 +43,9 @@ func TestEqualFunction_float(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::equal(43234.43234, 43234.43234)
-				}
+output "test" {
+  value = provider::assert::equal(43234.43234, 43234.43234)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -65,9 +65,9 @@ func TestEqualFunction_minus(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::equal(-20, -20)
-				}
+output "test" {
+  value = provider::assert::equal(-20, -20)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -87,9 +87,9 @@ func TestEqualFunction_minusFloat(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::equal(-10.43234, -10.43234)
-				}
+output "test" {
+  value = provider::assert::equal(-10.43234, -10.43234)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -109,9 +109,9 @@ func TestEqualFunction_falseCases(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::equal(100, 105)
-				}
+output "test" {
+  value = provider::assert::equal(100, 105)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),
