@@ -69,7 +69,46 @@ func TestIsHTTPClientErrorFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 locals {
+  status_code = 101
+}
+output "test" {
+  value = provider::assert::http_client_error(local.status_code)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+			{
+				Config: `
+locals {
   status_code = 201
+}
+output "test" {
+  value = provider::assert::http_client_error(local.status_code)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+			{
+				Config: `
+locals {
+  status_code = 301
+}
+output "test" {
+  value = provider::assert::http_client_error(local.status_code)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+			{
+				Config: `
+locals {
+  status_code = 503
 }
 output "test" {
   value = provider::assert::http_client_error(local.status_code)

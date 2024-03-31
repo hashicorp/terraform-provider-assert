@@ -69,7 +69,46 @@ func TestIsHTTP2XXFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 locals {
+  status_code = 101
+}
+output "test" {
+  value = provider::assert::http_success(local.status_code)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+			{
+				Config: `
+locals {
+  status_code = 301
+}
+output "test" {
+  value = provider::assert::http_success(local.status_code)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+			{
+				Config: `
+locals {
   status_code = 403
+}
+output "test" {
+  value = provider::assert::http_success(local.status_code)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+			{
+				Config: `
+locals {
+  status_code = 504
 }
 output "test" {
   value = provider::assert::http_success(local.status_code)
