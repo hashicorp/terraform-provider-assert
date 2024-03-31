@@ -68,7 +68,7 @@ func TestIsHTTP3XXFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 locals {
-  status_code = 403
+  status_code = 101
 }
 output "test" {
   value = provider::assert::http_redirect(local.status_code)
@@ -82,6 +82,32 @@ output "test" {
 				Config: `
 locals {
   status_code = 201
+}
+output "test" {
+  value = provider::assert::http_redirect(local.status_code)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+			{
+				Config: `
+locals {
+  status_code = 403
+}
+output "test" {
+  value = provider::assert::http_redirect(local.status_code)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+			{
+				Config: `
+locals {
+  status_code = 504
 }
 output "test" {
   value = provider::assert::http_redirect(local.status_code)
