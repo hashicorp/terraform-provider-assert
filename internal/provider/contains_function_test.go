@@ -77,6 +77,28 @@ output "test" {
 	})
 }
 
+func TestContainsFunction_bool(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+output "test" {
+  value = provider::assert::contains([true, false, true], true)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
 func TestContainsFunction_numberFloat(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
