@@ -9,6 +9,7 @@ install: build
 lint:
 	golangci-lint run
 
+# Generate docs and copywrite headers
 generate:
 	cd tools; go generate ./...
 
