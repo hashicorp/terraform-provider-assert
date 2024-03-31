@@ -48,7 +48,9 @@ func (r IsHTTPSuccessFunction) Run(ctx context.Context, req function.RunRequest,
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isSuccessStatusCode(statusCode.ValueInt64())))
+	result := isSuccessStatusCode(statusCode.ValueInt64())
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, result))
 }
 
 // isValid2xxStatusCode checks if an HTTP status code is within the 2xx range.
