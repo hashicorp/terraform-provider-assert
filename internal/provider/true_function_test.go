@@ -58,7 +58,7 @@ func TestTrueFunction_stringComparison(t *testing.T) {
 	})
 }
 
-func TestTrueFunction_errorCases(t *testing.T) {
+func TestTrueFunction_falseCases(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -76,18 +76,6 @@ func TestTrueFunction_errorCases(t *testing.T) {
 					resource.TestCheckOutput("test", "false"),
 				),
 			},
-		},
-	})
-}
-
-func TestTrueFunction_stringComparisonFail(t *testing.T) {
-	t.Parallel()
-	resource.UnitTest(t, resource.TestCase{
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
 			{
 				Config: `
 				locals {

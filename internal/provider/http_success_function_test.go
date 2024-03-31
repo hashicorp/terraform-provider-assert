@@ -58,7 +58,7 @@ func TestIsHTTP2XXFunction_httpCreated(t *testing.T) {
 	})
 }
 
-func TestIsHTTP2XXFunction_httpForbidden(t *testing.T) {
+func TestIsHTTP2XXFunction_falseCases(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -69,10 +69,10 @@ func TestIsHTTP2XXFunction_httpForbidden(t *testing.T) {
 			{
 				Config: `
 				locals {
-				  forbidden = 403
+				  status_code = 403
 				}
 				output "test" {
-				  value = provider::assert::http_success(local.forbidden)
+				  value = provider::assert::http_success(local.status_code)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

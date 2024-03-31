@@ -86,7 +86,7 @@ func TestValidJSONFunction_EmptyJSON(t *testing.T) {
 	})
 }
 
-func TestValidJSONFunction_NotJSON(t *testing.T) {
+func TestValidJSONFunction_falseCases(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -100,18 +100,6 @@ func TestValidJSONFunction_NotJSON(t *testing.T) {
 					resource.TestCheckOutput("test", "false"),
 				),
 			},
-		},
-	})
-}
-
-func TestValidJSONFunction_abc(t *testing.T) {
-	t.Parallel()
-	resource.UnitTest(t, resource.TestCase{
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
 			{
 				Config: testValidJSONFunctionConfig("abc"),
 				Check: resource.ComposeAggregateTestCheckFunc(
