@@ -48,7 +48,9 @@ func (r IsHTTPServerErrorFunction) Run(ctx context.Context, req function.RunRequ
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isHTTPServerError(statusCode.ValueInt64())))
+	result := isHTTPServerError(statusCode.ValueInt64())
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, result))
 }
 
 // isHTTPServerError checks if an HTTP status code is within the 5xx range.
