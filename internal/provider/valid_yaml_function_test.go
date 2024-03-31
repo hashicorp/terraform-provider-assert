@@ -66,7 +66,7 @@ output "test" {
 	})
 }
 
-func TestValidYAMLFunction_errorCases(t *testing.T) {
+func TestValidYAMLFunction_falseCases(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{

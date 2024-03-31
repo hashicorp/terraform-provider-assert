@@ -36,7 +36,7 @@ func TestIsNullFunction(t *testing.T) {
 	})
 }
 
-func TestIsNullFunction_NotNull_Object(t *testing.T) {
+func TestIsNullFunction_falseCases(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -60,18 +60,6 @@ func TestIsNullFunction_NotNull_Object(t *testing.T) {
 					resource.TestCheckOutput("test", "false"),
 				),
 			},
-		},
-	})
-}
-
-func TestIsNullFunction_NotNull_String(t *testing.T) {
-	t.Parallel()
-	resource.UnitTest(t, resource.TestCase{
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
 			{
 				Config: `
 				locals {
@@ -85,18 +73,6 @@ func TestIsNullFunction_NotNull_String(t *testing.T) {
 					resource.TestCheckOutput("test", "false"),
 				),
 			},
-		},
-	})
-}
-
-func TestIsNullFunction_NotNull_Int(t *testing.T) {
-	t.Parallel()
-	resource.UnitTest(t, resource.TestCase{
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
 			{
 				Config: `
 				locals {
@@ -110,18 +86,6 @@ func TestIsNullFunction_NotNull_Int(t *testing.T) {
 					resource.TestCheckOutput("test", "false"),
 				),
 			},
-		},
-	})
-}
-
-func TestIsNullFunction_NotNull_Function(t *testing.T) {
-	t.Parallel()
-	resource.UnitTest(t, resource.TestCase{
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
 			{
 				Config: `
 				locals {
@@ -135,18 +99,6 @@ func TestIsNullFunction_NotNull_Function(t *testing.T) {
 					resource.TestCheckOutput("test", "false"),
 				),
 			},
-		},
-	})
-}
-
-func TestIsNullFunction_NotNull_List(t *testing.T) {
-	t.Parallel()
-	resource.UnitTest(t, resource.TestCase{
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
 			{
 				Config: `
 				locals {
@@ -160,18 +112,6 @@ func TestIsNullFunction_NotNull_List(t *testing.T) {
 					resource.TestCheckOutput("test", "false"),
 				),
 			},
-		},
-	})
-}
-
-func TestIsNullFunction_NotNull_Map(t *testing.T) {
-	t.Parallel()
-	resource.UnitTest(t, resource.TestCase{
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
 			{
 				Config: `
 				locals {
@@ -188,18 +128,6 @@ func TestIsNullFunction_NotNull_Map(t *testing.T) {
 					resource.TestCheckOutput("test", "false"),
 				),
 			},
-		},
-	})
-}
-
-func TestIsNullFunction_NotNull_Set(t *testing.T) {
-	t.Parallel()
-	resource.UnitTest(t, resource.TestCase{
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
 			{
 				Config: `
 				locals {

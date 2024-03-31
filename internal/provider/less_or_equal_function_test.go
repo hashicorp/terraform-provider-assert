@@ -77,28 +77,6 @@ func TestLessOrEqualFunction_equalFloat(t *testing.T) {
 	})
 }
 
-func TestLessOrEqualFunction_errorCases(t *testing.T) {
-	t.Parallel()
-	resource.UnitTest(t, resource.TestCase{
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: `
-				output "test" {
-				  value = provider::assert::less_or_equal(200, 100)
-				}
-				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckOutput("test", "false"),
-				),
-			},
-		},
-	})
-}
-
 func TestLessOrEqualFunction_float(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
@@ -159,6 +137,28 @@ func TestLessOrEqualFunction_minusFloat(t *testing.T) {
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestLessOrEqualFunction_falseCases(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+				output "test" {
+				  value = provider::assert::less_or_equal(200, 100)
+				}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
 				),
 			},
 		},

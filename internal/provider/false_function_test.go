@@ -58,7 +58,7 @@ func TestFalseFunction_stringComparison(t *testing.T) {
 	})
 }
 
-func TestFalseFunction_errorCases(t *testing.T) {
+func TestFalseFunction_falseCases(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -76,25 +76,13 @@ func TestFalseFunction_errorCases(t *testing.T) {
 					resource.TestCheckOutput("test", "false"),
 				),
 			},
-		},
-	})
-}
-
-func TestFalseFunction_stringComparison_errorCases(t *testing.T) {
-	t.Parallel()
-	resource.UnitTest(t, resource.TestCase{
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
 			{
 				Config: `
 				locals {
-					string_comparison = "abc" == "abc"
+					comparison = "abc" == "abc"
 				}
 				output "test" {
-				  value = provider::assert::false(local.string_comparison)
+				  value = provider::assert::false(local.comparison)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

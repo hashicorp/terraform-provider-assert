@@ -220,7 +220,7 @@ func TestNotNullFunction_Set(t *testing.T) {
 	})
 }
 
-func TestNotNullFunction_Null(t *testing.T) {
+func TestNotNullFunction_falseCases(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{

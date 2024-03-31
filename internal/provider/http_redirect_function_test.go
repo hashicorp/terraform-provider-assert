@@ -58,7 +58,7 @@ func TestIsHTTP3XXFunction_httpMovedPermanently(t *testing.T) {
 	})
 }
 
-func TestIsHTTP3XXFunction_httpForbidden(t *testing.T) {
+func TestIsHTTP3XXFunction_falseCases(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
@@ -68,34 +68,23 @@ func TestIsHTTP3XXFunction_httpForbidden(t *testing.T) {
 			{
 				Config: `
 				locals {
-				  forbidden = 403
+					status_code = 403
 				}
 				output "test" {
-				  value = provider::assert::http_redirect(local.forbidden)
+				  value = provider::assert::http_redirect(local.status_code)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),
 				),
 			},
-		},
-	})
-}
-
-func TestIsHTTP3XXFunction_httpCreated(t *testing.T) {
-	resource.UnitTest(t, resource.TestCase{
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
 			{
 				Config: `
 				locals {
-				  http_created = 201
+					status_code = 201
 				}
 				output "test" {
-				  value = provider::assert::http_redirect(local.http_created)
+				  value = provider::assert::http_redirect(local.status_code)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

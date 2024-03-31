@@ -58,7 +58,7 @@ func TestIsHTTPServerErrorFunction_httpForbidden(t *testing.T) {
 	})
 }
 
-func TestIsHTTPServerErrorFunction_httpCreated(t *testing.T) {
+func TestIsHTTPServerErrorFunction_falseCases(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -69,10 +69,10 @@ func TestIsHTTPServerErrorFunction_httpCreated(t *testing.T) {
 			{
 				Config: `
 				locals {
-				  http_created = 201
+				  status_code = 201
 				}
 				output "test" {
-				  value = provider::assert::http_server_error(local.http_created)
+				  value = provider::assert::http_server_error(local.status_code)
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
