@@ -48,7 +48,9 @@ func (r IsHTTPRedirectFunction) Run(ctx context.Context, req function.RunRequest
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isRedirectStatusCode(statusCode.ValueInt64())))
+	result := isRedirectStatusCode(statusCode.ValueInt64())
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, result))
 }
 
 // isValid3xxStatusCode checks if an HTTP status code is within the 3xx range.
