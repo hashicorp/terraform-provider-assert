@@ -28,7 +28,7 @@ func (r IsNullFunction) Definition(_ context.Context, _ function.DefinitionReque
 	resp.Definition = function.Definition{
 		Summary: "Checks whether a given object is null",
 		Parameters: []function.Parameter{
-			function.ObjectParameter{
+			function.DynamicParameter{
 				AllowNullValue:     true,
 				AllowUnknownValues: true,
 				Description:        "The object to check",
@@ -40,7 +40,7 @@ func (r IsNullFunction) Definition(_ context.Context, _ function.DefinitionReque
 }
 
 func (r IsNullFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var data types.Object
+	var data types.Dynamic
 
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &data))
 	if resp.Error != nil {
