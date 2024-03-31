@@ -32,7 +32,7 @@ func (r ContainsFunction) Definition(_ context.Context, _ function.DefinitionReq
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
 				Description:        "The list of strings to check",
-				Name:               "input",
+				Name:               "list",
 				ElementType:        tpftypes.StringType,
 			},
 			function.StringParameter{

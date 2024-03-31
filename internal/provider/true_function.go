@@ -25,13 +25,13 @@ func (r TrueFunction) Metadata(_ context.Context, req function.MetadataRequest, 
 
 func (r TrueFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether a value is true",
+		Summary: "Checks whether a boolean value is true",
 		Parameters: []function.Parameter{
 			function.BoolParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The value to check",
-				Name:               "value",
+				Description:        "The boolean value to check",
+				Name:               "bool",
 			},
 		},
 		Return: function.BoolReturn{},
