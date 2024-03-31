@@ -21,9 +21,9 @@ func TestIsHTTP2XXFunction(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::http_success(200)
-				}
+output "test" {
+  value = provider::assert::http_success(200)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -43,12 +43,12 @@ func TestIsHTTP2XXFunction_httpCreated(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				locals {
-					status_code = 201
-				}
-				output "test" {
-				  value = provider::assert::http_success(local.status_code)
-				}
+locals {
+  status_code = 201
+}
+output "test" {
+  value = provider::assert::http_success(local.status_code)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -68,12 +68,12 @@ func TestIsHTTP2XXFunction_falseCases(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				locals {
-				  status_code = 403
-				}
-				output "test" {
-				  value = provider::assert::http_success(local.status_code)
-				}
+locals {
+  status_code = 403
+}
+output "test" {
+  value = provider::assert::http_success(local.status_code)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),

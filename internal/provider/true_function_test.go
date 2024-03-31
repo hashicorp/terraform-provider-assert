@@ -21,9 +21,9 @@ func TestTrueFunction(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::true(true)
-				}
+output "test" {
+  value = provider::assert::true(true)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -43,12 +43,12 @@ func TestTrueFunction_stringComparison(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				locals {
-				  comparison = "abc" == "abc"
-				}
-				output "test" {
-				  value = provider::assert::true(local.comparison)
-				}
+locals {
+  comparison = "abc" == "abc"
+}
+output "test" {
+  value = provider::assert::true(local.comparison)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -68,9 +68,9 @@ func TestTrueFunction_falseCases(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::true(false)
-				}
+output "test" {
+  value = provider::assert::true(false)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),
@@ -78,12 +78,12 @@ func TestTrueFunction_falseCases(t *testing.T) {
 			},
 			{
 				Config: `
-				locals {
-				  comparison = "abc" == "def"
-				}
-				output "test" {
-				  value = provider::assert::true(local.comparison)
-				}
+locals {
+  comparison = "abc" == "def"
+}
+output "test" {
+  value = provider::assert::true(local.comparison)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),

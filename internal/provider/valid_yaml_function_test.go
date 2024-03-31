@@ -21,14 +21,14 @@ func TestValidYAMLFunction(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				locals {
-				  yaml = yamlencode({
-					foo = "bar"
-				  })
-				}
-				output "test" {
-					value = provider::assert::valid_yaml(local.yaml)
-				}
+locals {
+  yaml = yamlencode({
+    foo = "bar"
+  })
+}
+output "test" {
+  value = provider::assert::valid_yaml(local.yaml)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -76,12 +76,12 @@ func TestValidYAMLFunction_falseCases(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				locals {
-				  not_yaml = "not yaml"
-				}
-				output "test" {
-					value = provider::assert::valid_yaml(local.not_yaml)
-				}
+locals {
+  not_yaml = "not yaml"
+}
+output "test" {
+  value = provider::assert::valid_yaml(local.not_yaml)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),

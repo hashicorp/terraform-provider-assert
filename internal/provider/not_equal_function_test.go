@@ -21,9 +21,9 @@ func TestNotnot_equalFunction(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::not_equal(213132, 1000000)
-				}
+output "test" {
+  value = provider::assert::not_equal(213132, 1000000)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -43,9 +43,9 @@ func TestNotnot_equalFunction_float(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::not_equal(564546.1211, 43234.43234)
-				}
+output "test" {
+  value = provider::assert::not_equal(564546.1211, 43234.43234)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -65,9 +65,9 @@ func TestNotnot_equalFunction_minus(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::not_equal(-22, -20)
-				}
+output "test" {
+  value = provider::assert::not_equal(-22, -20)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -87,9 +87,9 @@ func TestNotnot_equalFunction_minusFloat(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::not_equal(-51.54654, -10.43234)
-				}
+output "test" {
+  value = provider::assert::not_equal(-51.54654, -10.43234)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -109,9 +109,9 @@ func TestNotnot_equalFunction_falseCases(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::not_equal(100, 100)
-				}
+output "test" {
+  value = provider::assert::not_equal(100, 100)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),
@@ -119,9 +119,9 @@ func TestNotnot_equalFunction_falseCases(t *testing.T) {
 			},
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::not_equal(10.43234, 10.43234)
-				}
+output "test" {
+  value = provider::assert::not_equal(10.43234, 10.43234)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),

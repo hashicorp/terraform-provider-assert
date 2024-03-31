@@ -21,9 +21,9 @@ func TestIsHTTPClientErrorFunction(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::http_client_error(400)
-				}
+output "test" {
+  value = provider::assert::http_client_error(400)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -43,12 +43,12 @@ func TestIsHTTPClientErrorFunction_httpForbidden(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				locals {
-				  status_code = 403
-				}
-				output "test" {
-				  value = provider::assert::http_client_error(local.status_code)
-				}
+locals {
+  status_code = 403
+}
+output "test" {
+  value = provider::assert::http_client_error(local.status_code)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -68,12 +68,12 @@ func TestIsHTTPClientErrorFunction_falseCases(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				locals {
-					status_code = 201
-				}
-				output "test" {
-				  value = provider::assert::http_client_error(local.status_code)
-				}
+locals {
+  status_code = 201
+}
+output "test" {
+  value = provider::assert::http_client_error(local.status_code)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),

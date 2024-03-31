@@ -21,9 +21,9 @@ func TestIsHTTPServerErrorFunction(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::http_server_error(500)
-				}
+output "test" {
+  value = provider::assert::http_server_error(500)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -43,12 +43,12 @@ func TestIsHTTPServerErrorFunction_httpForbidden(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				locals {
-					status_code = 503
-				}
-				output "test" {
-				  value = provider::assert::http_server_error(local.status_code)
-				}
+locals {
+  status_code = 503
+}
+output "test" {
+  value = provider::assert::http_server_error(local.status_code)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -68,12 +68,12 @@ func TestIsHTTPServerErrorFunction_falseCases(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				locals {
-				  status_code = 201
-				}
-				output "test" {
-				  value = provider::assert::http_server_error(local.status_code)
-				}
+locals {
+  status_code = 201
+}
+output "test" {
+  value = provider::assert::http_server_error(local.status_code)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),

@@ -22,14 +22,14 @@ func TestValidJSONFunction(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				locals {
-				  json = jsonencode({
-				    foo = "bar"
-				  })
-				}
-				output "test" {
-					value = provider::assert::valid_json(local.json)
-				}
+locals {
+  json = jsonencode({
+    foo = "bar"
+  })
+}
+output "test" {
+  value = provider::assert::valid_json(local.json)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -49,16 +49,16 @@ func TestValidJSONFunction_multiLine(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				locals {
-				  json = <<EOF
+locals {
+  json = <<EOF
 				  {
 					"foo": "bar"
 				  }
 				EOF
-				}
-				output "test" {
-					value = provider::assert::valid_json(local.json)
-				}
+}
+output "test" {
+  value = provider::assert::valid_json(local.json)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -111,8 +111,7 @@ func TestValidJSONFunction_falseCases(t *testing.T) {
 }
 
 func testValidJSONFunctionConfig(json string) string {
-	return fmt.Sprintf(`
-output "test" {
+	return fmt.Sprintf(`output "test" {
   value = provider::assert::valid_json(%[1]q)
 }
 `, json)

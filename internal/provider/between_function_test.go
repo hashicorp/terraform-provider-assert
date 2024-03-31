@@ -21,9 +21,9 @@ func TestBetweenFunction(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-					value = provider::assert::between(1, 10, 5)
-				}
+output "test" {
+  value = provider::assert::between(1, 10, 5)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -43,9 +43,9 @@ func TestBetweenFunction_falseCases(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-					value = provider::assert::between(1, 10, 11)
-				}
+output "test" {
+  value = provider::assert::between(1, 10, 11)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),

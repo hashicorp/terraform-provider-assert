@@ -21,9 +21,9 @@ func TestLessFunction(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::less(100, 200)
-				}
+output "test" {
+  value = provider::assert::less(100, 200)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -43,9 +43,9 @@ func TestLessFunction_float(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::less(50.32132, 55.53443)
-				}
+output "test" {
+  value = provider::assert::less(50.32132, 55.53443)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -65,9 +65,9 @@ func TestLessFunction_minus(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::less(-20, -10)
-				}
+output "test" {
+  value = provider::assert::less(-20, -10)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -87,9 +87,9 @@ func TestLessFunction_minusFloat(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::less(-20.43234, -10.2112132)
-				}
+output "test" {
+  value = provider::assert::less(-20.43234, -10.2112132)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "true"),
@@ -109,9 +109,9 @@ func TestLessFunction_falseCases(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-				  value = provider::assert::less(500, 300)
-				}
+output "test" {
+  value = provider::assert::less(500, 300)
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),
