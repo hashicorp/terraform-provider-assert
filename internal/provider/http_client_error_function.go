@@ -86,19 +86,7 @@ func isHTTPClientError(statusCode int64) bool {
 		http.StatusPreconditionRequired,
 		http.StatusTooManyRequests,
 		http.StatusRequestHeaderFieldsTooLarge,
-		http.StatusUnavailableForLegalReasons,
-		// 5XX status codes
-		http.StatusInternalServerError,
-		http.StatusNotImplemented,
-		http.StatusBadGateway,
-		http.StatusServiceUnavailable,
-		http.StatusGatewayTimeout,
-		http.StatusHTTPVersionNotSupported,
-		http.StatusVariantAlsoNegotiates,
-		http.StatusInsufficientStorage,
-		http.StatusLoopDetected,
-		http.StatusNotExtended,
-		http.StatusNetworkAuthenticationRequired:
+		http.StatusUnavailableForLegalReasons:
 		return true
 	default:
 		return false
