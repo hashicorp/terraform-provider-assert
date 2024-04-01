@@ -1,3 +1,3 @@
 output "test" {
-  value = provider::assert::http_client_error(504)
+  value = provider::assert::http_server_error(504)
 }

@@ -13,7 +13,19 @@ description: |-
 
 ```terraform
 output "test" {
-  value = provider::assert::http_client_error(200)
+  value = provider::assert::http_success(200)
+}
+```
+
+## HTTP GET request
+
+```terraform
+data "http" "hashicorp" {
+  url = "https://developer.hashicorp.com"
+}
+
+output "is_redirected" {
+  value = provider::assert::http_success(data.http.hashicorp.status_code)
 }
 ```
 
