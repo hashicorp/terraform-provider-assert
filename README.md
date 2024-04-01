@@ -4,22 +4,29 @@ The [Assert Terraform provider]((https://registry.terraform.io/providers/bschaat
 
 ## Usage
 
+## Terraform Test
+
 ```hcl
-terraform {
-  required_providers {
-    assert = {
-      source = "bschaatsbergen/assert"
-      version = "0.1.0"
-    }
+run "ebs_volume_size" {
+
+  command = plan
+
+  assert {
+    condition     = provider::assert::between(1, 100, aws_ebs_volume.example.size)
+    error_message = "EBS volume size must be between 1 and 100 GiB"
   }
 }
+```
 
-data "http" "example" {
-  url = "https://developer.hashicorp.com"
-}
+## Variable Validation
 
-output "is_redirected" {
-  value = provider::assert::http_redirect(data.http.example.status_code)
+```hcl
+variable "ebs_volume_size" {
+  type = number
+  validation {
+    condition     = provider::assert::between(1, 100, aws_ebs_volume.example.size)
+    error_message = "EBS volume size must be between 1 and 100 GiB"
+  }
 }
 ```
 
