@@ -1,0 +1,51 @@
+site_name: Terraform Assert Provider - Usage Guide
+site_description: 'Usage and contribution guide for the Terraform Assert Provider'
+copyright: HashiCorp
+repo_name: bschaatsbergen/terraform-provider-assert
+repo_url: https://github.com/bschaatsbergen/terraform-provider-assert
+edit_uri: "https://github.com/bschaatsbergen/terraform-provider-assert/tree/main/mkdocs"
+
+docs_dir: mkdocs
+
+nav:
+  - Welcome: index.md
+  - Usage: usage.md
+  - Contribute:
+      - Development Environment: development-environment.md
+      - New Function: add-a-new-function.md
+  - Submit an Issue: issue-reporting-and-lifecycle.md
+  - FAQ: faq.md
+
+theme:
+  name: material
+  logo: images/hashicorp.png
+  favicon: images/hashicorp-black.png
+  palette:
+    scheme: hashicorp
+    primary: black
+    accent: blue
+  icon:
+    repo: fontawesome/brands/github
+  font: false
+  features:
+    - navigation.instant
+    - content.tabs.link
+    - content.code.copy
+
+plugins:
+  - search:
+      lang:
+        - en
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.inlinehilite
+  - toc:
+      permalink: "#"
+
+extra_css:
+  - stylesheets/extra.css
