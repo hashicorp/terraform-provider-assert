@@ -1,7 +1,10 @@
 variable "example" {
-  type = string
+  type = object({
+    name  = string
+    value = optional(string)
+  })
   validation {
-    condition     = provider::assert::null(var.example) || length(var.example_variable) > 0
-    error_message = "Must either be a non-empty string or null"
+    condition     = provider::assert::null(var.example.value)
+    error_message = "Value must be null"
   }
 }

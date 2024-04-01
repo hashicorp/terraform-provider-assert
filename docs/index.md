@@ -26,7 +26,7 @@ Define the provider as a `required_provider` to use its functions
 terraform {
   required_providers {
     assert = {
-      source  = "bschaatsbergen/assert"
+      source = "bschaatsbergen/assert"
     }
   }
 }
