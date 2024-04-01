@@ -7,7 +7,7 @@ import (
 	"context"
 
 	"github.com/hashicorp/terraform-plugin-framework/function"
-	tpftypes "github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var (
@@ -33,7 +33,7 @@ func (r ContainsFunction) Definition(_ context.Context, _ function.DefinitionReq
 				AllowUnknownValues: false,
 				Description:        "The list to check",
 				Name:               "list",
-				ElementType:        tpftypes.StringType,
+				ElementType:        types.StringType,
 			},
 			function.StringParameter{
 				AllowNullValue:     false,
@@ -48,15 +48,15 @@ func (r ContainsFunction) Definition(_ context.Context, _ function.DefinitionReq
 
 func (r ContainsFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var list []string
-	var value string
+	var element string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &list, &value))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &list, &element))
 	if resp.Error != nil {
 		return
 	}
 
 	for _, item := range list {
-		if item == value {
+		if item == element {
 			resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, true))
 			return
 		}
