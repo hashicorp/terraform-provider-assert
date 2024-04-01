@@ -5,7 +5,6 @@ package provider
 
 import (
 	"context"
-	"math/big"
 
 	"github.com/hashicorp/terraform-plugin-framework/function"
 )
@@ -26,18 +25,18 @@ func (r EqualFunction) Metadata(_ context.Context, req function.MetadataRequest,
 
 func (r EqualFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether a number is equal to a given number",
+		Summary: "Checks whether an element is equal to another element",
 		Parameters: []function.Parameter{
-			function.NumberParameter{
+			function.StringParameter{
 				AllowNullValue:     true,
 				AllowUnknownValues: true,
-				Description:        "The number to check",
-				Name:               "number",
+				Description:        "The element to compare",
+				Name:               "element",
 			},
-			function.NumberParameter{
+			function.StringParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The number to compare against",
+				Description:        "The element to compare against",
 				Name:               "compare_against",
 			},
 		},
@@ -46,16 +45,12 @@ func (r EqualFunction) Definition(_ context.Context, _ function.DefinitionReques
 }
 
 func (r EqualFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var number *big.Float
-	var compareAgainst *big.Float
+	var element string
+	var compareAgainst string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &number, &compareAgainst))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &element, &compareAgainst))
 	if resp.Error != nil {
 		return
 	}
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isEqual(number, compareAgainst)))
-}
-
-func isEqual(number, compareAgainst *big.Float) bool {
-	return number.Cmp(compareAgainst) == 0
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, element == compareAgainst))
 }
