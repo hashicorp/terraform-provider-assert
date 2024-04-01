@@ -40,12 +40,12 @@ func (r NotNullFunction) Definition(_ context.Context, _ function.DefinitionRequ
 }
 
 func (r NotNullFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var data types.Dynamic
+	var argument types.Dynamic
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &data))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &argument))
 	if resp.Error != nil {
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, !data.IsNull()))
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, !argument.IsNull()))
 }
