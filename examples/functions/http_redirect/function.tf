@@ -1,3 +1,3 @@
 output "test" {
-  value = provider::assert::http_client_error(301)
+  value = provider::assert::http_redirect(301)
 }

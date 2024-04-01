@@ -1,3 +1,3 @@
 output "test" {
-  value = provider::assert::http_client_error(200)
+  value = provider::assert::http_success(200)
 }
