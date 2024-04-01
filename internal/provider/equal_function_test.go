@@ -4,6 +4,7 @@
 package provider
 
 import (
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/go-version"
@@ -23,6 +24,75 @@ func TestEqualFunction(t *testing.T) {
 				Config: `
 output "test" {
   value = provider::assert::equal(1000000, 1000000)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestEqualFunction_plainBool(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+output "test" {
+  value = provider::assert::equal(true, true)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestEqualFunction_comparison(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+locals {
+  comparison = 15 * 2 == 30
+}
+output "test" {
+  value = provider::assert::equal(local.comparison, true)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestEqualFunction_string(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+output "test" {
+  value = provider::assert::equal("hello", "hello")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -109,6 +179,7 @@ func TestEqualFunction_falseCases(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
+# number
 output "test" {
   value = provider::assert::equal(100, 105)
 }
@@ -116,6 +187,50 @@ output "test" {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),
 				),
+			},
+			{
+				Config: `
+# bool
+output "test" {
+  value = provider::assert::equal(true, false)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+			{
+				Config: `
+# object
+locals {
+  obj = {
+    key1 = "value1"
+    key2 = "value2"
+  }
+}
+output "test" {
+  value = provider::assert::equal(local.obj, local.obj)
+}
+				`,
+				ExpectError: regexp.MustCompile("Invalid value for \"element\" parameter: string required."),
+			},
+			{
+				Config: `
+# list
+output "test" {
+  value = provider::assert::equal([1, 2, 3], [1, 2, 3])
+}
+				`,
+				ExpectError: regexp.MustCompile("Invalid value for \"element\" parameter: string required."),
+			},
+			{
+				Config: `
+# map
+output "test" {
+  value = provider::assert::equal({ key1 = "value1", key2 = "value2" }, { key1 = "value1", key2 = "value2" })
+}
+				`,
+				ExpectError: regexp.MustCompile("Invalid value for \"element\" parameter: string required."),
 			},
 		},
 	})
