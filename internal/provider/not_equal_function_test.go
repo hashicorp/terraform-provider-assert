@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestNotnot_equalFunction(t *testing.T) {
+func TestNotEqualFunction(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -33,7 +33,7 @@ output "test" {
 	})
 }
 
-func TestNotnot_equalFunction_float(t *testing.T) {
+func TestNotEqualFunction_float(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -55,7 +55,7 @@ output "test" {
 	})
 }
 
-func TestNotnot_equalFunction_minus(t *testing.T) {
+func TestNotEqualFunction_minus(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -77,7 +77,7 @@ output "test" {
 	})
 }
 
-func TestNotnot_equalFunction_minusFloat(t *testing.T) {
+func TestNotEqualFunction_minusFloat(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -99,7 +99,29 @@ output "test" {
 	})
 }
 
-func TestNotnot_equalFunction_falseCases(t *testing.T) {
+func TestNotEqualFunction_bool(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+output "test" {
+  value = provider::assert::not_equal(true, false)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestNotEqualFunction_falseCases(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -121,6 +143,16 @@ output "test" {
 				Config: `
 output "test" {
   value = provider::assert::not_equal(10.43234, 10.43234)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+			{
+				Config: `
+output "test" {
+  value = provider::assert::not_equal(true, true)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

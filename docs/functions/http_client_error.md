@@ -9,11 +9,29 @@ description: |-
 
 
 
-## Example Usage
+## Terraform Test Example
 
 ```terraform
-output "test" {
-  value = provider::assert::http_client_error(400)
+run "check_http_client_error" {
+
+  command = plan
+
+  assert {
+    condition     = provider::assert::http_client_error(data.http.secured.status_code)
+    error_message = "My secure website must return an HTTP client error status code"
+  }
+}
+```
+
+## HTTP GET Example
+
+```terraform
+data "http" "secure" {
+  url = "https://my.secure.website.com"
+}
+
+output "is_redirected" {
+  value = provider::assert::http_client_error(data.http.secure.status_code)
 }
 ```
 

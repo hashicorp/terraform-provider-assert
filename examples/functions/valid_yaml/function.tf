@@ -1,8 +1,9 @@
-locals {
-  yaml = yamlencode({
-    foo = "bar"
-  })
-}
-output "test" {
-  value = provider::assert::valid_yaml(local.yaml)
+run "check_config" {
+
+  command = plan
+
+  assert {
+    condition     = provider::assert::valid_yaml(data.local_file.config.content)
+    error_message = "Config is not a valid YAML"
+  }
 }

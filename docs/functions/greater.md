@@ -9,11 +9,29 @@ description: |-
 
 
 
-## Example Usage
+## Terraform Test Example
 
 ```terraform
-output "test" {
-  value = provider::assert::greater(500, 200)
+run "check_aws_db_instance_size" {
+
+  command = plan
+
+  assert {
+    condition     = provider::assert::greater(aws_db_instance.example.instance_class, 100)
+    error_message = "DB instance size must be greater than 100"
+  }
+}
+```
+
+## Variable Validation Example
+
+```terraform
+variable "db_instance_size" {
+  type = number
+  validation {
+    condition     = provider::assert::greater(var.db_instance_size, 100)
+    error_message = "DB instance size must be greater than 100"
+  }
 }
 ```
 

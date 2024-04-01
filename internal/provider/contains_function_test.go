@@ -55,6 +55,28 @@ output "test" {
 	})
 }
 
+func TestContainsFunction_cidrsubnets(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+output "test" {
+  value = provider::assert::contains(cidrsubnets("10.1.0.0/16", 4, 4, 8, 4), "10.1.0.0/20")
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
 func TestContainsFunction_number(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
@@ -241,6 +263,16 @@ output "test" {
 				Config: `
 output "test" {
   value = provider::assert::contains([true, true], false)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+			{
+				Config: `
+output "test" {
+  value = provider::assert::contains(cidrsubnets("10.1.0.0/16", 4, 4, 8, 4), "172.1.0.0/21")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

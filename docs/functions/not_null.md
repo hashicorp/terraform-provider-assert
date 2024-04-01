@@ -9,17 +9,30 @@ description: |-
 
 
 
-## Example Usage
+## Terraform Test Example
 
 ```terraform
-locals {
-  obj = {
-    foo = "Foo"
-    bar = "Bar"
+run "check_if_range_key_is_not_null" {
+
+  command = plan
+
+  assert {
+    condition     = provider::assert::not_null(aws_dynamodb_table.example.range_key)
+    error_message = "DynamoDB table range key must not be null"
   }
 }
-output "test" {
-  value = provider::assert::not_null(local.obj)
+```
+
+## Variable Validation Example
+
+```terraform
+variable "dynamodb_range_key" {
+  type    = string
+  default = null
+  validation {
+    condition     = provider::assert::not_null(var.dynamodb_range_key)
+    error_message = "DynamoDB table range key must not be null"
+  }
 }
 ```
 

@@ -10,12 +10,12 @@ description: |-
 {{ .Description | trimspace }}
 
 {{ if .HasExample -}}
-## Example Usage
+## Terraform Test Example
 
 {{tffile .ExampleFile }}
 {{- end }}
 
-## HTTP GET request
+## HTTP GET Example
 
 {{ tffile (printf "examples/functions/%s/http_get.tf" .Name)}}
 

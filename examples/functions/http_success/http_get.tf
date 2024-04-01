@@ -1,5 +1,5 @@
 data "http" "hashicorp" {
-  url = "https://developer.hashicorp.com"
+  url = "https://hashicorp.com"
 }
 
 output "is_redirected" {

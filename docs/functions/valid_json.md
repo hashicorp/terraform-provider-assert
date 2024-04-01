@@ -9,16 +9,29 @@ description: |-
 
 
 
-## Example Usage
+## Terraform Test Example
 
 ```terraform
-locals {
-  json = jsonencode({
-    foo = "bar"
-  })
+run "check_config" {
+
+  command = plan
+
+  assert {
+    condition     = provider::assert::valid_json(data.local_file.config.content)
+    error_message = "Config is not a valid JSON"
+  }
 }
-output "test" {
-  value = provider::assert::valid_json(local.json)
+```
+
+## Variable Validation Example
+
+```terraform
+variable "config" {
+  type = string
+  validation {
+    condition     = provider::assert::valid_json(var.config)
+    error_message = "Config is not a valid JSON"
+  }
 }
 ```
 

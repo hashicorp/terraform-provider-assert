@@ -9,16 +9,29 @@ description: |-
 
 
 
-## Example Usage
+## Terraform Test Example
 
 ```terraform
-locals {
-  yaml = yamlencode({
-    foo = "bar"
-  })
+run "check_config" {
+
+  command = plan
+
+  assert {
+    condition     = provider::assert::valid_yaml(data.local_file.config.content)
+    error_message = "Config is not a valid YAML"
+  }
 }
-output "test" {
-  value = provider::assert::valid_yaml(local.yaml)
+```
+
+## Variable Validation Example
+
+```terraform
+variable "config" {
+  type = string
+  validation {
+    condition     = provider::assert::valid_yaml(var.config)
+    error_message = "Config is not a valid YAML"
+  }
 }
 ```
 
