@@ -4,13 +4,15 @@ description: |-
   The Assert provider provides functions to verify values in your Terraform configurations to make sure they meet specific criteria.
 ---
 
-# ASSERT Provider
+# Assert Provider
 
 The Assert provider is a utility provider that helps practitioners 
 to simplify the way they write assertions in their Terraform configurations.
 
+This provider is typically used in Terraform test assertions or variable validation.
+
 This provider does not manage any infrastructure, but instead provides a set of provider-defined functions
-that can be used to assert that values in Terraform configurations meet specific criteria.
+that can be used to assert that values in Terraform configurations.
 
 Use the navigation to the left to read about the available resources.
 
@@ -25,7 +27,7 @@ terraform {
   required_providers {
     assert = {
       source  = "bschaatsbergen/assert"
-      version = ">= 1.0.0"
+      version = ">= 0.1.0"
     }
   }
 }
