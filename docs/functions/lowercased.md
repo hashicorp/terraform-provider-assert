@@ -9,8 +9,6 @@ description: |-
 
 
 
-
-
 ## Variable Validation Example
 
 ```terraform
