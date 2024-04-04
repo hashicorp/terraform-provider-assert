@@ -1,6 +1,6 @@
 ---
 page_title: "starts_with function - terraform-provider-assert"
-subcategory: ""
+subcategory: "String Functions"
 description: |-
   Checks whether a string starts with another string
 ---

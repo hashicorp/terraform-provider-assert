@@ -1,6 +1,6 @@
 ---
 page_title: "http_redirect function - terraform-provider-assert"
-subcategory: ""
+subcategory: "HTTP Status Code Functions"
 description: |-
   Checks whether an HTTP status code is a redirect status code
 ---

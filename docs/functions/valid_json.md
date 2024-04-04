@@ -1,6 +1,6 @@
 ---
 page_title: "valid_json function - terraform-provider-assert"
-subcategory: ""
+subcategory: "Data Validation Functions"
 description: |-
   Checks whether a string is valid JSON
 ---

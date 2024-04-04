@@ -1,6 +1,6 @@
 ---
 page_title: "greater function - terraform-provider-assert"
-subcategory: ""
+subcategory: "Numeric Functions"
 description: |-
   Checks whether a number is greater than a given number
 ---

@@ -1,6 +1,6 @@
 ---
 page_title: "less_or_equal function - terraform-provider-assert"
-subcategory: ""
+subcategory: "Numeric Functions"
 description: |-
   Checks whether a number is less than or equal to a given number
 ---

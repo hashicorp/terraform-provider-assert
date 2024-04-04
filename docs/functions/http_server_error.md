@@ -1,6 +1,6 @@
 ---
 page_title: "http_server_error function - terraform-provider-assert"
-subcategory: ""
+subcategory: "HTTP Status Code Functions"
 description: |-
   Checks whether an HTTP status code is a server error status code
 ---
