@@ -4,6 +4,8 @@ FEATURES:
 
 * **New Function:** `starts_with`
 * **New Function:** `ends_with`
+* **New Function:** `uppercased`
+* **New Function:** `lowercased`
 
 ## 0.2.0 (April 4, 2024)
 
