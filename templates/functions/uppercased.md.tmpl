@@ -9,12 +9,6 @@ description: |-
 
 {{ .Description | trimspace }}
 
-{{ if .HasExample -}}
-## Terraform Test Example
-
-{{tffile .ExampleFile }}
-{{- end }}
-
 ## Variable Validation Example
 
 {{ tffile (printf "examples/functions/%s/variable.tf" .Name)}}

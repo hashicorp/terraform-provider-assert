@@ -110,7 +110,7 @@ func TestIPFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 output "test" {
-	value = provider::assert::ip("2001:db8:1111:2222:1::/80 2001:db8:1111:2222:1:1::/96")
+  value = provider::assert::ip("2001:db8:1111:2222:1::/80 2001:db8:1111:2222:1:1::/96")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -120,7 +120,7 @@ output "test" {
 			{
 				Config: `
 output "test" {
-	value = provider::assert::ip("10.0.0.1/16")
+  value = provider::assert::ip("10.0.0.1/16")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

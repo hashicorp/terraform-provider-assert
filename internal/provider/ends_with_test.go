@@ -115,9 +115,9 @@ func TestEndsWithFunction_falseCases(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-					value = provider::assert::ends_with("hello world", "mars")
-				  }
+output "test" {
+  value = provider::assert::ends_with("hello world", "mars")
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),
