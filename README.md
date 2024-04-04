@@ -2,7 +2,8 @@
 
 The [Assert Terraform provider]((https://registry.terraform.io/providers/bschaatsbergen/assert/latest/docs)) is intended for use when writing [Terraform tests](https://developer.hashicorp.com/terraform/language/tests). It serves as a way to verify that the values in your Terraform configuration meet specific criteria. The provider only contains functions to assert values, and does not manage any resources.
 
-## Examples
+* [Terraform Registry](https://registry.terraform.io/providers/bschaatsbergen/assert/latest/docs)
+* [Contributor Guide](https://bschaatsbergen.github.io/terraform-provider-assert/)
 
 ## Terraform Test
 
@@ -29,16 +30,6 @@ variable "ebs_volume_size" {
   }
 }
 ```
-
-## Documentation
-
-Official documentation on how to use this provider can be found on the 
-[Terraform Registry](https://registry.terraform.io/providers/bschaatsbergen/assert/latest/docs).
-In case of specific questions or discussions, please [open an issue](https://github.com/bschaatsbergen/terraform-provider-assert/issues/new) in this repository.
-
-## Contributing
-
-Check out the [contributor guide](https://bschaatsbergen.github.io/terraform-provider-assert/).
 
 ## License
 
