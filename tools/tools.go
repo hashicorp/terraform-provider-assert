@@ -15,4 +15,4 @@ import (
 // to ensure the documentation is formatted properly.
 //go:generate terraform fmt -recursive
 // Generate documentation.
-//go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-name terraform-provider-assert
+//go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-name terraform-provider-assert --examples-dir examples --provider-dir .
