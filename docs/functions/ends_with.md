@@ -1,6 +1,6 @@
 ---
 page_title: "ends_with function - terraform-provider-assert"
-subcategory: ""
+subcategory: "String Functions"
 description: |-
   Checks whether a string ends with another string
 ---

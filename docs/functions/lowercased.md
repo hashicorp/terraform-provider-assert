@@ -1,6 +1,6 @@
 ---
 page_title: "lowercased function - terraform-provider-assert"
-subcategory: ""
+subcategory: "String Functions"
 description: |-
   Checks whether a string is lowercased
 ---
