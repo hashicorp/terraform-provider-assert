@@ -6,6 +6,10 @@ FEATURES:
 * **New Function:** `ipv4`
 * **New Function:** `ipv6`
 
+NOTES:
+
+* Makefile now builds, installs, formats, lints and adds copyright headers to all files
+
 ## 0.1.2 (April 2, 2024)
 
 * Documentation updates
