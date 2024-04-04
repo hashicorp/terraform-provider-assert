@@ -36,6 +36,6 @@ tests-lint:
 tests-lint-fix:
 	@echo "==> Fixing acceptance test terraform blocks code with terrafmt..."
 	@find ./internal/provider -name "*_test.go" -exec sed -i ':a;N;$$!ba;s/fmt.Sprintf(`\n/fmt.Sprintf(`/g' '{}' \; # remove newlines for terrafmt
-	@~/go/bin/terrafmt fmt -f ./internal/provider --pattern '*_test.go'
+	@terrafmt fmt -f ./internal/provider --pattern '*_test.go'
 
 .PHONY: build install lint generate fmt test testacc tests-lint tests-lint-fix copyright
