@@ -2,7 +2,7 @@
 
 The [Assert Terraform provider]((https://registry.terraform.io/providers/bschaatsbergen/assert/latest/docs)) is intended for use when writing [Terraform tests](https://developer.hashicorp.com/terraform/language/tests). It serves as a way to verify that the values in your Terraform configuration meet specific criteria. The provider only contains functions to assert values, and does not manage any resources.
 
-## Usage
+## Examples
 
 ## Terraform Test
 
@@ -38,7 +38,7 @@ In case of specific questions or discussions, please [open an issue](https://git
 
 ## Contributing
 
-If you are interested in contributing to this project, please check out the [contributor guide](https://bschaatsbergen.github.io/terraform-provider-assert/).
+Check out the [contributor guide](https://bschaatsbergen.github.io/terraform-provider-assert/).
 
 ## License
 
