@@ -115,9 +115,9 @@ func TestStartsWithFunction_falseCases(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-				output "test" {
-					value = provider::assert::starts_with("hello world", "bye")
-				  }
+output "test" {
+  value = provider::assert::starts_with("hello world", "bye")
+}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),

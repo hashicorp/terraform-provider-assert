@@ -66,7 +66,7 @@ func TestIPv4Function_falseCases(t *testing.T) {
 			{
 				Config: `
 output "test" {
-	value = provider::assert::ipv4("10.0.0.1/16")
+  value = provider::assert::ipv4("10.0.0.1/16")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -76,7 +76,7 @@ output "test" {
 			{
 				Config: `
 output "test" {
-	value = provider::assert::ipv4("2001:0000:130F:0000:0000:09C0:876A:130B")
+  value = provider::assert::ipv4("2001:0000:130F:0000:0000:09C0:876A:130B")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -86,7 +86,7 @@ output "test" {
 			{
 				Config: `
 output "test" {
-	value = provider::assert::ipv6("2001:db8:1111:2222:1::/80 2001:db8:1111:2222:1:1::/96")
+  value = provider::assert::ipv6("2001:db8:1111:2222:1::/80 2001:db8:1111:2222:1:1::/96")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
