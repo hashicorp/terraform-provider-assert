@@ -1,6 +1,6 @@
 ---
 page_title: "null function - terraform-provider-assert"
-subcategory: ""
+subcategory: "Null Functions"
 description: |-
   Checks whether a given argument is null
 ---

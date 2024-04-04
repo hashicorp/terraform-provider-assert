@@ -1,6 +1,6 @@
 ---
 page_title: "not_equal function - terraform-provider-assert"
-subcategory: ""
+subcategory: "Value Comparison Functions"
 description: |-
   Checks whether an element is not equal to another element
 ---

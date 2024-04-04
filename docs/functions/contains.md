@@ -1,6 +1,6 @@
 ---
 page_title: "contains function - terraform-provider-assert"
-subcategory: ""
+subcategory: "Value Comparison Functions"
 description: |-
   Checks whether an element is in a list
 ---

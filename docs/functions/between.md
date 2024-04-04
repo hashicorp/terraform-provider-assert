@@ -1,6 +1,6 @@
 ---
 page_title: "between function - terraform-provider-assert"
-subcategory: ""
+subcategory: "Value Comparison Functions"
 description: |-
   Checks whether a number is within a given range
 ---

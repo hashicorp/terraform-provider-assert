@@ -1,6 +1,6 @@
 ---
 page_title: "true function - terraform-provider-assert"
-subcategory: ""
+subcategory: "Boolean Functions"
 description: |-
   Checks whether a boolean value is true
 ---

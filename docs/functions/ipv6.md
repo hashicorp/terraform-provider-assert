@@ -1,6 +1,6 @@
 ---
 page_title: "ipv6 function - terraform-provider-assert"
-subcategory: ""
+subcategory: "IP Address Functions"
 description: |-
   Checks whether a string is a valid IPv6 address
 ---
