@@ -1,3 +1,11 @@
+## 0.2.0 (April 4, 2024)
+
+FEATURES:
+
+* **New Function:** `ip`
+* **New Function:** `ipv4`
+* **New Function:** `ipv6`
+
 ## 0.1.2 (April 2, 2024)
 
 * Documentation updates
