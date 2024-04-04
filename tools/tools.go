@@ -8,11 +8,15 @@ package tools
 import (
 	// document generation
 	_ "github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs"
+	// copywrite header generation
+	_ "github.com/hashicorp/copywrite"
 )
 
+// Generate copyright headers
+//go:generate go run github.com/hashicorp/copywrite headers -d .. --config ../.copywrite.hcl
 // Format Terraform code for use in documentation.
 // If you do not have Terraform installed, you can remove the formatting command, but it is suggested
 // to ensure the documentation is formatted properly.
-//go:generate terraform fmt -recursive
+//go:generate terraform fmt -recursive ../examples/
 // Generate documentation.
-//go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-name terraform-provider-assert --examples-dir examples --provider-dir .
+//go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir ..
