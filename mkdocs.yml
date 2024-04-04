@@ -1,5 +1,5 @@
-site_name: Terraform Assert Provider - Usage Guide
-site_description: 'Usage and contribution guide for the Terraform Assert Provider'
+site_name: Terraform Assert Provider - Contributor Guide
+site_description: 'Contributor guide for the Terraform Assert Provider'
 copyright: HashiCorp
 repo_name: bschaatsbergen/terraform-provider-assert
 repo_url: https://github.com/bschaatsbergen/terraform-provider-assert
@@ -9,10 +9,12 @@ docs_dir: mkdocs
 
 nav:
   - Welcome: index.md
-  - Usage: usage.md
   - Contribute:
       - Development Environment: development-environment.md
       - New Function: add-a-new-function.md
+      - Testing: testing.md
+      - Generating Documentation: generating-documentation.md
+      - Releasing: releasing.md
   - Submit an Issue: issue-reporting-and-lifecycle.md
   - FAQ: faq.md
 

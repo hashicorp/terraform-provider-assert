@@ -1,5 +1,7 @@
 # Development Environment Setup
 
+If running tests and acceptance tests isn't enough, it's possible to set up a local terraform configuration to use a development builds of the provider. This can be achieved by leveraging the Terraform CLI configuration file development overrides.
+
 ## Requirements
 
 - [Terraform](https://www.terraform.io/downloads.html) 1.8+ (to run acceptance tests)
@@ -7,13 +9,13 @@
 
 ### Building the Provider
 
-To compile the provider, run `make build`.
+To place a fresh development build of the provider in your `${GOBIN}` (defaults to `${GOPATH}/bin` or `${HOME}/go/bin` if `${GOPATH}` is not set), run:
 
 ```console
 make build
 ```
 
-This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
+This will build the provider and put the provider binary in the `${GOBIN}` directory.
 
 ```console
 ls -la ./$GOPATH/bin/terraform-provider-assert
@@ -21,7 +23,7 @@ ls -la ./$GOPATH/bin/terraform-provider-assert
 
 ### Testing the Provider
 
-In order to test the provider, you can run `make test`.
+In order to test the provider, you can run:
 
 ```console
 make test

@@ -23,7 +23,7 @@ For a new function use a branch named `f-{function name}`, for example, `f-equal
 ### Create and name the function
 
 The function name should be descriptive of its functionality and succinct.
-Existing examples include `not_null`, `equals`, and `contains`.
+Existing examples include `null`, `equals`, and `contains`.
 
 New functions can be created by copying the format of an existing function inside `internal/provider`.
 
@@ -33,9 +33,9 @@ The function struct's `Definition` method will document the expected parameters 
 Parameter names and return values should be specified in `camel_case`.
 
 ```go
-func (r NotNullFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
+func (r NullFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether a given argument is not null",
+		Summary: "Checks whether a given argument is null",
 		Parameters: []function.Parameter{
 			function.DynamicParameter{
 				AllowNullValue:     true,
@@ -57,7 +57,7 @@ The function struct's `Run` method will contain the function logic.
 This includes processing the arguments, setting the return value, and any data processing that needs to happen in between.
 
 ```go
-func (r NotNullFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
+func (r NullFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var argument types.Dynamic
 
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &argument))
@@ -77,12 +77,12 @@ This is done by adding the function to the `Functions` method in `internal/provi
 ```go
 func (p *AssertProvider) Functions(ctx context.Context) []func() function.Function {
 	return []func() function.Function{
-		NewNotNullFunction,
+		NewNullFunction,
 	}
 }
 ```
 
-### Write passing acceptance tests
+### Write passing tests
 
 All functions should have corresponding acceptance tests.
 For functions with variadic arguments, or which can potentially return an error, tests should be written to exercise those conditions.
@@ -103,7 +103,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestIsNullFunction(t *testing.T) {
+func TestNullFunction(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -114,10 +114,10 @@ func TestIsNullFunction(t *testing.T) {
 			{
 				Config: `
 locals {
-  something = null
+  example = null
 }
-output "test" {
-  value = provider::assert::null(local.something)
+output "is_null" {
+  value = provider::assert::null(locals.example)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
