@@ -11,20 +11,20 @@ import (
 )
 
 var (
-	_ function.Function = IsIPFunction{}
+	_ function.Function = IPFunction{}
 )
 
-func NewIsIPFunction() function.Function {
-	return IsIPFunction{}
+func NewIPFunction() function.Function {
+	return IPFunction{}
 }
 
-type IsIPFunction struct{}
+type IPFunction struct{}
 
-func (r IsIPFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
+func (r IPFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
 	resp.Name = "ip"
 }
 
-func (r IsIPFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
+func (r IPFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
 		Summary: "Checks whether a string is a valid IP address (IPv4 or IPv6)",
 		Parameters: []function.Parameter{
@@ -39,7 +39,7 @@ func (r IsIPFunction) Definition(_ context.Context, _ function.DefinitionRequest
 	}
 }
 
-func (r IsIPFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
+func (r IPFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var ip string
 
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &ip))

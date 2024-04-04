@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestIPFunction_ipv4(t *testing.T) {
+func TestStartsWithFunction(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -22,7 +22,7 @@ func TestIPFunction_ipv4(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::ip("10.1.0.0")
+  value = provider::assert::starts_with("hello world", "hello")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -33,7 +33,7 @@ output "test" {
 	})
 }
 
-func TestIPFunction_ipv6(t *testing.T) {
+func TestStartsWithFunction_empty(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -44,7 +44,7 @@ func TestIPFunction_ipv6(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::ip("2001:0000:130F:0000:0000:09C0:876A:130B")
+  value = provider::assert::starts_with("hello world", "")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -55,7 +55,7 @@ output "test" {
 	})
 }
 
-func TestIPFunction_ipv4_quadZero(t *testing.T) {
+func TestStartsWithFunction_local(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -65,8 +65,11 @@ func TestIPFunction_ipv4_quadZero(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
+locals {
+  text = "hello world"
+}
 output "test" {
-  value = provider::assert::ip("0.0.0.0")
+  value = provider::assert::starts_with(local.text, "hello ")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -77,7 +80,7 @@ output "test" {
 	})
 }
 
-func TestIPFunction_ipv6_quadZero(t *testing.T) {
+func TestStartsWithFunction_local_chain(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -87,8 +90,11 @@ func TestIPFunction_ipv6_quadZero(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
+locals {
+  true = provider::assert::starts_with("hello world", "hello")
+}
 output "test" {
-  value = provider::assert::ip("::")
+  value = provider::assert::starts_with(local.true, "tru")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -99,7 +105,7 @@ output "test" {
 	})
 }
 
-func TestIPFunction_falseCases(t *testing.T) {
+func TestStartsWithFunction_falseCases(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -109,39 +115,9 @@ func TestIPFunction_falseCases(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-output "test" {
-	value = provider::assert::ip("2001:db8:1111:2222:1::/80 2001:db8:1111:2222:1:1::/96")
-}
-				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckOutput("test", "false"),
-				),
-			},
-			{
-				Config: `
-output "test" {
-	value = provider::assert::ip("10.0.0.1/16")
-}
-				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckOutput("test", "false"),
-				),
-			},
-			{
-				Config: `
-output "test" {
-  value = provider::assert::ip(true)
-}
-				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckOutput("test", "false"),
-				),
-			},
-			{
-				Config: `
-output "test" {
-  value = provider::assert::ip("true")
-}
+				output "test" {
+					value = provider::assert::starts_with("hello world", "bye")
+				  }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckOutput("test", "false"),

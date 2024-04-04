@@ -27,7 +27,7 @@ run "check_valid_ipv6_google_compute_address" {
 
 ```terraform
 variable "ipv6_address" {
-  type = number
+  type = string
   validation {
     condition     = provider::assert::ipv6(var.ipv6_address)
     error_message = "Invalid IPv6 address"
