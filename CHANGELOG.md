@@ -1,3 +1,11 @@
+## 0.4.0 (April 5, 2024)
+
+FEATURES:
+
+* **New Function:** `positive`
+* **New Function:** `negative`
+
+
 ## 0.3.0 (April 4, 2024)
 
 FEATURES:
