@@ -67,6 +67,9 @@ func (p *AssertProvider) Functions(ctx context.Context) []func() function.Functi
 		NewFalseFunction,
 		NewValidJSONFunction,
 		NewValidYAMLFunction,
+		NewIsIPv4Function,
+		NewIsIPv6Function,
+		NewIsIPFunction,
 	}
 }
 
