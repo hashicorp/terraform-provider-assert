@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestIsIPv4Function(t *testing.T) {
+func TestIPv4Function(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -33,7 +33,7 @@ output "test" {
 	})
 }
 
-func TestIsIPv4Function_quadZero(t *testing.T) {
+func TestIPv4Function_quadZero(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -55,7 +55,7 @@ output "test" {
 	})
 }
 
-func TestIsIPv4Function_falseCases(t *testing.T) {
+func TestIPv4Function_falseCases(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{

@@ -1,3 +1,10 @@
+## 0.3.0 (April 4, 2024)
+
+FEATURES:
+
+* **New Function:** `starts_with`
+* **New Function:** `ends_with`
+
 ## 0.2.0 (April 4, 2024)
 
 FEATURES:
