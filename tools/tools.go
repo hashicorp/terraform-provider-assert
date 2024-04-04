@@ -8,8 +8,6 @@ package tools
 import (
 	// document generation
 	_ "github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs"
-	// copywrite header generation
-	_ "github.com/hashicorp/copywrite"
 )
 
 // Format Terraform code for use in documentation.
