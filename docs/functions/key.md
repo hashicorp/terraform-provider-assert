@@ -1,6 +1,6 @@
 ---
 page_title: "key function - terraform-provider-assert"
-subcategory: "IP Address Functions"
+subcategory: "Map Functions"
 description: |-
   Checks whether a key exists in a map
 ---

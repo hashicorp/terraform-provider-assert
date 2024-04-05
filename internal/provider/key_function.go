@@ -59,6 +59,10 @@ func (r KeyFunction) Run(ctx context.Context, req function.RunRequest, resp *fun
 }
 
 func hasKey(mapValue *map[string]string, key *string) bool {
+	if mapValue == nil {
+		return false
+	}
+
 	_, ok := (*mapValue)[*key]
 	return ok
 }
