@@ -66,6 +66,7 @@ jobs:
       matrix:
         # list whatever Terraform versions here you would like to support
         terraform:
+          - '1.7.0'
           - '1.8.0-rc2'
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
