@@ -5,6 +5,7 @@ FEATURES:
 * **New Function:** `positive`
 * **New Function:** `negative`
 * **New Function:** `key`
+* **New Function:** `value`
 
 ## 0.3.1 (April 4, 2024)
 
