@@ -76,6 +76,7 @@ func (p *AssertProvider) Functions(ctx context.Context) []func() function.Functi
 		NewLowercasedFunction,
 		NewNegativeFunction,
 		NewPositiveFunction,
+		NewKeyFunction,
 	}
 }
 

@@ -4,6 +4,13 @@ FEATURES:
 
 * **New Function:** `positive`
 * **New Function:** `negative`
+* **New Function:** `key`
+
+## 0.3.1 (April 4, 2024)
+
+NOTES:
+
+* Set subcategories for all functions in the documentation
 
 ## 0.3.0 (April 4, 2024)
 
