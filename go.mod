@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/hashicorp/go-version v1.6.0
-	github.com/hashicorp/terraform-plugin-framework v1.7.0
+	github.com/hashicorp/terraform-plugin-framework v1.8.0
 	github.com/hashicorp/terraform-plugin-go v0.22.2
 	github.com/hashicorp/terraform-plugin-testing v1.7.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -53,7 +53,7 @@ require (
 	github.com/zclconf/go-cty v1.14.3 // indirect
 	golang.org/x/crypto v0.21.0 // indirect
 	golang.org/x/mod v0.15.0 // indirect
-	golang.org/x/net v0.21.0 // indirect
+	golang.org/x/net v0.23.0 // indirect
 	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.13.0 // indirect
