@@ -36,7 +36,7 @@ check "health_check" {
 
 ## Terraform Test
 
-Simplify writing test assertions for your Terraform configuration:
+Test assertions in your Terraform configuration should be simple and easy to read:
 
 ```hcl
 run "ebs_volume_size" {
@@ -52,7 +52,7 @@ run "ebs_volume_size" {
 
 ## Variable Validation
 
-Make writing validations for Terraform variables easier:
+Write simple validation rules for your Terraform variables:
 
 ```hcl
 variable "ebs_volume_size" {
