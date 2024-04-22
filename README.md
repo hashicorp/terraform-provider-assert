@@ -5,7 +5,38 @@ The [Assert Terraform provider]((https://registry.terraform.io/providers/bschaat
 * [Terraform Registry](https://registry.terraform.io/providers/bschaatsbergen/assert/latest/docs)
 * [Contributor Guide](https://bschaatsbergen.github.io/terraform-provider-assert/)
 
+To use provider functions, declare the provider as a required provider in your Terraform configuration:
+
+```hcl
+terraform {
+  required_providers {
+    assert = {
+      source = "bschaatsbergen/assert"
+    }
+  }
+}
+```
+
+## Continuous Validation
+
+Simplify continuous validation checks that run as part of your Terraform workflow:
+
+```hcl
+data "http" "terraform_io" {
+  url = "https://www.terraform.io"
+}
+
+check "health_check" {
+  assert {
+    condition     = provider::assert::http_success(data.http.terraform_io.status_code)
+    error_message = "${data.http.terraform_io.url} returned an unhealthy status code"
+  }
+}
+```
+
 ## Terraform Test
+
+Test assertions in your Terraform configuration should be simple and easy to read:
 
 ```hcl
 run "ebs_volume_size" {
@@ -20,6 +51,8 @@ run "ebs_volume_size" {
 ```
 
 ## Variable Validation
+
+Write simple validation rules for your Terraform variables:
 
 ```hcl
 variable "ebs_volume_size" {
