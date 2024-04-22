@@ -5,6 +5,33 @@ The [Assert Terraform provider]((https://registry.terraform.io/providers/bschaat
 * [Terraform Registry](https://registry.terraform.io/providers/bschaatsbergen/assert/latest/docs)
 * [Contributor Guide](https://bschaatsbergen.github.io/terraform-provider-assert/)
 
+To use provider functions, declare the provider as required provider in your Terraform configuration:
+
+```hcl
+terraform {
+  required_providers {
+    assert = {
+      source = "bschaatsbergen/assert"
+    }
+  }
+}
+```
+
+## Continuous Validation
+
+```hcl
+data "http" "terraform_io" {
+  url = "https://www.terraform.io"
+}
+
+check "health_check" {
+  assert {
+    condition     = provider::assert::http_success(data.http.terraform_io.status_code)
+    error_message = "${data.http.terraform_io.url} returned an unhealthy status code"
+  }
+}
+```
+
 ## Terraform Test
 
 ```hcl
