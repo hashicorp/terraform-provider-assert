@@ -19,6 +19,8 @@ terraform {
 
 ## Continuous Validation
 
+Simplify continuous validation checks that run as part of your Terraform workflow:
+
 ```hcl
 data "http" "terraform_io" {
   url = "https://www.terraform.io"
@@ -34,6 +36,8 @@ check "health_check" {
 
 ## Terraform Test
 
+Simplify writing test assertions for your Terraform configuration:
+
 ```hcl
 run "ebs_volume_size" {
 
@@ -47,6 +51,8 @@ run "ebs_volume_size" {
 ```
 
 ## Variable Validation
+
+Make writing validations for Terraform variables easier:
 
 ```hcl
 variable "ebs_volume_size" {
