@@ -1,3 +1,9 @@
+## 0.5.0 (April 21, 2024)
+
+FEATURES:
+
+* change `between`, `contains`, `equal`, `not_equal` to numeric functions.
+
 ## 0.4.0 (April 5, 2024)
 
 FEATURES:

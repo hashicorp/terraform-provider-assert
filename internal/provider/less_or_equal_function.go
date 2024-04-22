@@ -29,14 +29,14 @@ func (r LessOrEqualFunction) Definition(_ context.Context, _ function.Definition
 		Summary: "Checks whether a number is less than or equal to a given number",
 		Parameters: []function.Parameter{
 			function.NumberParameter{
-				AllowNullValue:     true,
+				AllowNullValue:     false,
 				AllowUnknownValues: true,
 				Description:        "The number to check",
 				Name:               "number",
 			},
 			function.NumberParameter{
 				AllowNullValue:     false,
-				AllowUnknownValues: false,
+				AllowUnknownValues: true,
 				Description:        "The number to compare against",
 				Name:               "compare_against",
 			},
