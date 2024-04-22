@@ -5,7 +5,7 @@ The [Assert Terraform provider]((https://registry.terraform.io/providers/bschaat
 * [Terraform Registry](https://registry.terraform.io/providers/bschaatsbergen/assert/latest/docs)
 * [Contributor Guide](https://bschaatsbergen.github.io/terraform-provider-assert/)
 
-To use provider functions, declare the provider as required provider in your Terraform configuration:
+To use provider functions, declare the provider as a required provider in your Terraform configuration:
 
 ```hcl
 terraform {
