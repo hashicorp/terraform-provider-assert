@@ -5,6 +5,7 @@ package provider
 
 import (
 	"context"
+	"math/big"
 
 	"github.com/hashicorp/terraform-plugin-framework/function"
 )
@@ -25,18 +26,18 @@ func (r NotEqualFunction) Metadata(_ context.Context, req function.MetadataReque
 
 func (r NotEqualFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether an element is not equal to another element",
+		Summary: "Checks whether a number is not equal to another number",
 		Parameters: []function.Parameter{
-			function.StringParameter{
+			function.NumberParameter{
 				AllowNullValue:     true,
 				AllowUnknownValues: true,
-				Description:        "The element to compare",
+				Description:        "The number to compare",
 				Name:               "number",
 			},
-			function.StringParameter{
+			function.NumberParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The element to compare against",
+				Description:        "The number to compare against",
 				Name:               "compare_against",
 			},
 		},
@@ -45,12 +46,12 @@ func (r NotEqualFunction) Definition(_ context.Context, _ function.DefinitionReq
 }
 
 func (r NotEqualFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var element string
-	var compareAgainst string
+	var number *big.Float
+	var compareAgainst *big.Float
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &element, &compareAgainst))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &number, &compareAgainst))
 	if resp.Error != nil {
 		return
 	}
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, element != compareAgainst))
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, number.Cmp(compareAgainst) != 0))
 }
