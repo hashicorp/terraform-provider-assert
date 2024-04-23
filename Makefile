@@ -24,7 +24,7 @@ test:
 
 testacc:
 	TF_ACC=1 go test -v -cover -timeout 120m ./...
-	
+
 tests-lint:
 	@echo "==> Checking acceptance test terraform blocks code with terrafmt..."
 	@terrafmt diff -f ./internal/provider --check --pattern '*_test.go' --quiet || (echo; \
