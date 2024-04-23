@@ -1,3 +1,11 @@
+## 0.6.0 (April 23, 2024)
+
+FEATURES:
+
+* **New Function:** `cidr`
+* **New Function:** `cidrv4`
+* **New Function:** `cidrv6`
+
 ## 0.5.0 (April 21, 2024)
 
 FEATURES:
