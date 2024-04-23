@@ -1,4 +1,4 @@
-default: fmt lint build install generate copyright tests-lint-fix
+default: fmt lint tests-lint-fix generate copyright build install    
 
 build:
 	go build -v ./...
