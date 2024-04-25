@@ -30,7 +30,7 @@ func (r ValidYAMLFunction) Definition(_ context.Context, _ function.DefinitionRe
 		Parameters: []function.Parameter{
 			function.StringParameter{
 				AllowNullValue:     false,
-				AllowUnknownValues: true,
+				AllowUnknownValues: false,
 				Description:        "The YAML string to check",
 				Name:               "yaml",
 			},

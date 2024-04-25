@@ -29,8 +29,8 @@ func (r NotEqualFunction) Definition(_ context.Context, _ function.DefinitionReq
 		Summary: "Checks whether a number is not equal to another number",
 		Parameters: []function.Parameter{
 			function.NumberParameter{
-				AllowNullValue:     true,
-				AllowUnknownValues: true,
+				AllowNullValue:     false,
+				AllowUnknownValues: false,
 				Description:        "The number to compare",
 				Name:               "number",
 			},

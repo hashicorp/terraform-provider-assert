@@ -30,7 +30,7 @@ func (r PositiveFunction) Definition(_ context.Context, _ function.DefinitionReq
 		Parameters: []function.Parameter{
 			function.NumberParameter{
 				AllowNullValue:     false,
-				AllowUnknownValues: true,
+				AllowUnknownValues: false,
 				Description:        "The number to check",
 				Name:               "number",
 			},

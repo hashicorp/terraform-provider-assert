@@ -29,8 +29,8 @@ func (r GreaterFunction) Definition(_ context.Context, _ function.DefinitionRequ
 		Summary: "Checks whether a number is greater than a given number",
 		Parameters: []function.Parameter{
 			function.NumberParameter{
-				AllowNullValue:     true,
-				AllowUnknownValues: true,
+				AllowNullValue:     false,
+				AllowUnknownValues: false,
 				Description:        "The number to check",
 				Name:               "number",
 			},

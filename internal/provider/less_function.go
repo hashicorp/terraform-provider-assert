@@ -29,8 +29,8 @@ func (r LessFunction) Definition(_ context.Context, _ function.DefinitionRequest
 		Summary: "Checks whether a number is less than a given number",
 		Parameters: []function.Parameter{
 			function.NumberParameter{
-				AllowNullValue:     true,
-				AllowUnknownValues: true,
+				AllowNullValue:     false,
+				AllowUnknownValues: false,
 				Description:        "The number to check",
 				Name:               "number",
 			},

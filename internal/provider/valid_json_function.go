@@ -30,7 +30,7 @@ func (r ValidJSONFunction) Definition(_ context.Context, _ function.DefinitionRe
 		Parameters: []function.Parameter{
 			function.StringParameter{
 				AllowNullValue:     false,
-				AllowUnknownValues: true,
+				AllowUnknownValues: false,
 				Description:        "The JSON string to check",
 				Name:               "json",
 			},

@@ -30,14 +30,14 @@ func (r KeyFunction) Definition(_ context.Context, _ function.DefinitionRequest,
 		Parameters: []function.Parameter{
 			function.MapParameter{
 				AllowNullValue:     false,
-				AllowUnknownValues: true,
+				AllowUnknownValues: false,
 				Description:        "The map to check",
 				Name:               "map",
 				ElementType:        basetypes.StringType{},
 			},
 			function.StringParameter{
 				AllowNullValue:     false,
-				AllowUnknownValues: true,
+				AllowUnknownValues: false,
 				Description:        "The key to check",
 				Name:               "key",
 			},

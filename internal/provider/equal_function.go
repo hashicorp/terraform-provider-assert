@@ -29,8 +29,8 @@ func (r EqualFunction) Definition(_ context.Context, _ function.DefinitionReques
 		Summary: "Checks whether a number is equal to another number",
 		Parameters: []function.Parameter{
 			function.NumberParameter{
-				AllowNullValue:     true,
-				AllowUnknownValues: true,
+				AllowNullValue:     false,
+				AllowUnknownValues: false,
 				Description:        "The number to compare",
 				Name:               "number",
 			},

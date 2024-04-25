@@ -30,14 +30,14 @@ func (r ValueFunction) Definition(_ context.Context, _ function.DefinitionReques
 		Parameters: []function.Parameter{
 			function.MapParameter{
 				AllowNullValue:     false,
-				AllowUnknownValues: true,
+				AllowUnknownValues: false,
 				Description:        "The map to check",
 				Name:               "map",
 				ElementType:        basetypes.StringType{},
 			},
 			function.StringParameter{
 				AllowNullValue:     false,
-				AllowUnknownValues: true,
+				AllowUnknownValues: false,
 				Description:        "The value to check",
 				Name:               "value",
 			},

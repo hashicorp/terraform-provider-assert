@@ -1,5 +1,10 @@
 ## 0.6.0 (April 23, 2024)
 
+BUGS:
+* Functions now prohibit the allowance of null or unknown values, with the exception of `null` and `not_null` functions.
+
+## 0.6.0 (April 23, 2024)
+
 FEATURES:
 
 * **New Function:** `cidr`

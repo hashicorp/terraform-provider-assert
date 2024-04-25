@@ -31,7 +31,7 @@ func (r IsHTTPRedirectFunction) Definition(_ context.Context, _ function.Definit
 		Parameters: []function.Parameter{
 			function.Int64Parameter{
 				AllowNullValue:     false,
-				AllowUnknownValues: true,
+				AllowUnknownValues: false,
 				Description:        "The HTTP status code to check",
 				Name:               "status_code",
 			},

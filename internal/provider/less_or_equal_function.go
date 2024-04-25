@@ -30,13 +30,13 @@ func (r LessOrEqualFunction) Definition(_ context.Context, _ function.Definition
 		Parameters: []function.Parameter{
 			function.NumberParameter{
 				AllowNullValue:     false,
-				AllowUnknownValues: true,
+				AllowUnknownValues: false,
 				Description:        "The number to check",
 				Name:               "number",
 			},
 			function.NumberParameter{
 				AllowNullValue:     false,
-				AllowUnknownValues: true,
+				AllowUnknownValues: false,
 				Description:        "The number to compare against",
 				Name:               "compare_against",
 			},

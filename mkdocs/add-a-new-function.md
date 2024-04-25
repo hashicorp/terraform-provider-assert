@@ -38,8 +38,8 @@ func (r NullFunction) Definition(_ context.Context, _ function.DefinitionRequest
 		Summary: "Checks whether a given argument is null",
 		Parameters: []function.Parameter{
 			function.DynamicParameter{
-				AllowNullValue:     true,
-				AllowUnknownValues: true,
+				AllowNullValue:     false,
+				AllowUnknownValues: false,
 				Description:        "The argument to check",
 				Name:               "argument",
 			},
