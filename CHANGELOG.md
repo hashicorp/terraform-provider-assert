@@ -1,3 +1,8 @@
+## 0.8.0 (April 29, 2024)
+
+STYLE:
+* Variables passed should be passed to the last available argument in the function signature.
+
 ## 0.7.0 (April 23, 2024)
 
 BUGS:
