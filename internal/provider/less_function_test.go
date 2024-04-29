@@ -22,7 +22,7 @@ func TestLessFunction(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::less(100, 200)
+  value = provider::assert::less(200, 100)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -44,7 +44,7 @@ func TestLessFunction_float(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::less(50.32132, 55.53443)
+  value = provider::assert::less(55.53443, 50.32132)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -66,7 +66,7 @@ func TestLessFunction_minus(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::less(-20, -10)
+  value = provider::assert::less(-10, -20)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -88,7 +88,7 @@ func TestLessFunction_minusFloat(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::less(-20.43234, -10.2112132)
+  value = provider::assert::less(-10.2112132, -20.43234)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -110,7 +110,7 @@ func TestLessFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::less(500, 300)
+  value = provider::assert::less(300, 500)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

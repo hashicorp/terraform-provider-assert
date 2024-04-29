@@ -22,7 +22,7 @@ func TestEndsWithFunction(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::ends_with("hello world", "world")
+  value = provider::assert::ends_with("world", "hello world")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -44,7 +44,7 @@ func TestEndsWithFunction_empty(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::ends_with("hello world", "")
+  value = provider::assert::ends_with("", "hello world")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -69,7 +69,7 @@ locals {
   text = "hello world"
 }
 output "test" {
-  value = provider::assert::ends_with(local.text, " world")
+  value = provider::assert::ends_with(" world", local.text)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -91,10 +91,10 @@ func TestEndsWithFunction_local_chain(t *testing.T) {
 			{
 				Config: `
 locals {
-  true = provider::assert::ends_with("hello world", "world")
+  true = provider::assert::ends_with("world", "hello world")
 }
 output "test" {
-  value = provider::assert::ends_with(local.true, "ue")
+  value = provider::assert::ends_with("ue", local.true)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -116,7 +116,7 @@ func TestEndsWithFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::ends_with("hello world", "mars")
+  value = provider::assert::ends_with("mars", "hello world")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

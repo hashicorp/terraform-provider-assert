@@ -22,7 +22,7 @@ func TestStartsWithFunction(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::starts_with("hello world", "hello")
+  value = provider::assert::starts_with("hello", "hello world")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -44,7 +44,7 @@ func TestStartsWithFunction_empty(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::starts_with("hello world", "")
+  value = provider::assert::starts_with("", "hello world")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -69,7 +69,7 @@ locals {
   text = "hello world"
 }
 output "test" {
-  value = provider::assert::starts_with(local.text, "hello ")
+  value = provider::assert::starts_with("hello ", local.text)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -91,10 +91,10 @@ func TestStartsWithFunction_local_chain(t *testing.T) {
 			{
 				Config: `
 locals {
-  true = provider::assert::starts_with("hello world", "hello")
+  true = provider::assert::starts_with("hello", "hello world")
 }
 output "test" {
-  value = provider::assert::starts_with(local.true, "tru")
+  value = provider::assert::starts_with("tru", local.true)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -116,7 +116,7 @@ func TestStartsWithFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::starts_with("hello world", "bye")
+  value = provider::assert::starts_with("bye", "hello world")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

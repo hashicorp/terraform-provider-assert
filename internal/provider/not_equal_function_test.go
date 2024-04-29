@@ -22,7 +22,7 @@ func TestNotEqualFunction(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::not_equal(213132, 1000000)
+  value = provider::assert::not_equal(1000000, 213132)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -44,7 +44,7 @@ func TestNotEqualFunction_float(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::not_equal(564546.1211, 43234.43234)
+  value = provider::assert::not_equal(43234.43234, 564546.1211)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -66,7 +66,7 @@ func TestNotEqualFunction_minus(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::not_equal(-22, -20)
+  value = provider::assert::not_equal(-20, -22)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -88,7 +88,7 @@ func TestNotEqualFunction_minusFloat(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::not_equal(-51.54654, -10.43234)
+  value = provider::assert::not_equal(-10.43234, -51.54654)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

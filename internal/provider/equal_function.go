@@ -31,14 +31,14 @@ func (r EqualFunction) Definition(_ context.Context, _ function.DefinitionReques
 			function.NumberParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The number to compare",
-				Name:               "number",
+				Description:        "The number to compare against",
+				Name:               "compare_against",
 			},
 			function.NumberParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The number to compare against",
-				Name:               "compare_against",
+				Description:        "The number to compare",
+				Name:               "number",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -46,10 +46,10 @@ func (r EqualFunction) Definition(_ context.Context, _ function.DefinitionReques
 }
 
 func (r EqualFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var number *big.Float
 	var compareAgainst *big.Float
+	var number *big.Float
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &number, &compareAgainst))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &compareAgainst, &number))
 	if resp.Error != nil {
 		return
 	}

@@ -22,7 +22,7 @@ func TestGreaterOrEqualFunction(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::greater_or_equal(500, 200)
+  value = provider::assert::greater_or_equal(200, 500)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -88,7 +88,7 @@ func TestGreaterOrEqualFunction_float(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::greater_or_equal(50.32132, 40.53443)
+  value = provider::assert::greater_or_equal(40.53443, 50.32132)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -110,7 +110,7 @@ func TestGreaterOrEqualFunction_minus(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::greater_or_equal(-10, -20)
+  value = provider::assert::greater_or_equal(-20, -10)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -132,7 +132,7 @@ func TestGreaterOrEqualFunction_minusFloat(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::greater_or_equal(-10.43234, -20.2112132)
+  value = provider::assert::greater_or_equal(-20.2112132, -10.43234)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -154,7 +154,7 @@ func TestGreaterOrEqualFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::greater_or_equal(100, 105)
+  value = provider::assert::greater_or_equal(105, 100)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

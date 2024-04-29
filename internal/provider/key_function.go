@@ -28,6 +28,12 @@ func (r KeyFunction) Definition(_ context.Context, _ function.DefinitionRequest,
 	resp.Definition = function.Definition{
 		Summary: "Checks whether a key exists in a map",
 		Parameters: []function.Parameter{
+			function.StringParameter{
+				AllowNullValue:     false,
+				AllowUnknownValues: false,
+				Description:        "The key to check",
+				Name:               "key",
+			},
 			function.MapParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
@@ -35,30 +41,24 @@ func (r KeyFunction) Definition(_ context.Context, _ function.DefinitionRequest,
 				Name:               "map",
 				ElementType:        basetypes.StringType{},
 			},
-			function.StringParameter{
-				AllowNullValue:     false,
-				AllowUnknownValues: false,
-				Description:        "The key to check",
-				Name:               "key",
-			},
 		},
 		Return: function.BoolReturn{},
 	}
 }
 
 func (r KeyFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var mapValue *map[string]string
 	var key *string
+	var mapValue *map[string]string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &mapValue, &key))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &key, &mapValue))
 	if resp.Error != nil {
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, hasKey(mapValue, key)))
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, hasKey(key, mapValue)))
 }
 
-func hasKey(mapValue *map[string]string, key *string) bool {
+func hasKey(key *string, mapValue *map[string]string) bool {
 	if mapValue == nil {
 		return false
 	}

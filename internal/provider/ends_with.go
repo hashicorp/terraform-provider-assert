@@ -31,14 +31,14 @@ func (r EndsWithFunction) Definition(_ context.Context, _ function.DefinitionReq
 			function.StringParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The string to check",
-				Name:               "string",
+				Description:        "The suffix to check for",
+				Name:               "suffix",
 			},
 			function.StringParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The suffix to check for",
-				Name:               "suffix",
+				Description:        "The string to check",
+				Name:               "string",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -46,9 +46,9 @@ func (r EndsWithFunction) Definition(_ context.Context, _ function.DefinitionReq
 }
 
 func (r EndsWithFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var s, suffix string
+	var suffix, s string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &s, &suffix))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &suffix, &s))
 	if resp.Error != nil {
 		return
 	}

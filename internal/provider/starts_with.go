@@ -31,14 +31,14 @@ func (r StartsWithFunction) Definition(_ context.Context, _ function.DefinitionR
 			function.StringParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The string to check",
-				Name:               "string",
+				Description:        "The prefix to check for",
+				Name:               "prefix",
 			},
 			function.StringParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The prefix to check for",
-				Name:               "prefix",
+				Description:        "The string to check",
+				Name:               "string",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -46,9 +46,9 @@ func (r StartsWithFunction) Definition(_ context.Context, _ function.DefinitionR
 }
 
 func (r StartsWithFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var s, prefix string
+	var prefix, s string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &s, &prefix))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &prefix, &s))
 	if resp.Error != nil {
 		return
 	}

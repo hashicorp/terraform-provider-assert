@@ -22,7 +22,7 @@ func TestLessOrEqualFunction(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::less_or_equal(100, 200)
+  value = provider::assert::less_or_equal(200, 100)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -88,7 +88,7 @@ func TestLessOrEqualFunction_float(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::less_or_equal(40.32132, 50.53443)
+  value = provider::assert::less_or_equal(50.53443, 40.32132)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -110,7 +110,7 @@ func TestLessOrEqualFunction_minus(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::less_or_equal(-20, -10)
+  value = provider::assert::less_or_equal(-10, -20)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -132,7 +132,7 @@ func TestLessOrEqualFunction_minusFloat(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::less_or_equal(-20.43234, -10.2112132)
+  value = provider::assert::less_or_equal(-10.2112132, -20.43234)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -154,7 +154,7 @@ func TestLessOrEqualFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::less_or_equal(200, 100)
+  value = provider::assert::less_or_equal(100, 200)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

@@ -22,7 +22,7 @@ func TestGreaterFunction(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::greater(500, 200)
+  value = provider::assert::greater(200, 500)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -44,7 +44,7 @@ func TestGreaterFunction_float(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::greater(50.32132, 40.53443)
+  value = provider::assert::greater(40.53443, 50.32132)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -66,7 +66,7 @@ func TestGreaterFunction_minus(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::greater(-10, -20)
+  value = provider::assert::greater(-20, -10)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -88,7 +88,7 @@ func TestGreaterFunction_minusFloat(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::greater(-10.43234, -20.2112132)
+  value = provider::assert::greater(-20.2112132, -10.43234)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -110,7 +110,7 @@ func TestGreaterFunction_falseCases(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::greater(100, 105)
+  value = provider::assert::greater(105, 100)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

@@ -28,7 +28,7 @@ locals {
   }
 }
 output "test" {
-  value = provider::assert::value(local.my_map, "value1")
+  value = provider::assert::value("value1", local.my_map)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -60,7 +60,7 @@ locals {
   }
 }
 output "test" {
-  value = provider::assert::value(local.my_map, "5")
+  value = provider::assert::value("5", local.my_map)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -89,7 +89,7 @@ locals {
   }
 }
 output "test" {
-  value = provider::assert::value(local.my_map["key1"], "value2")
+  value = provider::assert::value("value2", local.my_map["key1"])
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -116,7 +116,7 @@ locals {
   }
 }
 output "test" {
-  value = provider::assert::value(local.my_map, "value2")
+  value = provider::assert::value("value2", local.my_map)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -133,7 +133,7 @@ locals {
   }
 }
 output "test" {
-  value = provider::assert::value(local.my_map["key1"], "nested2")
+  value = provider::assert::value("nested2", local.my_map["key1"])
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

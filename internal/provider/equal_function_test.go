@@ -90,7 +90,7 @@ func TestEqualFunction_falseCases(t *testing.T) {
 				Config: `
 # number
 output "test" {
-  value = provider::assert::equal(100, 105)
+  value = provider::assert::equal(105, 100)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

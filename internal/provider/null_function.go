@@ -48,7 +48,9 @@ func (r IsNullFunction) Run(ctx context.Context, req function.RunRequest, resp *
 	}
 
 	if argument.UnderlyingValue() == nil {
-		resp.Result.Set(ctx, true)
+		if err := resp.Result.Set(ctx, true); err == nil {
+			return
+		}
 		return
 	}
 

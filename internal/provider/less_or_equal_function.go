@@ -31,14 +31,14 @@ func (r LessOrEqualFunction) Definition(_ context.Context, _ function.Definition
 			function.NumberParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The number to check",
-				Name:               "number",
+				Description:        "The number to compare against",
+				Name:               "compare_against",
 			},
 			function.NumberParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The number to compare against",
-				Name:               "compare_against",
+				Description:        "The number to check",
+				Name:               "number",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -46,10 +46,10 @@ func (r LessOrEqualFunction) Definition(_ context.Context, _ function.Definition
 }
 
 func (r LessOrEqualFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var number *big.Float
 	var compareAgainst *big.Float
+	var number *big.Float
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &number, &compareAgainst))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &compareAgainst, &number))
 	if resp.Error != nil {
 		return
 	}
