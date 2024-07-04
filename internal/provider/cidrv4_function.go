@@ -47,13 +47,19 @@ func (r CIDRv4Function) Run(ctx context.Context, req function.RunRequest, resp *
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isCIDRv4(prefix)))
+	isCIDRv4, err := isCIDRv4(prefix)
+	if err != nil {
+		resp.Error = function.ConcatFuncErrors(resp.Error, function.NewFuncError(err.Error()))
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isCIDRv4))
 }
 
-func isCIDRv4(prefix string) bool {
+func isCIDRv4(prefix string) (bool, error) {
 	ip, _, err := net.ParseCIDR(prefix)
 	if err != nil {
-		return false
+		return false, err
 	}
-	return ip.To4() != nil
+	return ip.To4() != nil, nil
 }

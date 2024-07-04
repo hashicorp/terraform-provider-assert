@@ -47,19 +47,26 @@ func (r CIDRv6Function) Run(ctx context.Context, req function.RunRequest, resp *
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isCIDRv6(prefix)))
+	isCIDRv6, err := isCIDRv6(prefix)
+	if err != nil {
+		resp.Error = function.ConcatFuncErrors(resp.Error, function.NewFuncError(err.Error()))
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isCIDRv6))
 }
 
-func isCIDRv6(prefix string) bool {
+func isCIDRv6(prefix string) (bool, error) {
 	ip, _, err := net.ParseCIDR(prefix)
 	if err != nil {
-		return false
+		return false, err
 	}
 
 	// Because IPv4 addresses can also have a 16-byte representation,
 	// we need to check that the address is not an IPv4 address first.
 	if ip.To4() != nil {
-		return false
+		return false, nil
 	}
-	return ip.To16() != nil
+
+	return ip.To16() != nil, nil
 }
