@@ -1,6 +1,6 @@
 ---
 page_title: "expired function - terraform-provider-assert"
-subcategory: "Time"
+subcategory: "Time Functions"
 description: |-
   Checks whether a timestamp in RFC3339 format is expired
 ---
@@ -9,7 +9,28 @@ description: |-
 
 
 
-## Continuous Validation Example
+## Continuous Validation Example (AWS)
+
+```terraform
+resource "aws_acm_certificate" "example" {
+  domain_name       = "example.com"
+  validation_method = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+check "certificate_valid" {
+  assert {
+    // Add 336 hours (14 days) to the expiration time, making sure we have enough time to renew the certificate
+    condition     = !provider::assert::expired(timeadd(aws_acm_certificate.example.not_after, "336h"))
+    error_message = "Example certificate needs to be renewed"
+  }
+}
+```
+
+## Continuous Validation Example (Google Cloud)
 
 ```terraform
 resource "google_compute_managed_ssl_certificate" "example" {
@@ -22,8 +43,9 @@ resource "google_compute_managed_ssl_certificate" "example" {
 
 check "certificate_valid" {
   assert {
-    condition     = provider::assert::expired(timeadd(google_compute_managed_ssl_certificate.example.expire_time, "7d"))
-    error_message = "Certificate needs to be renewed"
+    // Add 336 hours (14 days) to the expiration time, making sure we have enough time to renew the certificate
+    condition     = !provider::assert::expired(timeadd(google_compute_managed_ssl_certificate.example.expire_time, "336h"))
+    error_message = "Example certificate needs to be renewed"
   }
 }
 ```
