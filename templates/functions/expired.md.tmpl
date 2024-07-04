@@ -9,9 +9,13 @@ description: |-
 
 {{ .Description | trimspace }}
 
-## Continuous Validation Example
+## Continuous Validation Example (AWS)
 
-{{ tffile (printf "examples/functions/%s/check.tf" .Name)}}
+{{ tffile (printf "examples/functions/%s/check_aws.tf" .Name)}}
+
+## Continuous Validation Example (Google Cloud)
+
+{{ tffile (printf "examples/functions/%s/check_google.tf" .Name)}}
 
 ## Signature
 
