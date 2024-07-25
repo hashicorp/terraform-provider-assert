@@ -1,4 +1,4 @@
-module github.com/bschaatsbergen/terraform-provider-assert
+module github.com/hashicorp/terraform-provider-assert
 
 go 1.21
 

@@ -1,6 +1,6 @@
 # Documentation
 
-This directory contains documentation for the [Terraform Assert Provider Contributor Guide](https://bschaatsbergen.github.io/terraform-provider-assert/).
+This directory contains documentation for the [Terraform Assert Provider Contributor Guide](https://hashicorp.github.io/terraform-provider-assert/).
 
 ## Local Development
 

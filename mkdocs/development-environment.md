@@ -38,7 +38,7 @@ To do this, populate a Terraform CLI configuration file (`~/.terraformrc` for al
 ```terraform
 provider_installation {
   dev_overrides {
-    "bschaatsbergen/assert" = "[REPLACE WITH GOPATH]/bin"
+    "hashicorp/assert" = "[REPLACE WITH GOPATH]/bin"
   }
   direct {}
 }

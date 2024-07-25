@@ -1,9 +1,9 @@
 site_name: Terraform Assert Provider - Contributor Guide
 site_description: 'Contributor guide for the Terraform Assert Provider'
 copyright: HashiCorp
-repo_name: bschaatsbergen/terraform-provider-assert
-repo_url: https://github.com/bschaatsbergen/terraform-provider-assert
-edit_uri: "https://github.com/bschaatsbergen/terraform-provider-assert/tree/main/mkdocs"
+repo_name: hashicorp/terraform-provider-assert
+repo_url: https://github.com/hashicorp/terraform-provider-assert
+edit_uri: "https://github.com/hashicorp/terraform-provider-assert/tree/main/mkdocs"
 
 docs_dir: mkdocs
 

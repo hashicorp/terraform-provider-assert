@@ -14,4 +14,4 @@ If there's new functionality or bug fixes, we aim to release every week. If ther
 
 Great question, if you have contributed before check out issues with the `help-wanted` label. These are normally enhancement issues that will have a great impact, but the maintainers are unable to develop them in the near future. If you are just getting started, take a look at issues with the `good-first-issue` label. Items with these labels will always be given priority for response.
 
-Check out the [Contributing Guide](https://bschaatsbergen.github.io/terraform-provider-assert/) for additional information.
+Check out the [Contributing Guide](https://hashicorp.github.io/terraform-provider-assert/) for additional information.
