@@ -1,42 +1,51 @@
-# Terraform Provider release workflow.
 name: Release
 
-# This GitHub action creates a release when a tag that matches the pattern
-# "v*" (e.g. v0.1.0) is created.
 on:
   push:
     tags:
-      - 'v*'
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
 
-# Releases need permissions to read and write the repository contents.
-# GitHub considers creating releases and uploading assets as writing contents.
 permissions:
   contents: write
 
 jobs:
-  goreleaser:
+  go-version:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.go-version.outputs.version }}
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+      - id: go-version
+        run: echo "version=$(cat ./.go-version)" >> "$GITHUB_OUTPUT"
+  release-notes:
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_VERSION: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+      - name: Generate Release Notes
+        run: awk -v ver=${RELEASE_VERSION} '/^## / { if (p) { exit }; if ($2 == ver) { p=1; next } } p' CHANGELOG.md > release-notes.txt
+      - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
         with:
-          # Allow goreleaser to access older tag information.
-          fetch-depth: 0
-      - uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
-        with:
-          go-version-file: 'go.mod'
-          cache: true
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@01dd5d3ca463c7f10f7f4f7b4f177225ac661ee4 # v6.1.0
-        id: import_gpg
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@7ec5c2b0c6cdda6e8bbb49444bc797dd33d74dd8 # v5.0.0
-        with:
-          args: release --clean
-          version: v1.26.2
-        env:
-          # GitHub sets the GITHUB_TOKEN secret automatically.
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
+          name: release-notes
+          path: release-notes.txt
+          retention-days: 1
+  terraform-provider-release:
+    name: 'Terraform Provider Release'
+    needs: [go-version, release-notes]
+    uses: hashicorp/ghaction-terraform-provider-release/.github/workflows/hashicorp.yml@01981baad5d35ce2342924e60ae91cf69fe31fd0 # v2.3.0
+    secrets:
+      hc-releases-github-token: '${{ secrets.HASHI_RELEASES_GITHUB_TOKEN }}'
+      hc-releases-host-prod: '${{ secrets.HC_RELEASES_HOST_PROD }}'
+      hc-releases-host-staging: '${{ secrets.HC_RELEASES_HOST_STAGING }}'
+      hc-releases-key-prod: '${{ secrets.HC_RELEASES_KEY_PROD }}'
+      hc-releases-key-staging: '${{ secrets.HC_RELEASES_KEY_STAGING }}'
+      hc-releases-terraform-registry-sync-token: '${{ secrets.TF_PROVIDER_RELEASE_TERRAFORM_REGISTRY_SYNC_TOKEN }}'
+      setup-signore-github-token: '${{ secrets.HASHI_SIGNORE_GITHUB_TOKEN }}'
+      signore-client-id: '${{ secrets.SIGNORE_CLIENT_ID }}'
+      signore-client-secret: '${{ secrets.SIGNORE_CLIENT_SECRET }}'
+    with:
+      # Update to tag name if switched to branch-based workflow
+      product-version: '${{ github.ref_name }}'
+      release-notes: true
+      setup-go-version: '${{ needs.go-version.outputs.version }}'

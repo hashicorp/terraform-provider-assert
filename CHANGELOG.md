@@ -1,3 +1,8 @@
+## 0.10.0 (July 25, 2024)
+
+NOTES:
+* Moved this provider to a new namespace: `hashicorp`
+
 ## 0.8.0 (April 29, 2024)
 
 STYLE:
