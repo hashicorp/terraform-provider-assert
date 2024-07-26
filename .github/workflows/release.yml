@@ -1,35 +1,51 @@
 name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      versionNumber:
-        description: 'Release version number (v#.#.#)'
-        type: string
-        required: true
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
 
 permissions:
-  contents: read # Changelog commit operations use service account PAT
+  contents: write
 
 jobs:
+  go-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.go-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+      - id: go-version
+        run: echo "version=$(cat ./.go-version)" >> "$GITHUB_OUTPUT"
+  release-notes:
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_VERSION: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+      - name: Generate Release Notes
+        run: awk -v ver=${RELEASE_VERSION} '/^## / { if (p) { exit }; if ($2 == ver) { p=1; next } } p' CHANGELOG.md > release-notes.txt
+      - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+        with:
+          name: release-notes
+          path: release-notes.txt
+          retention-days: 1
   terraform-provider-release:
     name: 'Terraform Provider Release'
-    permissions:
-      contents: write # Needed for goreleaser to create GitHub release
-      issues: write # Needed for goreleaser to close associated milestone
-    uses: hashicorp/ghaction-terraform-provider-release/.github/workflows/hashicorp.yml@5f388ae147bcc1e1c34822571b2f2de40694c5d6 # v5.0.0
+    needs: [go-version, release-notes]
+    uses: hashicorp/ghaction-terraform-provider-release/.github/workflows/hashicorp.yml@01981baad5d35ce2342924e60ae91cf69fe31fd0 # v2.3.0
     secrets:
+      hc-releases-github-token: '${{ secrets.HASHI_RELEASES_GITHUB_TOKEN }}'
+      hc-releases-host-prod: '${{ secrets.HC_RELEASES_HOST_PROD }}'
+      hc-releases-host-staging: '${{ secrets.HC_RELEASES_HOST_STAGING }}'
       hc-releases-key-prod: '${{ secrets.HC_RELEASES_KEY_PROD }}'
       hc-releases-key-staging: '${{ secrets.HC_RELEASES_KEY_STAGING }}'
-      hc-releases-github-token: '${{ secrets.HASHI_RELEASES_GITHUB_TOKEN }}'
       hc-releases-terraform-registry-sync-token: '${{ secrets.TF_PROVIDER_RELEASE_TERRAFORM_REGISTRY_SYNC_TOKEN }}'
       setup-signore-github-token: '${{ secrets.HASHI_SIGNORE_GITHUB_TOKEN }}'
       signore-client-id: '${{ secrets.SIGNORE_CLIENT_ID }}'
       signore-client-secret: '${{ secrets.SIGNORE_CLIENT_SECRET }}'
-      hc-releases-host-staging: '${{ secrets.HC_RELEASES_HOST_STAGING }}'
-      hc-releases-host-prod: '${{ secrets.HC_RELEASES_HOST_PROD }}'
     with:
+      # Update to tag name if switched to branch-based workflow
+      product-version: '${{ github.ref_name }}'
       release-notes: true
-      setup-go-version-file: 'go.mod'
-      # Product Version (e.g. v1.2.3)
-      product-version: '${{ inputs.versionNumber }}'
+      setup-go-version: '${{ needs.go-version.outputs.version }}'
