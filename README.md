@@ -5,13 +5,16 @@ The [Assert Terraform provider]((https://registry.terraform.io/providers/hashico
 * [Terraform Registry](https://registry.terraform.io/providers/hashicorp/assert/latest/docs)
 * [Contributor Guide](https://hashicorp.github.io/terraform-provider-assert/)
 
+> [!IMPORTANT]  
+> We’re migrating this Terraform provider from the bschaatsbergen namespace to the hashicorp namespace.
+
 To use provider functions, declare the provider as a required provider in your Terraform configuration:
 
 ```hcl
 terraform {
   required_providers {
     assert = {
-      source = "hashicorp/assert"
+      source = "bschaatsbergen/assert"
     }
   }
 }
