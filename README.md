@@ -2,11 +2,8 @@
 
 The [Assert Terraform provider]((https://registry.terraform.io/providers/hashicorp/assert/latest/docs)) is intended for use when writing [Terraform tests](https://developer.hashicorp.com/terraform/language/tests). It serves as a way to verify that the values in your Terraform configuration meet specific criteria. The provider only contains functions to assert values, and does not manage any resources.
 
-* [Terraform Registry](https://registry.terraform.io/providers/bschaatsbergen/assert/latest/docs)
+* [Terraform Registry](https://registry.terraform.io/providers/hashicorp/assert/latest/docs)
 * [Contributor Guide](https://hashicorp.github.io/terraform-provider-assert/)
-
-> [!IMPORTANT]  
-> We’re in the process of migrating this Terraform provider to the hashicorp namespace.
 
 To use provider functions, declare the provider as a required provider in your Terraform configuration:
 
@@ -14,7 +11,7 @@ To use provider functions, declare the provider as a required provider in your T
 terraform {
   required_providers {
     assert = {
-      source = "bschaatsbergen/assert"
+      source = "hashicorp/assert"
     }
   }
 }
