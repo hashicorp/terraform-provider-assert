@@ -82,6 +82,7 @@ func (p *AssertProvider) Functions(ctx context.Context) []func() function.Functi
 		NewKeyFunction,
 		NewValueFunction,
 		NewExpiredFunction,
+		NewEmptyFunction,
 	}
 }
 
