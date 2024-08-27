@@ -28,10 +28,10 @@ func (r EmptyFunction) Definition(_ context.Context, _ function.DefinitionReques
 		Summary: "Checks wether a given string is empty",
 		Parameters: []function.Parameter{
 			function.StringParameter{
-				AllowNullValue:     true,
+				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The argument to check",
-				Name:               "argument",
+				Description:        "The string to check",
+				Name:               "string",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -39,7 +39,7 @@ func (r EmptyFunction) Definition(_ context.Context, _ function.DefinitionReques
 }
 
 func (r EmptyFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var argument *string
+	var argument string
 
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &argument))
 	if resp.Error != nil {
@@ -48,9 +48,6 @@ func (r EmptyFunction) Run(ctx context.Context, req function.RunRequest, resp *f
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isEmpty(argument)))
 }
 
-func isEmpty(argument *string) bool {
-	if argument == nil {
-		return true
-	}
-	return len(*argument) == 0
+func isEmpty(argument string) bool {
+	return len(argument) == 0
 }

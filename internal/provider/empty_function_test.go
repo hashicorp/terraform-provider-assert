@@ -54,28 +54,3 @@ output "test" {
 		},
 	})
 }
-
-func TestEmptyFunction_nil(t *testing.T) {
-	t.Parallel()
-	resource.UnitTest(t, resource.TestCase{
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: `
-locals {
-  foo = null
-}
-output "test" {
-  value = provider::assert::empty(local.foo)
-}
-				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckOutput("test", "true"),
-				),
-			},
-		},
-	})
-}
