@@ -9,17 +9,29 @@ description: |-
 
 
 
+## Terraform Test Example
 
+```terraform
+run "check_security_group_description" {
+
+  command = plan
+
+  assert {
+    condition     = provider::assert::not_empty(aws_security_group.example.description)
+    error_message = "Description can not be empty"
+  }
+}
+```
 
 ## Variable Validation Example
 
 ```terraform
-variable "example" {
+variable "bucket_name" {
   type = string
 
   validation {
-    condition     = provider::assert::not_empty(var.example)
-    error_message = "Value must not be empty"
+    condition     = provider::assert::not_empty(var.bucket_name)
+    error_message = "Bucket name must not be empty"
   }
 }
 ```
