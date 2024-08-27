@@ -44,7 +44,7 @@ func TestEmptyFunction_stringNotEmpty(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::empty("hashicups")
+  value = provider::assert::empty("notempty")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
