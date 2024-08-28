@@ -20,7 +20,7 @@ func NewRegexMatchesFunction() function.Function {
 type RegexMatchesFunction struct{}
 
 func (r RegexMatchesFunction) Metadata(_ context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
-	resp.Name = "regex_matches"
+	resp.Name = "regex"
 }
 
 func (r RegexMatchesFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {

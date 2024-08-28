@@ -23,7 +23,7 @@ func TestRegexMatchesFunction(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::regex_matches("needle", "hay needle stack")
+  value = provider::assert::regex("needle", "hay needle stack")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -79,7 +79,7 @@ func TestRegexMatchesFunction_trueCases(t *testing.T) {
 					{
 						Config: fmt.Sprintf(`
 output "test" {
-  value = provider::assert::regex_matches("%s", "%s")
+  value = provider::assert::regex("%s", "%s")
 }
 				`, test.pattern, test.s),
 						Check: resource.ComposeAggregateTestCheckFunc(
@@ -136,7 +136,7 @@ func TestRegexMatchesFunction_falseCases(t *testing.T) {
 					{
 						Config: fmt.Sprintf(`
 output "test" {
-  value = provider::assert::regex_matches("%s", "%s")
+  value = provider::assert::regex("%s", "%s")
 }
 				`, test.pattern, test.s),
 						Check: resource.ComposeAggregateTestCheckFunc(
