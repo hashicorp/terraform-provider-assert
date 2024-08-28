@@ -25,19 +25,19 @@ func (r RegexMatchesFunction) Metadata(_ context.Context, req function.MetadataR
 
 func (r RegexMatchesFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether a string matches a regular expression pattern",
+		Summary: "Check if a string matches a regular expression",
 		Parameters: []function.Parameter{
 			function.StringParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The regular expression pattern to check for",
+				Description:        "The regular expression pattern to match against",
 				Name:               "pattern",
 			},
 			function.StringParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Description:        "The string to check",
-				Name:               "string",
+				Description:        "The string to match against the regular expression",
+				Name:               "s",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -45,17 +45,18 @@ func (r RegexMatchesFunction) Definition(_ context.Context, _ function.Definitio
 }
 
 func (r RegexMatchesFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var patternRaw, s string
+	var pattern, s string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &patternRaw, &s))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &pattern, &s))
 	if resp.Error != nil {
 		return
 	}
 
-	patternCompiled, err := regexp.Compile(patternRaw)
+	patternCompiled, err := regexp.Compile(pattern)
 	if err != nil {
 		resp.Error = function.NewFuncError(err.Error())
 		return
 	}
+
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, patternCompiled.MatchString(s)))
 }

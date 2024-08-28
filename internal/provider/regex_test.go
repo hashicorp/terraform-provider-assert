@@ -23,7 +23,7 @@ func TestRegexMatchesFunction(t *testing.T) {
 			{
 				Config: `
 output "test" {
-  value = provider::assert::regex("needle", "hay needle stack")
+  value = provider::assert::regex("complex\\d+", "complex1234")
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -34,62 +34,114 @@ output "test" {
 	})
 }
 
-func TestRegexMatchesFunction_trueCases(t *testing.T) {
+func TestRegexMatchesFunction_ComplexPatternWithDigit(t *testing.T) {
 	t.Parallel()
-	tests := []struct {
-		name    string
-		pattern string
-		s       string
-	}{
-		{
-			name:    "simple regex matches",
-			pattern: "needle",
-			s:       "hay needle stack",
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
 		},
-		{
-			name:    "regex matches exact string",
-			pattern: "needle",
-			s:       "needle",
-		},
-		{
-			name:    "regex matches with special characters",
-			pattern: "needle\\s+",
-			s:       "hay needle    stack",
-		},
-		{
-			name:    "regex matches with positional anchors in front",
-			pattern: "^needle",
-			s:       "needle hay stack",
-		},
-		{
-			name:    "regex matches with positional anchors behind",
-			pattern: "needle$",
-			s:       "hay stack needle",
-		},
-	}
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			t.Parallel()
-			resource.UnitTest(t, resource.TestCase{
-				TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-					tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
-				},
-				ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-				Steps: []resource.TestStep{
-					{
-						Config: fmt.Sprintf(`
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
 output "test" {
-  value = provider::assert::regex("%s", "%s")
+  value = provider::assert::regex("complex\\d+", "complex1234")
 }
-				`, test.pattern, test.s),
-						Check: resource.ComposeAggregateTestCheckFunc(
-							resource.TestCheckOutput("test", "true"),
-						),
-					},
-				},
-			})
-		})
-	}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestRegexMatchesFunction_PatternWithOptionalGroup(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+output "test" {
+  value = provider::assert::regex("file(?:\\.txt)?", "file.txt")
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestRegexMatchesFunction_PatternWithAlternation(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+output "test" {
+  value = provider::assert::regex("foo|bar", "foo")
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestRegexMatchesFunction_PatternWithCharacterClass(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+output "test" {
+  value = provider::assert::regex("[a-zA-Z]{5}", "hello")
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestRegexMatchesFunction_PatternWithNonCapturingGroup(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+output "test" {
+  value = provider::assert::regex("(?:abc|def)ghi", "defghi")
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
 }
 
 func TestRegexMatchesFunction_falseCases(t *testing.T) {
@@ -100,28 +152,29 @@ func TestRegexMatchesFunction_falseCases(t *testing.T) {
 		s       string
 	}{
 		{
-			name:    "simple regex does not match",
-			pattern: "needle",
-			s:       "hay hay stack",
+			name:    "complex pattern with digit not matching",
+			pattern: "complex\\d+",
+			s:       "simple1234",
 		},
 		{
-			name:    "regex does not match exact string",
-			pattern: "needle",
-			s:       "needles",
+			name:    "pattern with optional group not present",
+			pattern: "file(?:\\.txt)?",
+			s:       "file.doc",
 		},
 		{
-			name:    "regex does not match with special characters",
-			pattern: "needle\\s+",
-			s:       "hay needlestack",
+			name:    "pattern with alternation not matching",
+			pattern: "foo|bar",
+			s:       "baz",
 		},
 		{
-			name:    "regex does not match with positional anchors in front",
-			pattern: "^needle",
-			s:       "hay needle stack",
+			name:    "pattern with character class not matching",
+			pattern: "[a-zA-Z]{5}",
+			s:       "helloo",
 		},
 		{
-			name:    "regex does not match with positional anchors behind",
-			pattern: "needle$",
+			name:    "pattern with non-capturing group not matching",
+			pattern: "(?:abc|def)ghi",
+			s:       "abcdeghi",
 		},
 	}
 	for _, test := range tests {

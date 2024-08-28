@@ -1,7 +1,9 @@
-variable "service_account_email" {
-  type = string
+variable "user_email" {
+  description = "The email address for the user."
+  type        = string
+
   validation {
-    condition     = provider::assert::regex("^[^@]+@[^@]+\.[^@]+$", var.webhook_url)
-    error_message = "Service account email must be in the format of <name>@<domain>.<tld>"
+    condition     = provider::assert::regex("^[^@]+@[^@]+\\.[^@]+$", var.user_email)
+    error_message = "The user email must be in a valid format, such as 'name@domain.tld'."
   }
 }
