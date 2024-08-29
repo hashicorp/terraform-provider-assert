@@ -96,7 +96,7 @@ output "test" {
   value = provider::assert::empty(local.example)
 }
 				`,
-				ExpectError: regexp.MustCompile(`Invalid value for "string" parameter: argument must not be null`),
+				ExpectError: regexp.MustCompile(`Invalid value for "s" parameter: argument must not be null`),
 			},
 		},
 	})
@@ -116,7 +116,7 @@ output "test" {
   value = provider::assert::empty([])
 }
 				`,
-				ExpectError: regexp.MustCompile(`Invalid value for "string" parameter: string required`),
+				ExpectError: regexp.MustCompile(`Invalid value for "s" parameter: string required`),
 			},
 		},
 	})
