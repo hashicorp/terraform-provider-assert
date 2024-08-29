@@ -1,8 +1,8 @@
-variable "bucket_name" {
+variable "example" {
   type = string
 
   validation {
-    condition     = provider::assert::not_empty(var.bucket_name)
-    error_message = "Bucket name must not be empty"
+    condition     = provider::assert::not_empty(var.example)
+    error_message = "Variable 'example' must not be empty."
   }
 }

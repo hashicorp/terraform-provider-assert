@@ -4,6 +4,6 @@ run "check_security_group_description" {
 
   assert {
     condition     = provider::assert::not_empty(aws_security_group.example.description)
-    error_message = "Description can not be empty"
+    error_message = "Security group description must not be empty."
   }
 }

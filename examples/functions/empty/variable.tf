@@ -3,6 +3,6 @@ variable "example" {
 
   validation {
     condition     = provider::assert::empty(var.example)
-    error_message = "Value must be empty"
+    error_message = "Variable 'example' must be empty."
   }
 }
