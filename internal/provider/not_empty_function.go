@@ -31,7 +31,7 @@ func (r NotEmptyFunction) Definition(_ context.Context, _ function.DefinitionReq
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
 				Description:        "The string to check",
-				Name:               "string",
+				Name:               "s",
 			},
 		},
 		Return: function.BoolReturn{},
