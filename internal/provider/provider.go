@@ -85,6 +85,7 @@ func (p *AssertProvider) Functions(ctx context.Context) []func() function.Functi
 		NewEmptyFunction,
 		NewNotEmptyFunction,
 		NewRegexMatchesFunction,
+		NewSemVerCheckFunction,
 		NewSemVerVersionFunction,
 		NewSemVerConstraintFunction,
 	}
