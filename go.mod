@@ -1,9 +1,11 @@
 module github.com/hashicorp/terraform-provider-assert
 
-go 1.21
-toolchain go1.22.5
+go 1.22.0
+
+toolchain go1.23.1
 
 require (
+	github.com/google/uuid v1.6.0
 	github.com/hashicorp/go-version v1.7.0
 	github.com/hashicorp/terraform-plugin-framework v1.12.0
 	github.com/hashicorp/terraform-plugin-go v0.24.0

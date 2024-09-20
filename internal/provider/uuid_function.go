@@ -6,7 +6,7 @@ package provider
 import (
 	"context"
 
-	"github.com/hashicorp/go-uuid"
+	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 )
 
@@ -26,7 +26,7 @@ func (r UUIDFunction) Metadata(_ context.Context, req function.MetadataRequest, 
 
 func (r UUIDFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether a string is a valid UUID",
+		Summary: "Check if a string is a valid UUID",
 		Parameters: []function.Parameter{
 			function.StringParameter{
 				AllowNullValue:     false,
@@ -40,17 +40,18 @@ func (r UUIDFunction) Definition(_ context.Context, _ function.DefinitionRequest
 }
 
 func (r UUIDFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var uuid string
+	var s string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &uuid))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &s))
 	if resp.Error != nil {
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isUUID(uuid)))
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isUUID(s)))
 }
 
-func isUUID(uuidStr string) bool {
-	_, err := uuid.ParseUUID(uuidStr)
+func isUUID(s string) bool {
+	_, err := uuid.Parse(s)
 	return err == nil
 }
+
