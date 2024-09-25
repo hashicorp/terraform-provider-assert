@@ -9,13 +9,15 @@ description: |-
 
 
 
+The `not_null` function returns `true` if the given value is not a null value. Otherwise, it returns `false`.
+
+In Terraform, the null value type represents the absence or omission of a value. You can explicitly set a resource argument to `null` to indicate that no value is provided.
+
 ## Terraform Test Example
 
 ```terraform
 run "check_if_range_key_is_not_null" {
-
   command = plan
-
   assert {
     condition     = provider::assert::not_null(aws_dynamodb_table.example.range_key)
     error_message = "DynamoDB table range key must not be null"

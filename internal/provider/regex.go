@@ -5,8 +5,9 @@ package provider
 
 import (
 	"context"
-	"github.com/hashicorp/terraform-plugin-framework/function"
 	"regexp"
+
+	"github.com/hashicorp/terraform-plugin-framework/function"
 )
 
 var (

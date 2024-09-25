@@ -9,13 +9,13 @@ description: |-
 
 
 
+The data validation function `valid_json` returns `true` if the given string is a valid JSON. Otherwise, it returns `false`.
+
 ## Terraform Test Example
 
 ```terraform
 run "check_config" {
-
   command = plan
-
   assert {
     condition     = provider::assert::valid_json(data.local_file.config.content)
     error_message = "Config is not a valid JSON"

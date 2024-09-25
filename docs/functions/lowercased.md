@@ -9,6 +9,8 @@ description: |-
 
 
 
+The string function `lowercased` returns `true` if the given string is in lowercase. Otherwise, it returns `false`.
+
 ## Variable Validation Example
 
 ```terraform

@@ -1,6 +1,6 @@
 ---
 page_title: "ip function - terraform-provider-assert"
-subcategory: "IP Address Functions"
+subcategory: "Network Functions"
 description: |-
   Checks whether a string is a valid IP address (IPv4 or IPv6)
 ---
@@ -9,13 +9,15 @@ description: |-
 
 
 
+The network function `ip` returns `true` if the given string is a valid IP address (either IPv4 or IPv6); otherwise, it returns `false`.
+
+A valid `ip_address` must be represented in one of the following formats: IPv4 dotted decimal (e.g., “192.0.2.1”), standard IPv6 notation (e.g., “2001:db8::68”), or IPv4-mapped IPv6 format (e.g., “::ffff:192.0.2.1”).
+
 ## Terraform Test Example
 
 ```terraform
 run "check_valid_ip_google_compute_address" {
-
   command = plan
-
   assert {
     condition     = provider::assert::ip(google_compute_address.example.address)
     error_message = "Address is not a valid IP address"

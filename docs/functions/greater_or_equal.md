@@ -9,13 +9,13 @@ description: |-
 
 
 
+The numeric function `greater_or_equal` returns `true` if the second value is greater than or equal to the first value. Otherwise, it returns `false`.
+
 ## Terraform Test Example
 
 ```terraform
 run "check_aws_db_instance_size" {
-
   command = plan
-
   assert {
     condition     = provider::assert::greater_or_equal(100, aws_db_instance.example.instance_class)
     error_message = "DB instance size must be greater than or equal to 100"
