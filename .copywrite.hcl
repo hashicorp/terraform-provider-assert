@@ -7,8 +7,8 @@ project {
 
   header_ignore = [
     # changie tooling configuration and CHANGELOG entries (prose)
-    ".changes/unreleased/*.yaml",
-    ".changie.yaml",
+    ".changes/unreleased/*.yml",
+    ".changie.yml",
 
     # examples used within documentation (prose)
     "examples/**",
