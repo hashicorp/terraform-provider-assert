@@ -9,6 +9,8 @@ description: |-
 
 
 
+The list function `contains` returns `true` if the given value is in the provided list. Otherwise, it returns `false`.
+
 ## Terraform Test Example
 
 ```terraform

@@ -9,6 +9,8 @@ description: |-
 
 
 
+The numeric function `less_or_equal` returns `true` if the second value is less than or equal to the first value. Otherwise, it returns `false`.
+
 ## Terraform Test Example
 
 ```terraform

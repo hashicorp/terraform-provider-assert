@@ -9,6 +9,8 @@ description: |-
 
 
 
+The numeric function `between` returns `true` if the given value is between the two provided values, inclusive of the lower the upper bound. Otherwise, it returns `false`.
+
 ## Terraform Test Example
 
 ```terraform

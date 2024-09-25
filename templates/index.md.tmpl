@@ -6,7 +6,7 @@ description: |-
 
 # Assert Provider
 
-The Assert provider for Terraform is a utility provider that offers a comprehensive set of assertion capabilities through provider-defined functions such as [http_success()](https://registry.terraform.io/providers/hashicorp/assert/latest/docs/functions/http_success), [expired()](https://registry.terraform.io/providers/hashicorp/assert/latest/docs/functions/expired), and [between()](https://registry.terraform.io/providers/hashicorp/assert/latest/docs/functions/between). These assertion functions simplify your Terraform configurations, making variable validation, continuous validation, and testing easier.
+The Assert provider for Terraform is a utility provider that offers a comprehensive set of assertion capabilities through provider-defined functions such as [http_success](https://registry.terraform.io/providers/hashicorp/assert/latest/docs/functions/http_success), [expired](https://registry.terraform.io/providers/hashicorp/assert/latest/docs/functions/expired), and [between](https://registry.terraform.io/providers/hashicorp/assert/latest/docs/functions/between). These assertion functions simplify your Terraform configurations, making variable validation, continuous validation, and testing easier.
 
 The Assert provider functions complement Terraform’s [built-in](https://developer.hashicorp.com/terraform/language/functions) functions rather than replacing them. If Terraform’s built-in functions better fit your requirements, they should be your choice.
 

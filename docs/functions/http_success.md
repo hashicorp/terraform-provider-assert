@@ -9,6 +9,10 @@ description: |-
 
 
 
+The HTTP status code function `http_success` returns `true` if the given HTTP status code is a success status code (2xx). Otherwise, it returns `false`.
+
+This function checks against the HTTP status codes defined in the Go standard library [net/http](https://golang.org/pkg/net/http/) package. For details, refer to [src/net/http/status.go](https://cs.opensource.google/go/go/+/refs/tags/go1.23.1:src/net/http/status.go;l=9).
+
 ## Terraform Test Example
 
 ```terraform

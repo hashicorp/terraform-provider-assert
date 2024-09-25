@@ -1,6 +1,6 @@
 ---
 page_title: "ipv6 function - terraform-provider-assert"
-subcategory: "IP Address Functions"
+subcategory: "Network Functions"
 description: |-
   Checks whether a string is a valid IPv6 address
 ---
@@ -8,6 +8,12 @@ description: |-
 # function: ipv6
 
 
+
+The network function `ipv6` returns `true` if the given string is a valid IPv6 address. Otherwise, it returns `false`.
+
+A valid `ip_address` must be represented in the following format: standard IPv6 notation (e.g., “2001:db8::68”) or IPv4-mapped IPv6 format (e.g., “::ffff:192.0.2.1”).
+
+To validate an IP address regardless of the IP version, use the `ip` function.
 
 ## Terraform Test Example
 

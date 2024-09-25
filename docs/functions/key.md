@@ -9,6 +9,8 @@ description: |-
 
 
 
+The map function `key` returns `true` if the given key is in the provided map. Otherwise, it returns `false`.
+
 ## Terraform Test Example
 
 ```terraform

@@ -9,6 +9,10 @@ description: |-
 
 {{ .Description | trimspace }}
 
+The string function `not_empty` returns `true` if the given string is not empty. Otherwise, it returns `false`.
+
+A string is considered empty if it is initialized, not null, and has a length of zero characters.
+
 {{ if .HasExample -}}
 ## Terraform Test Example
 

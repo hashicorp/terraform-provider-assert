@@ -9,6 +9,8 @@ description: |-
 
 
 
+The boolean function `false` returns `true` if the specified value or expression evaluates to `false`; otherwise, it returns `false`.
+
 ## Terraform Test Example
 
 ```terraform

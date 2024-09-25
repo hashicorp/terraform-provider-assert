@@ -9,6 +9,8 @@ description: |-
 
 
 
+The numeric function `equal` returns `true` if the given values are equal. Otherwise, it returns `false`.
+
 ## Terraform Test Example
 
 ```terraform

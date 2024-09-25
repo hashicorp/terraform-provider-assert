@@ -9,6 +9,8 @@ description: |-
 
 
 
+The numeric function `positive` returns `true` if the given value is positive. Otherwise, it returns `false`.
+
 ## Variable Validation Example
 
 ```terraform

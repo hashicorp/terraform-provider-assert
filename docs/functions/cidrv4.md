@@ -1,6 +1,6 @@
 ---
 page_title: "cidrv4 function - terraform-provider-assert"
-subcategory: "CIDR Address Functions"
+subcategory: "Network Functions"
 description: |-
   Checks whether a string is a valid CIDR notation (IPv4)
 ---
@@ -8,6 +8,10 @@ description: |-
 # function: cidrv4
 
 
+
+The network function `cidrv4` returns true if the provided CIDR range is a valid IPv4 CIDR notation. Otherwise, it returns `false`.
+
+To validate a CIDR range regardless of the IP version, use the `cidr` function.
 
 ## Terraform Test Example
 

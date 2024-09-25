@@ -9,6 +9,8 @@ description: |-
 
 
 
+The string function `ends_with` returns true if the given string ends with the provided suffix. Otherwise, it returns `false`.
+
 ## Terraform Test Example
 
 ```terraform

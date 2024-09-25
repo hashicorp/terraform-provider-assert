@@ -9,6 +9,8 @@ description: |-
 
 
 
+The numeric function `greater` returns `true` if the second value is greater than the first value. Otherwise, it returns `false`.
+
 ## Terraform Test Example
 
 ```terraform

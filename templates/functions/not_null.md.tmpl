@@ -9,6 +9,10 @@ description: |-
 
 {{ .Description | trimspace }}
 
+The `not_null` function returns `true` if the given value is not a null value. Otherwise, it returns `false`.
+
+In Terraform, the null value type represents the absence or omission of a value. You can explicitly set a resource argument to `null` to indicate that no value is provided.
+
 {{ if .HasExample -}}
 ## Terraform Test Example
 
