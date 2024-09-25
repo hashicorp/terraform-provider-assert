@@ -1,0 +1,37 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
+github-actions:
+  - changed-files:
+      - any-glob-to-any-file:
+        - '.github/**'
+        - '.goreleaser.yml'
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+        - 'go.mod'
+        - 'go.sum'
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+        - 'README.md'
+        - 'docs/**'
+        - 'examples/**'
+        - 'templates/**'
+
+legal:
+  - changed-files:
+      - any-glob-to-any-file:
+        - 'LICENSE'
+
+tests:
+  - changed-files:
+      - any-glob-to-any-file:
+        - '**/*_test.go'
+
+new-function:
+  - changed-files:
+      - any-glob-to-any-file:
+        - '**/*_function.go'
