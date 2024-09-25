@@ -153,12 +153,12 @@ func TestRegexMatchesFunction_falseCases(t *testing.T) {
 	}{
 		{
 			name:    "complex pattern with digit not matching",
-			pattern: "complex\\d+",
+			pattern: "complex\\\\d+",
 			s:       "simple1234",
 		},
 		{
 			name:    "pattern with optional group not present",
-			pattern: "file(?:\\.txt)?",
+			pattern: "^file(?:\\\\.txt)?$",
 			s:       "file.doc",
 		},
 		{
@@ -168,7 +168,7 @@ func TestRegexMatchesFunction_falseCases(t *testing.T) {
 		},
 		{
 			name:    "pattern with character class not matching",
-			pattern: "[a-zA-Z]{5}",
+			pattern: "^[a-zA-Z]{5}$",
 			s:       "helloo",
 		},
 		{
