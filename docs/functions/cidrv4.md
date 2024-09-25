@@ -11,15 +11,15 @@ description: |-
 
 The network function `cidrv4` returns true if the provided CIDR range is a valid IPv4 CIDR notation. Otherwise, it returns `false`.
 
+It parses the `prefix` as a CIDR notation IP address and prefix length, such as “192.0.2.0/24” as defined in RFC 4632.
+
 To validate a CIDR range regardless of the IP version, use the `cidr` function.
 
 ## Terraform Test Example
 
 ```terraform
 run "check_valid_ipv4_aws_subnet" {
-
   command = plan
-
   assert {
     condition     = provider::assert::cidrv4(aws_subnet.example.cidr_block)
     error_message = "Subnet is not in valid IPv4 CIDR notation"

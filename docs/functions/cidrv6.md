@@ -11,15 +11,15 @@ description: |-
 
 The network function `cidrv6` returns true if the provided CIDR range is a valid IPv6 CIDR notation. Otherwise, it returns `false`.
 
+It parses the `prefix` as a CIDR notation IP address and prefix length, such as “2001:db8::/32,” as defined in RFC 4291.
+
 To validate a CIDR range regardless of the IP version, use the `cidr` function.
 
 ## Terraform Test Example
 
 ```terraform
 run "check_valid_ipv6_aws_subnet" {
-
   command = plan
-
   assert {
     condition     = provider::assert::cidrv6(aws_subnet.example.ipv6_cidr_block)
     error_message = "Subnet is not in valid IPv6 CIDR notation"

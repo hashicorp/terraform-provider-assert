@@ -9,6 +9,8 @@ description: |-
 
 
 
+The string function `uppercsaed` returns `true` if the given string is in uppercase. Otherwise, it returns `false`.
+
 ## Variable Validation Example
 
 ```terraform
