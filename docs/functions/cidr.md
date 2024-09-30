@@ -1,6 +1,6 @@
 ---
 page_title: "cidr function - terraform-provider-assert"
-subcategory: "CIDR Address Functions"
+subcategory: "Network Functions"
 description: |-
   Checks whether a string is a valid CIDR notation (IPv4 or IPv6)
 ---
@@ -9,13 +9,17 @@ description: |-
 
 
 
+The network function `cidr` returns `true` if the provided CIDR range is a valid CIDR notation, regardless of whether it’s IPv4 or IPv6; otherwise, it returns `false`.
+
+It parses the `prefix` as a CIDR notation IP address and prefix length, such as “192.0.2.0/24” or “2001:db8::/32,” as defined in RFC 4632 and RFC 4291.
+
+To validate a CIDR range for a specific IP version, use the `cidrv4` or `cidrv6` functions.
+
 ## Terraform Test Example
 
 ```terraform
 run "check_valid_ip_aws_subnet" {
-
   command = plan
-
   assert {
     condition     = provider::assert::cidr(aws_subnet.example.cidr_block)
     error_message = "Subnet is not in valid CIDR notation"

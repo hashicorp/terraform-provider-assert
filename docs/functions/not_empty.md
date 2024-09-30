@@ -9,13 +9,15 @@ description: |-
 
 
 
+The string function `not_empty` returns `true` if the given string is not empty. Otherwise, it returns `false`.
+
+A string is considered empty if it is initialized, not null, and has a length of zero characters.
+
 ## Terraform Test Example
 
 ```terraform
 run "check_security_group_description" {
-
   command = plan
-
   assert {
     condition     = provider::assert::not_empty(aws_security_group.example.description)
     error_message = "Security group description must not be empty."

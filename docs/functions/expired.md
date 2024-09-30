@@ -9,6 +9,8 @@ description: |-
 
 
 
+The time function `expired` checks whether a given timestamp, provided in RFC3339 format, has passed. It returns `true` if the timestamp represents a time that is earlier than the current time. Otherwise, it returns `false`.
+
 ## Continuous Validation Example (AWS)
 
 ```terraform

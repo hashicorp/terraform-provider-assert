@@ -9,13 +9,15 @@ description: |-
 
 
 
+The HTTP status code function `http_server_error` returns `true` if the given HTTP status code is a server error status code (5xx). Otherwise, it returns `false`.
+
+This function checks against the HTTP status codes defined in the Go standard library [net/http](https://golang.org/pkg/net/http/) package. For details, refer to [src/net/http/status.go](https://cs.opensource.google/go/go/+/refs/tags/go1.23.1:src/net/http/status.go;l=9).
+
 ## Terraform Test Example
 
 ```terraform
 run "check_http_server_error" {
-
   command = plan
-
   assert {
     condition     = provider::assert::http_client_error(data.http.down.status_code)
     error_message = "My down website must return an HTTP server error status code"

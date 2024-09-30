@@ -9,15 +9,15 @@ description: |-
 
 {{ .Description | trimspace }}
 
+The string function `empty` returns `true` if the given string is empty. Otherwise, it returns `false`.
+
+A string is considered empty if it is initialized as an empty string and is not null; strings that contain only whitespace characters are not considered empty.
+
 {{ if .HasExample -}}
 ## Terraform Test Example
 
 {{tffile .ExampleFile }}
 {{- end }}
-
-## Variable Validation Example
-
-{{ tffile (printf "examples/functions/%s/variable.tf" .Name)}}
 
 ## Signature
 

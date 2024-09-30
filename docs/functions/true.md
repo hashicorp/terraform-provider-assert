@@ -9,13 +9,13 @@ description: |-
 
 
 
+The boolean function `true` returns `true` if the specified value or expression evaluates to `true`; otherwise, it returns `false`.
+
 ## Terraform Test Example
 
 ```terraform
 run "check_rds_global_cluster_deletion_protection" {
-
   command = plan
-
   assert {
     condition     = provider::assert::true(aws_rds_global_cluster.example.deletion_protection)
     error_message = "Cluster deletion protection must be enabled, because this is a prod environment"
