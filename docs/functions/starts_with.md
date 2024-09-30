@@ -9,13 +9,13 @@ description: |-
 
 
 
+The string function `starts_with` returns true if the given string starts with the provided prefix. Otherwise, it returns `false`.
+
 ## Terraform Test Example
 
 ```terraform
 run "check_https_google_pubsub_subscription_push_endpoint" {
-
   command = plan
-
   assert {
     condition     = provider::assert::starts_with("https://", google_pubsub_subscription.example.push_config.push_endpoint)
     error_message = "Push endpoint must start with https://"

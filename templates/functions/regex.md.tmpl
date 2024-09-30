@@ -9,6 +9,10 @@ description: |-
 
 {{ .Description | trimspace }}
 
+The string function regex returns true if the given string matches the regular expression pattern; otherwise, it returns false. To perform a substring match, use the regular expression without anchoring the pattern.
+
+Learn more about regular expressions in the [Terraform documentation](https://www.terraform.io/docs/language/functions/regex.html).
+
 {{ if .HasExample -}}
 ## Terraform Test Example
 

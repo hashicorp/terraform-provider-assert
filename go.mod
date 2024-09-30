@@ -1,8 +1,6 @@
 module github.com/hashicorp/terraform-provider-assert
 
-go 1.22.0
-
-toolchain go1.23.1
+go 1.23.0
 
 require (
 	github.com/google/uuid v1.6.0

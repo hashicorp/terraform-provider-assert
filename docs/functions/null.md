@@ -9,6 +9,10 @@ description: |-
 
 
 
+The null function `null` returns `true` if the given value is a null value. Otherwise, it returns `false`.
+
+In Terraform, the null value type represents the absence or omission of a value. You can explicitly set a resource argument to `null` to indicate that no value is provided.
+
 
 
 ## Variable Validation Example

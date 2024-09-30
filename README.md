@@ -1,6 +1,6 @@
 # Terraform Provider: Assert
 
-The [Assert Terraform provider]((https://registry.terraform.io/providers/hashicorp/assert/latest/docs)) is intended for use when writing [Terraform tests](https://developer.hashicorp.com/terraform/language/tests). It serves as a way to verify that the values in your Terraform configuration meet specific criteria. The provider only contains functions to assert values, and does not manage any resources.
+The [Assert Terraform provider]((https://registry.terraform.io/providers/hashicorp/assert/latest/docs)) is intended for use when writing [Terraform Tests](https://developer.hashicorp.com/terraform/language/tests), [Variable Validation](https://developer.hashicorp.com/terraform/language/values/variables#custom-validation-rules), [Preconditions and Postconditions](https://developer.hashicorp.com/terraform/language/expressions/custom-conditions#preconditions-and-postconditions), or [Continuous Validation](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/health#continuous-validation). It serves as a way to verify that the values in your Terraform configuration meet specific criteria. The provider only contains functions to assert values, and does not manage any resources.
 
 * [Terraform Registry](https://registry.terraform.io/providers/hashicorp/assert/latest/docs)
 * [Contributor Guide](https://hashicorp.github.io/terraform-provider-assert/)
@@ -40,9 +40,7 @@ Test assertions in your Terraform configuration should be simple and easy to rea
 
 ```hcl
 run "ebs_volume_size" {
-
   command = plan
-
   assert {
     condition     = provider::assert::between(1, 100, aws_ebs_volume.example.size)
     error_message = "EBS volume size must be between 1 and 100 GiB"

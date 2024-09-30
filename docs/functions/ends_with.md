@@ -9,13 +9,13 @@ description: |-
 
 
 
+The string function `ends_with` returns true if the given string ends with the provided suffix. Otherwise, it returns `false`.
+
 ## Terraform Test Example
 
 ```terraform
 run "check_events_path_google_pubsub_subscription_push_endpoint" {
-
   command = plan
-
   assert {
     condition     = provider::assert::ends_with("/events", google_pubsub_subscription.example.push_config.push_endpoint)
     error_message = "Push endpoint must end with /events"
