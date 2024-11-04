@@ -29,22 +29,22 @@ func (r BetweenFunction) Definition(_ context.Context, _ function.DefinitionRequ
 		Summary: "Checks whether a number is within a given range",
 		Parameters: []function.Parameter{
 			function.NumberParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
 				Description:        "The beginning of the range",
 				Name:               "begin",
 			},
 			function.NumberParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
 				Description:        "The end of the range",
 				Name:               "end",
 			},
 			function.NumberParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The number to check",
-				Name:               "number",
+				Description:        "The value to check",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -52,15 +52,22 @@ func (r BetweenFunction) Definition(_ context.Context, _ function.DefinitionRequ
 }
 
 func (r BetweenFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var begin, end, number *big.Float
+	var begin, end, value *big.Float
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &begin, &end, &number))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &begin, &end, &value))
 	if resp.Error != nil {
 		return
 	}
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isInRange(number, begin, end)))
+
+	// Check if any of the values are nil, and if so, set the result to false and return early
+	if begin == nil || end == nil || value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isInRange(value, begin, end)))
 }
 
-func isInRange(number, start, end *big.Float) bool {
-	return number.Cmp(start) != -1 && number.Cmp(end) != 1
+func isInRange(v, start, end *big.Float) bool {
+	return v.Cmp(start) != -1 && v.Cmp(end) != 1
 }

@@ -26,12 +26,12 @@ func (r ValidJSONFunction) Metadata(_ context.Context, req function.MetadataRequ
 
 func (r ValidJSONFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether a string is valid JSON",
+		Summary: "Checks whether a value is valid JSON",
 		Parameters: []function.Parameter{
 			function.StringParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The JSON string to check",
+				Description:        "The JSON value to check",
 				Name:               "json",
 			},
 		},
@@ -40,14 +40,19 @@ func (r ValidJSONFunction) Definition(_ context.Context, _ function.DefinitionRe
 }
 
 func (r ValidJSONFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var JSON *string
+	var value *string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &JSON))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value))
 	if resp.Error != nil {
 		return
 	}
 
-	isValidJSON, err := isValidJSON(JSON)
+	if value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	isValidJSON, err := isValidJSON(value)
 	if err != nil {
 		resp.Error = function.ConcatFuncErrors(resp.Error, function.NewFuncError(err.Error()))
 		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
@@ -56,9 +61,9 @@ func (r ValidJSONFunction) Run(ctx context.Context, req function.RunRequest, res
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isValidJSON))
 }
 
-func isValidJSON(JSON *string) (bool, error) {
+func isValidJSON(v *string) (bool, error) {
 	var js map[string]interface{}
-	err := json.Unmarshal([]byte(*JSON), &js)
+	err := json.Unmarshal([]byte(*v), &js)
 	if err != nil {
 		return false, err
 	}

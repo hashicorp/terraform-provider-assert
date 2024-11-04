@@ -29,16 +29,16 @@ func (r EqualFunction) Definition(_ context.Context, _ function.DefinitionReques
 		Summary: "Checks whether a number is equal to another number",
 		Parameters: []function.Parameter{
 			function.NumberParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The number to compare against",
+				Description:        "The value to compare against",
 				Name:               "compare_against",
 			},
 			function.NumberParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The number to compare",
-				Name:               "number",
+				Description:        "The value to compare",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -47,11 +47,17 @@ func (r EqualFunction) Definition(_ context.Context, _ function.DefinitionReques
 
 func (r EqualFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var compareAgainst *big.Float
-	var number *big.Float
+	var value *big.Float
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &compareAgainst, &number))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &compareAgainst, &value))
 	if resp.Error != nil {
 		return
 	}
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, number.Cmp(compareAgainst) == 0))
+
+	if compareAgainst == nil || value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, value.Cmp(compareAgainst) == 0))
 }

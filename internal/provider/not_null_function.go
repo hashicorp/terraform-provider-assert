@@ -26,13 +26,13 @@ func (r NotNullFunction) Metadata(_ context.Context, req function.MetadataReques
 
 func (r NotNullFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether a given argument is not null",
+		Summary: "Checks whether a given value is not null",
 		Parameters: []function.Parameter{
 			function.DynamicParameter{
 				AllowNullValue:     true,
 				AllowUnknownValues: true,
-				Description:        "The argument to check",
-				Name:               "argument",
+				Description:        "The value to check",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -40,12 +40,12 @@ func (r NotNullFunction) Definition(_ context.Context, _ function.DefinitionRequ
 }
 
 func (r NotNullFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var argument types.Dynamic
+	var value types.Dynamic
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &argument))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value))
 	if resp.Error != nil {
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, !argument.IsNull()))
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, !value.IsNull()))
 }

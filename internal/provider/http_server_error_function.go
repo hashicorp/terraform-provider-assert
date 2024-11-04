@@ -5,10 +5,8 @@ package provider
 
 import (
 	"context"
-	"net/http"
 
 	"github.com/hashicorp/terraform-plugin-framework/function"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var (
@@ -30,7 +28,7 @@ func (r IsHTTPServerErrorFunction) Definition(_ context.Context, _ function.Defi
 		Summary: "Checks whether an HTTP status code is a server error status code",
 		Parameters: []function.Parameter{
 			function.Int64Parameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
 				Description:        "The HTTP status code to check",
 				Name:               "status_code",
@@ -41,36 +39,25 @@ func (r IsHTTPServerErrorFunction) Definition(_ context.Context, _ function.Defi
 }
 
 func (r IsHTTPServerErrorFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var statusCode types.Int64
+	var statusCode *int64
 
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &statusCode))
 	if resp.Error != nil {
 		return
 	}
 
-	result := isHTTPServerError(statusCode.ValueInt64())
+	result := isHTTPServerError(statusCode)
 
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, result))
 }
 
 // isHTTPServerError checks if an HTTP status code is within the 5xx range.
-func isHTTPServerError(statusCode int64) bool {
-	switch statusCode {
-	case
-		// 5XX status codes
-		http.StatusInternalServerError,
-		http.StatusNotImplemented,
-		http.StatusBadGateway,
-		http.StatusServiceUnavailable,
-		http.StatusGatewayTimeout,
-		http.StatusHTTPVersionNotSupported,
-		http.StatusVariantAlsoNegotiates,
-		http.StatusInsufficientStorage,
-		http.StatusLoopDetected,
-		http.StatusNotExtended,
-		http.StatusNetworkAuthenticationRequired:
-		return true
-	default:
+func isHTTPServerError(statusCode *int64) bool {
+	// Check if statusCode is nil
+	if statusCode == nil {
 		return false
 	}
+
+	// Check if the status code is in the 5xx range
+	return *statusCode >= 500 && *statusCode < 600
 }

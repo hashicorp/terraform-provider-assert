@@ -29,10 +29,10 @@ func (r CIDRv6Function) Definition(_ context.Context, _ function.DefinitionReque
 		Summary: "Checks whether a string is a valid CIDR notation (IPv6)",
 		Parameters: []function.Parameter{
 			function.StringParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The string to check",
-				Name:               "prefix",
+				Description:        "The value to check",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -40,14 +40,20 @@ func (r CIDRv6Function) Definition(_ context.Context, _ function.DefinitionReque
 }
 
 func (r CIDRv6Function) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var prefix string
+	var value *string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &prefix))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value))
 	if resp.Error != nil {
 		return
 	}
 
-	isCIDRv6, err := isCIDRv6(prefix)
+	// Return if `s` is empty, as it implies a null or invalid value
+	if value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	isCIDRv6, err := isCIDRv6(value)
 	if err != nil {
 		resp.Error = function.ConcatFuncErrors(resp.Error, function.NewFuncError(err.Error()))
 		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
@@ -56,8 +62,8 @@ func (r CIDRv6Function) Run(ctx context.Context, req function.RunRequest, resp *
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isCIDRv6))
 }
 
-func isCIDRv6(prefix string) (bool, error) {
-	ip, _, err := net.ParseCIDR(prefix)
+func isCIDRv6(prefix *string) (bool, error) {
+	ip, _, err := net.ParseCIDR(*prefix)
 	if err != nil {
 		return false, err
 	}

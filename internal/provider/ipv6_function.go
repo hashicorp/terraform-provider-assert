@@ -29,10 +29,10 @@ func (r IPv6Function) Definition(_ context.Context, _ function.DefinitionRequest
 		Summary: "Checks whether a string is a valid IPv6 address",
 		Parameters: []function.Parameter{
 			function.StringParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The string to check",
-				Name:               "ip_address",
+				Description:        "The value to check",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -40,21 +40,26 @@ func (r IPv6Function) Definition(_ context.Context, _ function.DefinitionRequest
 }
 
 func (r IPv6Function) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var ip string
+	var value *string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &ip))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value))
 	if resp.Error != nil {
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isIPv6(ip)))
+	if value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isIPv6(value)))
 }
 
-func isIPv6(ip string) bool {
+func isIPv6(v *string) bool {
 	// Because IPv4 addresses can also have a 16-byte representation,
 	// we need to check that the address is not an IPv4 address first.
-	if net.ParseIP(ip).To4() != nil {
+	if net.ParseIP(*v).To4() != nil {
 		return false
 	}
-	return net.ParseIP(ip).To16() != nil
+	return net.ParseIP(*v).To16() != nil
 }

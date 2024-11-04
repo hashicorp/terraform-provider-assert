@@ -88,15 +88,13 @@ func TestEmptyFunction_null(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-locals {
-  example = null
-}
-
 output "test" {
-  value = provider::assert::empty(local.example)
+  value = provider::assert::empty(null)
 }
 				`,
-				ExpectError: regexp.MustCompile(`Invalid value for "s" parameter: argument must not be null`),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
 			},
 		},
 	})
@@ -116,7 +114,7 @@ output "test" {
   value = provider::assert::empty([])
 }
 				`,
-				ExpectError: regexp.MustCompile(`Invalid value for "s" parameter: string required`),
+				ExpectError: regexp.MustCompile("Invalid value for \"value\" parameter: string required."),
 			},
 		},
 	})

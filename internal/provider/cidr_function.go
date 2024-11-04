@@ -29,10 +29,10 @@ func (r CIDRFunction) Definition(_ context.Context, _ function.DefinitionRequest
 		Summary: "Checks whether a string is a valid CIDR notation (IPv4 or IPv6)",
 		Parameters: []function.Parameter{
 			function.StringParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The string to check",
-				Name:               "prefix",
+				Description:        "The value to check",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -40,17 +40,23 @@ func (r CIDRFunction) Definition(_ context.Context, _ function.DefinitionRequest
 }
 
 func (r CIDRFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var prefix string
+	var value *string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &prefix))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value))
 	if resp.Error != nil {
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isCIDR(prefix)))
+	// Return if `s` is empty, as it implies a null or invalid value
+	if value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isCIDR(value)))
 }
 
-func isCIDR(prefix string) bool {
-	_, _, err := net.ParseCIDR(prefix)
+func isCIDR(prefix *string) bool {
+	_, _, err := net.ParseCIDR(*prefix)
 	return err == nil
 }

@@ -29,10 +29,10 @@ func (r IPv4Function) Definition(_ context.Context, _ function.DefinitionRequest
 		Summary: "Checks whether a string is a valid IPv4 address",
 		Parameters: []function.Parameter{
 			function.StringParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The string to check",
-				Name:               "ip_address",
+				Description:        "The value to check",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -40,16 +40,21 @@ func (r IPv4Function) Definition(_ context.Context, _ function.DefinitionRequest
 }
 
 func (r IPv4Function) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var ip string
+	var value *string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &ip))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value))
 	if resp.Error != nil {
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isIPv4(ip)))
+	if value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isIPv4(value)))
 }
 
-func isIPv4(ip string) bool {
-	return net.ParseIP(ip).To4() != nil
+func isIPv4(v *string) bool {
+	return net.ParseIP(*v).To4() != nil
 }

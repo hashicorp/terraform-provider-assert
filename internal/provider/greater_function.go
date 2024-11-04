@@ -29,16 +29,16 @@ func (r GreaterFunction) Definition(_ context.Context, _ function.DefinitionRequ
 		Summary: "Checks whether a number is greater than a given number",
 		Parameters: []function.Parameter{
 			function.NumberParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The number to compare against",
+				Description:        "The value to compare against",
 				Name:               "compare_against",
 			},
 			function.NumberParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The number to check",
-				Name:               "number",
+				Description:        "The value to check",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -47,15 +47,21 @@ func (r GreaterFunction) Definition(_ context.Context, _ function.DefinitionRequ
 
 func (r GreaterFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var compareAgainst *big.Float
-	var number *big.Float
+	var value *big.Float
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &compareAgainst, &number))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &compareAgainst, &value))
 	if resp.Error != nil {
 		return
 	}
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isGreaterThan(number, compareAgainst)))
+
+	if compareAgainst == nil || value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isGreaterThan(value, compareAgainst)))
 }
 
-func isGreaterThan(number, compareAgainst *big.Float) bool {
-	return number.Cmp(compareAgainst) == 1
+func isGreaterThan(v, compareAgainst *big.Float) bool {
+	return v.Cmp(compareAgainst) == 1
 }

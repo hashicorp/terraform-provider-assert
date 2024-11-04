@@ -5,10 +5,8 @@ package provider
 
 import (
 	"context"
-	"net/http"
 
 	"github.com/hashicorp/terraform-plugin-framework/function"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var (
@@ -30,10 +28,10 @@ func (r IsHTTPSuccessFunction) Definition(_ context.Context, _ function.Definiti
 		Summary: "Checks whether an HTTP status code is a success status code",
 		Parameters: []function.Parameter{
 			function.Int64Parameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
 				Description:        "The HTTP status code to check",
-				Name:               "status_code",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -41,34 +39,25 @@ func (r IsHTTPSuccessFunction) Definition(_ context.Context, _ function.Definiti
 }
 
 func (r IsHTTPSuccessFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var statusCode types.Int64
+	var value *int64
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &statusCode))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value))
 	if resp.Error != nil {
 		return
 	}
 
-	result := isSuccessStatusCode(statusCode.ValueInt64())
+	result := isSuccessStatusCode(value)
 
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, result))
 }
 
-// isValid2xxStatusCode checks if an HTTP status code is within the 2xx range.
-func isSuccessStatusCode(statusCode int64) bool {
-	switch statusCode {
-	case
-		http.StatusOK,
-		http.StatusCreated,
-		http.StatusAccepted,
-		http.StatusNonAuthoritativeInfo,
-		http.StatusNoContent,
-		http.StatusResetContent,
-		http.StatusPartialContent,
-		http.StatusMultiStatus,
-		http.StatusAlreadyReported,
-		http.StatusIMUsed:
-		return true
-	default:
+// isSuccessStatusCode checks if an HTTP status code is within the 2xx range.
+func isSuccessStatusCode(v *int64) bool {
+	// Check if statusCode is nil
+	if v == nil {
 		return false
 	}
+
+	// Check if the status code is in the 2xx range
+	return *v >= 200 && *v < 300
 }

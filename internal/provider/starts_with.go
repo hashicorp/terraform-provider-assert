@@ -29,16 +29,16 @@ func (r StartsWithFunction) Definition(_ context.Context, _ function.DefinitionR
 		Summary: "Checks whether a string starts with another string",
 		Parameters: []function.Parameter{
 			function.StringParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
 				Description:        "The prefix to check for",
 				Name:               "prefix",
 			},
 			function.StringParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The string to check",
-				Name:               "string",
+				Description:        "The value to check",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -46,12 +46,17 @@ func (r StartsWithFunction) Definition(_ context.Context, _ function.DefinitionR
 }
 
 func (r StartsWithFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var prefix, s string
+	var prefix, value *string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &prefix, &s))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &prefix, &value))
 	if resp.Error != nil {
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, strings.HasPrefix(s, prefix)))
+	if prefix == nil || value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, strings.HasPrefix(*value, *prefix)))
 }

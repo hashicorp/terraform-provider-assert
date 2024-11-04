@@ -29,13 +29,13 @@ func (r ValueFunction) Definition(_ context.Context, _ function.DefinitionReques
 		Summary: "Checks whether a value exists in a map",
 		Parameters: []function.Parameter{
 			function.StringParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
 				Description:        "The value to check",
 				Name:               "value",
 			},
 			function.MapParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
 				Description:        "The map to check",
 				Name:               "map",
@@ -47,24 +47,29 @@ func (r ValueFunction) Definition(_ context.Context, _ function.DefinitionReques
 }
 
 func (r ValueFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var value *string
-	var mapValue *map[string]string
+	var v *string
+	var m *map[string]string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value, &mapValue))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &v, &m))
 	if resp.Error != nil {
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, hasValue(value, mapValue)))
+	if v == nil || m == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, hasValue(v, m)))
 }
 
-func hasValue(value *string, mapValue *map[string]string) bool {
-	if mapValue == nil {
+func hasValue(v *string, m *map[string]string) bool {
+	if m == nil {
 		return false
 	}
 
-	for _, v := range *mapValue {
-		if v == *value {
+	for _, value := range *m {
+		if value == *v {
 			return true
 		}
 	}

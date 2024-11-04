@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestRegexMatchesFunction(t *testing.T) {
+func TestRegexFunction(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -34,7 +34,7 @@ output "test" {
 	})
 }
 
-func TestRegexMatchesFunction_ComplexPatternWithDigit(t *testing.T) {
+func TestRegexFunction_ComplexPatternWithDigit(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -56,7 +56,7 @@ output "test" {
 	})
 }
 
-func TestRegexMatchesFunction_PatternWithOptionalGroup(t *testing.T) {
+func TestRegexFunction_PatternWithOptionalGroup(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -78,7 +78,7 @@ output "test" {
 	})
 }
 
-func TestRegexMatchesFunction_PatternWithAlternation(t *testing.T) {
+func TestRegexFunction_PatternWithAlternation(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -100,7 +100,7 @@ output "test" {
 	})
 }
 
-func TestRegexMatchesFunction_PatternWithCharacterClass(t *testing.T) {
+func TestRegexFunction_PatternWithCharacterClass(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -122,7 +122,7 @@ output "test" {
 	})
 }
 
-func TestRegexMatchesFunction_PatternWithNonCapturingGroup(t *testing.T) {
+func TestRegexFunction_PatternWithNonCapturingGroup(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -144,7 +144,49 @@ output "test" {
 	})
 }
 
-func TestRegexMatchesFunction_falseCases(t *testing.T) {
+func TestRegexFunction_null(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+output "test" {
+  value = provider::assert::regex(null, "defghi")
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+			{
+				Config: `
+output "test" {
+  value = provider::assert::regex("(?:abc|def)ghi", null)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+			{
+				Config: `
+output "test" {
+  value = provider::assert::regex(null, null)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+		},
+	})
+}
+
+func TestRegexFunction_falseCases(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
 		name    string

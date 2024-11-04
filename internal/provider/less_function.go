@@ -29,16 +29,16 @@ func (r LessFunction) Definition(_ context.Context, _ function.DefinitionRequest
 		Summary: "Checks whether a number is less than a given number",
 		Parameters: []function.Parameter{
 			function.NumberParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The number to compare against",
+				Description:        "The value to compare against",
 				Name:               "compare_against",
 			},
 			function.NumberParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The number to check",
-				Name:               "number",
+				Description:        "The value to check",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -46,16 +46,22 @@ func (r LessFunction) Definition(_ context.Context, _ function.DefinitionRequest
 }
 
 func (r LessFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var compareAgainst *big.Float
-	var number *big.Float
+	var comparisonTarget *big.Float
+	var value *big.Float
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &compareAgainst, &number))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &comparisonTarget, &value))
 	if resp.Error != nil {
 		return
 	}
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isLessThan(number, compareAgainst)))
+
+	if comparisonTarget == nil || value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isLessThan(value, comparisonTarget)))
 }
 
-func isLessThan(number, compareAgainst *big.Float) bool {
-	return number.Cmp(compareAgainst) == -1
+func isLessThan(value, comparisonTarget *big.Float) bool {
+	return value.Cmp(comparisonTarget) == -1
 }

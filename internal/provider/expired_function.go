@@ -29,10 +29,10 @@ func (r ExpiredFunction) Definition(_ context.Context, _ function.DefinitionRequ
 		Summary: "Checks whether a timestamp in RFC3339 format is expired",
 		Parameters: []function.Parameter{
 			function.StringParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The string to check",
-				Name:               "timestamp",
+				Description:        "The value to check",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -40,14 +40,19 @@ func (r ExpiredFunction) Definition(_ context.Context, _ function.DefinitionRequ
 }
 
 func (r ExpiredFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var timestamp string
+	var value *string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &timestamp))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value))
 	if resp.Error != nil {
 		return
 	}
 
-	expired, err := isExpired(timestamp)
+	if value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	expired, err := isExpired(value)
 	if err != nil {
 		resp.Error = function.ConcatFuncErrors(resp.Error, function.NewFuncError(err.Error()))
 		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
@@ -56,8 +61,8 @@ func (r ExpiredFunction) Run(ctx context.Context, req function.RunRequest, resp 
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, expired))
 }
 
-func isExpired(timestamp string) (bool, error) {
-	t, err := time.Parse(time.RFC3339, timestamp)
+func isExpired(timestamp *string) (bool, error) {
+	t, err := time.Parse(time.RFC3339, *timestamp)
 	if err != nil {
 		return false, err
 	}

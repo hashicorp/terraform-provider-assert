@@ -5,10 +5,8 @@ package provider
 
 import (
 	"context"
-	"net/http"
 
 	"github.com/hashicorp/terraform-plugin-framework/function"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var (
@@ -30,10 +28,10 @@ func (r IsHTTPRedirectFunction) Definition(_ context.Context, _ function.Definit
 		Summary: "Checks whether an HTTP status code is a redirect status code",
 		Parameters: []function.Parameter{
 			function.Int64Parameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
 				Description:        "The HTTP status code to check",
-				Name:               "status_code",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -41,32 +39,25 @@ func (r IsHTTPRedirectFunction) Definition(_ context.Context, _ function.Definit
 }
 
 func (r IsHTTPRedirectFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var statusCode types.Int64
+	var value *int64
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &statusCode))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value))
 	if resp.Error != nil {
 		return
 	}
 
-	result := isRedirectStatusCode(statusCode.ValueInt64())
+	result := isRedirectStatusCode(value)
 
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, result))
 }
 
-// isValid3xxStatusCode checks if an HTTP status code is within the 3xx range.
-func isRedirectStatusCode(statusCode int64) bool {
-	switch statusCode {
-	case
-		http.StatusMultipleChoices,
-		http.StatusMovedPermanently,
-		http.StatusFound,
-		http.StatusSeeOther,
-		http.StatusNotModified,
-		http.StatusUseProxy,
-		http.StatusTemporaryRedirect,
-		http.StatusPermanentRedirect:
-		return true
-	default:
+// isRedirectStatusCode checks if an HTTP status code is within the 3xx range.
+func isRedirectStatusCode(v *int64) bool {
+	// Check if statusCode is nil
+	if v == nil {
 		return false
 	}
+
+	// Check if the status code is in the 3xx range
+	return *v >= 300 && *v < 400
 }

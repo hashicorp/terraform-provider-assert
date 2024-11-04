@@ -28,10 +28,10 @@ func (r FalseFunction) Definition(_ context.Context, _ function.DefinitionReques
 		Summary: "Checks whether a boolean value is false",
 		Parameters: []function.Parameter{
 			function.BoolParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
 				Description:        "The boolean value to check",
-				Name:               "bool",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -39,11 +39,17 @@ func (r FalseFunction) Definition(_ context.Context, _ function.DefinitionReques
 }
 
 func (r FalseFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var value bool
+	var value *bool
 
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value))
 	if resp.Error != nil {
 		return
 	}
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, !value))
+
+	if value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, !*value))
 }

@@ -29,10 +29,10 @@ func (r LowercasedFunction) Definition(_ context.Context, _ function.DefinitionR
 		Summary: "Checks whether a string is lowercased",
 		Parameters: []function.Parameter{
 			function.StringParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The string to check",
-				Name:               "string",
+				Description:        "The value to check",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -40,18 +40,23 @@ func (r LowercasedFunction) Definition(_ context.Context, _ function.DefinitionR
 }
 
 func (r LowercasedFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var s string
+	var value *string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &s))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value))
 	if resp.Error != nil {
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isLower(s)))
+	if value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isLower(value)))
 }
 
-func isLower(s string) bool {
-	for _, r := range s {
+func isLower(v *string) bool {
+	for _, r := range *v {
 		if !unicode.IsLower(r) && unicode.IsLetter(r) {
 			return false
 		}

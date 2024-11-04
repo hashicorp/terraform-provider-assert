@@ -28,10 +28,10 @@ func (r TrueFunction) Definition(_ context.Context, _ function.DefinitionRequest
 		Summary: "Checks whether a boolean value is true",
 		Parameters: []function.Parameter{
 			function.BoolParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The boolean value to check",
-				Name:               "bool",
+				Description:        "The value to check",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -39,11 +39,17 @@ func (r TrueFunction) Definition(_ context.Context, _ function.DefinitionRequest
 }
 
 func (r TrueFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var value bool
+	var value *bool
 
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value))
 	if resp.Error != nil {
 		return
 	}
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, value))
+
+	if value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, *value))
 }

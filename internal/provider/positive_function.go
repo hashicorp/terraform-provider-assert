@@ -29,10 +29,10 @@ func (r PositiveFunction) Definition(_ context.Context, _ function.DefinitionReq
 		Summary: "Checks whether a number is positive",
 		Parameters: []function.Parameter{
 			function.NumberParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The number to check",
-				Name:               "number",
+				Description:        "The value to check",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -40,11 +40,17 @@ func (r PositiveFunction) Definition(_ context.Context, _ function.DefinitionReq
 }
 
 func (r PositiveFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var number *big.Float
+	var value *big.Float
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &number))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value))
 	if resp.Error != nil {
 		return
 	}
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, number.Cmp(big.NewFloat(0)) == 1))
+
+	if value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, value.Cmp(big.NewFloat(0)) == 1))
 }

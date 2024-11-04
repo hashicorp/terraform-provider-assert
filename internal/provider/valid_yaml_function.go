@@ -26,12 +26,12 @@ func (r ValidYAMLFunction) Metadata(_ context.Context, req function.MetadataRequ
 
 func (r ValidYAMLFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
-		Summary: "Checks whether a string is valid YAML",
+		Summary: "Checks whether a value is valid YAML",
 		Parameters: []function.Parameter{
 			function.StringParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The YAML string to check",
+				Description:        "The YAML value to check",
 				Name:               "yaml",
 			},
 		},
@@ -40,14 +40,19 @@ func (r ValidYAMLFunction) Definition(_ context.Context, _ function.DefinitionRe
 }
 
 func (r ValidYAMLFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var YAML *string
+	var value *string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &YAML))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value))
 	if resp.Error != nil {
 		return
 	}
 
-	isValidYAML, err := isValidYAML(YAML)
+	if value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	isValidYAML, err := isValidYAML(value)
 	if err != nil {
 		resp.Error = function.ConcatFuncErrors(resp.Error, function.NewFuncError(err.Error()))
 		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
@@ -56,9 +61,9 @@ func (r ValidYAMLFunction) Run(ctx context.Context, req function.RunRequest, res
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isValidYAML))
 }
 
-func isValidYAML(YAML *string) (bool, error) {
+func isValidYAML(v *string) (bool, error) {
 	var js map[string]interface{}
-	err := yaml.Unmarshal([]byte(*YAML), &js)
+	err := yaml.Unmarshal([]byte(*v), &js)
 	if err != nil {
 		return false, err
 	}

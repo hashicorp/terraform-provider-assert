@@ -29,14 +29,14 @@ func (r ContainsFunction) Definition(_ context.Context, _ function.DefinitionReq
 		Summary: "Checks whether an element is in a list",
 		Parameters: []function.Parameter{
 			function.ListParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
 				Description:        "The list to check",
 				Name:               "list",
 				ElementType:        types.StringType,
 			},
 			function.StringParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
 				Description:        "The element to check",
 				Name:               "element",
@@ -47,16 +47,22 @@ func (r ContainsFunction) Definition(_ context.Context, _ function.DefinitionReq
 }
 
 func (r ContainsFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var list []string
-	var element string
+	var list *[]string
+	var element *string
 
 	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &list, &element))
 	if resp.Error != nil {
 		return
 	}
 
-	for _, item := range list {
-		if item == element {
+	// Return false if list is empty or element is empty
+	if list == nil || element == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	for _, item := range *list {
+		if item == *element {
 			resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, true))
 			return
 		}

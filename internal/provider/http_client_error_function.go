@@ -5,10 +5,8 @@ package provider
 
 import (
 	"context"
-	"net/http"
 
 	"github.com/hashicorp/terraform-plugin-framework/function"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var (
@@ -30,10 +28,10 @@ func (r IsHTTPClientErrorFunction) Definition(_ context.Context, _ function.Defi
 		Summary: "Checks whether an HTTP status code is a client error status code",
 		Parameters: []function.Parameter{
 			function.Int64Parameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
 				Description:        "The HTTP status code to check",
-				Name:               "status_code",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -41,54 +39,30 @@ func (r IsHTTPClientErrorFunction) Definition(_ context.Context, _ function.Defi
 }
 
 func (r IsHTTPClientErrorFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var statusCode types.Int64
+	var value *int64
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &statusCode))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value))
 	if resp.Error != nil {
 		return
 	}
 
-	result := isHTTPClientError(statusCode.ValueInt64())
+	if value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	result := isHTTPClientError(value)
 
 	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, result))
 }
 
 // isHTTPClientError checks if an HTTP status code is within the 4xx range.
-func isHTTPClientError(statusCode int64) bool {
-	switch statusCode {
-	case
-		// 4XX status codes
-		http.StatusBadRequest,
-		http.StatusUnauthorized,
-		http.StatusPaymentRequired,
-		http.StatusForbidden,
-		http.StatusNotFound,
-		http.StatusMethodNotAllowed,
-		http.StatusNotAcceptable,
-		http.StatusProxyAuthRequired,
-		http.StatusRequestTimeout,
-		http.StatusConflict,
-		http.StatusGone,
-		http.StatusLengthRequired,
-		http.StatusPreconditionFailed,
-		http.StatusRequestEntityTooLarge,
-		http.StatusRequestURITooLong,
-		http.StatusUnsupportedMediaType,
-		http.StatusRequestedRangeNotSatisfiable,
-		http.StatusExpectationFailed,
-		http.StatusTeapot,
-		http.StatusMisdirectedRequest,
-		http.StatusUnprocessableEntity,
-		http.StatusLocked,
-		http.StatusFailedDependency,
-		http.StatusTooEarly,
-		http.StatusUpgradeRequired,
-		http.StatusPreconditionRequired,
-		http.StatusTooManyRequests,
-		http.StatusRequestHeaderFieldsTooLarge,
-		http.StatusUnavailableForLegalReasons:
-		return true
-	default:
+func isHTTPClientError(v *int64) bool {
+	// Check if statusCode is nil
+	if v == nil {
 		return false
 	}
+
+	// Check if the status code is in the 4xx range
+	return *v >= 400 && *v < 500
 }

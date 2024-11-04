@@ -29,10 +29,10 @@ func (r UppercasedFunction) Definition(_ context.Context, _ function.DefinitionR
 		Summary: "Checks whether a string is uppercased",
 		Parameters: []function.Parameter{
 			function.StringParameter{
-				AllowNullValue:     false,
+				AllowNullValue:     true,
 				AllowUnknownValues: false,
-				Description:        "The string to check",
-				Name:               "string",
+				Description:        "The value to check",
+				Name:               "value",
 			},
 		},
 		Return: function.BoolReturn{},
@@ -40,18 +40,23 @@ func (r UppercasedFunction) Definition(_ context.Context, _ function.DefinitionR
 }
 
 func (r UppercasedFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var s string
+	var value *string
 
-	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &s))
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &value))
 	if resp.Error != nil {
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isUpper(s)))
+	if value == nil {
+		resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
+		return
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, isUpper(value)))
 }
 
-func isUpper(s string) bool {
-	for _, r := range s {
+func isUpper(v *string) bool {
+	for _, r := range *v {
 		if !unicode.IsUpper(r) && unicode.IsLetter(r) {
 			return false
 		}
