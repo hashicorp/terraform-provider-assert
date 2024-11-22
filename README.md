@@ -68,7 +68,7 @@ This provider is a HashiCorp utility provider, which means any bug fix and featu
 
 To provide some safety to the wider provider ecosystem, we strictly follow semantic versioning and HashiCorp's own versioning specification. Any changes that could be considered as breaking will only be included as part of a major release. In case multiple breaking changes need to happen, we will group them in the next upcoming major release.
 
-If you’re looking to contribute, thank you for investing your time and energy into this project! Please make sure you’re familiar with the [HashiCorp Code of Conduct](https://www.hashicorp.com/community-guidelines) and the Assert Provider [Contributor Guide]((https://hashicorp.github.io/terraform-provider-assert/).
+If you’re looking to contribute, thank you for investing your time and energy into this project! Please make sure you’re familiar with the [HashiCorp Code of Conduct](https://www.hashicorp.com/community-guidelines) and the Assert Provider [Contributor Guide](https://hashicorp.github.io/terraform-provider-assert/).
 
 ## License
 
