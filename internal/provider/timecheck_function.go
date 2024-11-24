@@ -5,6 +5,7 @@ package provider
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/function"
@@ -124,6 +125,10 @@ func timecheck(day []string, month []string, timeZone string, startTime string, 
 	stop, err := time.ParseInLocation("15:04", stopTime, loc)
 	if err != nil {
 		return false, err
+	}
+
+	if stop.Before(start) {
+		return false, fmt.Errorf("stop time should be higher than start time")
 	}
 
 	currentTime := time.Date(0, 1, 1, now.Hour(), now.Minute(), 0, 0, loc)
