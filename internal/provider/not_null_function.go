@@ -48,16 +48,12 @@ func (r NotNullFunction) Run(ctx context.Context, req function.RunRequest, resp 
 	}
 
 	if argument.IsNull() {
-		if err := resp.Result.Set(ctx, false); err == nil {
-			return
-		}
+		resp.Error = resp.Result.Set(ctx, false)
 		return
 	}
 
 	if !argument.IsUnderlyingValueNull() {
-		if err := resp.Result.Set(ctx, true); err == nil {
-			return
-		}
+		resp.Error = resp.Result.Set(ctx, true)
 		return
 	}
 
