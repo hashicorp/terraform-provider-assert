@@ -243,15 +243,15 @@ variable "cidr_block" {
   type        = string
 
   validation {
-    condition = provider::assert::cidr(var.cidr_block)
+    condition     = provider::assert::cidr(var.cidr_block)
     error_message = "CIDR block must be a valid CIDR range."
   }
 
   validation {
     condition = anytrue([
-	  provider::assert::not_null(var.cidr_block), 
-	  provider::assert::not_null(var.ipv4_ipam_pool_id)
-	])
+      provider::assert::not_null(var.cidr_block),
+      provider::assert::not_null(var.ipv4_ipam_pool_id)
+    ])
     error_message = "Exactly one of cidr_block or ipv4_ipam_pool_id must be provided."
   }
 }
