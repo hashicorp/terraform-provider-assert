@@ -7,11 +7,12 @@ import (
 	"testing"
 
 	"github.com/hashicorp/go-version"
+	"github.com/hashicorp/terraform-plugin-testing/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestIsNullFunction(t *testing.T) {
+func TestNullFunction(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -36,7 +37,86 @@ output "test" {
 	})
 }
 
-func TestIsNullFunction_falseCases(t *testing.T) {
+func TestNullFunction_crossObjectValidation(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ExternalProviders: map[string]resource.ExternalProvider{
+			"wireguard": {
+				Source:            "OJFord/wireguard",
+				VersionConstraint: "0.3.1",
+			},
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+resource "wireguard_asymmetric_key" "main" {}
+
+data "wireguard_config_document" "main" {
+  private_key = wireguard_asymmetric_key.main.private_key
+}
+
+output "test" {
+  // .addresses is always null in this configuration
+  value = provider::assert::null(data.wireguard_config_document.main.addresses)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestNullFunction_compoundValidation(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+variable "ipv4_ipam_pool_id" {
+  default     = null
+  description = "ID of the IPv4 IPAM pool to use for the VPC."
+  type        = string
+}
+
+variable "cidr_block" {
+  default     = null
+  description = "CIDR block for the VPC."
+  type        = string
+
+  validation {
+    condition = provider::assert::cidr(var.cidr_block)
+    error_message = "CIDR block must be a valid CIDR range."
+  }
+
+  validation {
+    condition = anytrue([
+	  !provider::assert::null(var.cidr_block), 
+	  !provider::assert::null(var.ipv4_ipam_pool_id)
+	])
+    error_message = "Exactly one of cidr_block or ipv4_ipam_pool_id must be provided."
+  }
+}
+				`,
+				ConfigVariables: config.Variables{
+					"cidr_block": config.StringVariable("10.0.42.0/24"),
+				},
+				Check: resource.ComposeAggregateTestCheckFunc(),
+			},
+		},
+	})
+}
+
+func TestNullFunction_falseCases(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
