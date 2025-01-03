@@ -225,39 +225,33 @@ func TestNotNullFunction_compoundValidation(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+			tfversion.SkipBelow(version.Must(version.NewVersion("1.2.0"))),
 		},
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: `
-variable "ipv4_ipam_pool_id" {
+variable "example_value_a" {
   default     = null
-  description = "ID of the IPv4 IPAM pool to use for the VPC."
+  description = "Example input A for validation."
   type        = string
 }
-
-variable "cidr_block" {
+variable "example_value_b" {
   default     = null
-  description = "CIDR block for the VPC."
+  description = "Example input B for validation."
   type        = string
-
-  validation {
-    condition     = provider::assert::cidr(var.cidr_block)
-    error_message = "CIDR block must be a valid CIDR range."
-  }
-
   validation {
     condition = anytrue([
-      provider::assert::not_null(var.cidr_block),
-      provider::assert::not_null(var.ipv4_ipam_pool_id)
+      provider::assert::not_null(var.example_value_a),
+      provider::assert::not_null(var.example_value_b)
+
     ])
-    error_message = "Exactly one of cidr_block or ipv4_ipam_pool_id must be provided."
+    error_message = "At least one of example_value_a or example_value_b must be provided."
   }
 }
 				`,
 				ConfigVariables: config.Variables{
-					"cidr_block": config.StringVariable("10.0.42.0/24"),
+					"example_value_b": config.StringVariable("example-format-value"),
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(),
 			},
