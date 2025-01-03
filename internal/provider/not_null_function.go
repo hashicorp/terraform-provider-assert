@@ -47,5 +47,19 @@ func (r NotNullFunction) Run(ctx context.Context, req function.RunRequest, resp 
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, !argument.IsNull()))
+	if argument.IsNull() {
+		if err := resp.Result.Set(ctx, false); err == nil {
+			return
+		}
+		return
+	}
+
+	if !argument.IsUnderlyingValueNull() {
+		if err := resp.Result.Set(ctx, true); err == nil {
+			return
+		}
+		return
+	}
+
+	resp.Error = function.ConcatFuncErrors(resp.Result.Set(ctx, false))
 }
