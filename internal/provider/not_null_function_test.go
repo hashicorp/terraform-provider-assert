@@ -244,7 +244,6 @@ variable "example_value_b" {
     condition = anytrue([
       provider::assert::not_null(var.example_value_a),
       provider::assert::not_null(var.example_value_b)
-
     ])
     error_message = "At least one of example_value_a or example_value_b must be provided."
   }
