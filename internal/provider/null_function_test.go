@@ -7,11 +7,12 @@ import (
 	"testing"
 
 	"github.com/hashicorp/go-version"
+	"github.com/hashicorp/terraform-plugin-testing/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestIsNullFunction(t *testing.T) {
+func TestNullFunction(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -36,7 +37,81 @@ output "test" {
 	})
 }
 
-func TestIsNullFunction_falseCases(t *testing.T) {
+func TestNullFunction_crossObjectValidation(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
+		},
+		ExternalProviders: map[string]resource.ExternalProvider{
+			"wireguard": {
+				Source:            "OJFord/wireguard",
+				VersionConstraint: "0.3.1",
+			},
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+resource "wireguard_asymmetric_key" "main" {}
+
+data "wireguard_config_document" "main" {
+  private_key = wireguard_asymmetric_key.main.private_key
+}
+
+output "test" {
+  // .addresses is always null in this configuration
+  value = provider::assert::null(data.wireguard_config_document.main.addresses)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "true"),
+				),
+			},
+		},
+	})
+}
+
+func TestNullFunction_compoundValidation(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion("1.2.0"))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+variable "example_value_a" {
+  default     = null
+  description = "Example option A for testing null validation."
+  type        = string
+}
+
+variable "example_value_b" {
+  default     = null
+  description = "Example option B for testing null validation."
+  type        = string
+
+  validation {
+    condition = anytrue([
+      !provider::assert::null(var.example_value_a),
+      !provider::assert::null(var.example_value_b)
+    ])
+    error_message = "Exactly one of example_value_a or example_value_b must be provided."
+  }
+}
+				`,
+				ConfigVariables: config.Variables{
+					"example_value_b": config.StringVariable("example-value"),
+				},
+				Check: resource.ComposeAggregateTestCheckFunc(),
+			},
+		},
+	})
+}
+
+func TestNullFunction_falseCases(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{

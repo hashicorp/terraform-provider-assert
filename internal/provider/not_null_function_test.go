@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/go-version"
+	"github.com/hashicorp/terraform-plugin-testing/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
@@ -220,6 +221,43 @@ output "test" {
 	})
 }
 
+func TestNotNullFunction_compoundValidation(t *testing.T) {
+	t.Parallel()
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(version.Must(version.NewVersion("1.2.0"))),
+		},
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+variable "example_value_a" {
+  default     = null
+  description = "Example input A for validation."
+  type        = string
+}
+variable "example_value_b" {
+  default     = null
+  description = "Example input B for validation."
+  type        = string
+  validation {
+    condition = anytrue([
+      provider::assert::not_null(var.example_value_a),
+      provider::assert::not_null(var.example_value_b)
+    ])
+    error_message = "At least one of example_value_a or example_value_b must be provided."
+  }
+}
+				`,
+				ConfigVariables: config.Variables{
+					"example_value_b": config.StringVariable("example-format-value"),
+				},
+				Check: resource.ComposeAggregateTestCheckFunc(),
+			},
+		},
+	})
+}
+
 func TestNotNullFunction_falseCases(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
@@ -227,6 +265,12 @@ func TestNotNullFunction_falseCases(t *testing.T) {
 			tfversion.SkipBelow(version.Must(version.NewVersion(MinimalRequiredTerraformVersion))),
 		},
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		ExternalProviders: map[string]resource.ExternalProvider{
+			"wireguard": {
+				Source:            "OJFord/wireguard",
+				VersionConstraint: "0.3.1",
+			},
+		},
 		Steps: []resource.TestStep{
 			{
 				Config: `
@@ -235,6 +279,23 @@ locals {
 }
 output "test" {
   value = provider::assert::not_null(local.object)
+}
+				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckOutput("test", "false"),
+				),
+			},
+			{
+				Config: `
+resource "wireguard_asymmetric_key" "main" {}
+
+data "wireguard_config_document" "main" {
+  private_key = wireguard_asymmetric_key.main.private_key
+}
+
+output "test" {
+  // .addresses is always null in this configuration
+  value = provider::assert::not_null(data.wireguard_config_document.main.addresses)
 }
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
