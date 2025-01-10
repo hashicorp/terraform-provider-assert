@@ -30,7 +30,7 @@ func (r NotNullFunction) Definition(_ context.Context, _ function.DefinitionRequ
 		Parameters: []function.Parameter{
 			function.DynamicParameter{
 				AllowNullValue:     true,
-				AllowUnknownValues: true,
+				AllowUnknownValues: false,
 				Description:        "The argument to check",
 				Name:               "argument",
 			},
