@@ -30,7 +30,7 @@ func (r IsNullFunction) Definition(_ context.Context, _ function.DefinitionReque
 		Parameters: []function.Parameter{
 			function.DynamicParameter{
 				AllowNullValue:     true,
-				AllowUnknownValues: true,
+				AllowUnknownValues: false,
 				Description:        "The argument to check",
 				Name:               "argument",
 			},
@@ -47,10 +47,13 @@ func (r IsNullFunction) Run(ctx context.Context, req function.RunRequest, resp *
 		return
 	}
 
-	if argument.UnderlyingValue() == nil {
-		if err := resp.Result.Set(ctx, true); err == nil {
-			return
-		}
+	if argument.IsNull() {
+		resp.Error = resp.Result.Set(ctx, true)
+		return
+	}
+
+	if argument.IsUnderlyingValueNull() {
+		resp.Error = resp.Result.Set(ctx, true)
 		return
 	}
 
