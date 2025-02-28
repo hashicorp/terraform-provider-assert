@@ -76,7 +76,7 @@ func TestNullFunction_compoundValidation(t *testing.T) {
 	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.2.0"))),
+			tfversion.SkipBelow(version.Must(version.NewVersion("1.10.0"))),
 		},
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
