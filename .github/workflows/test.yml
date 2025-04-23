@@ -67,7 +67,7 @@ jobs:
         with:
           go-version-file: 'go.mod'
           cache: true
-      - run: go test -v -cover -parallel=2 ./...
+      - run: go test -v -cover -parallel=1 ./...
 
       # Run acceptance tests in a matrix with Terraform CLI versions
   acceptance-test:
