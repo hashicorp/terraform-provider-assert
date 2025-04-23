@@ -18,7 +18,7 @@ project "terraform-provider-assert" {
   github {
     organization     = "hashicorp"
     repository       = "terraform-provider-assert"
-    release_branches = ["main", "release/**"] # TODO: Update to match your release workflow
+    release_branches = ["main"]
   }
 }
 
