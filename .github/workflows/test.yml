@@ -35,6 +35,7 @@ jobs:
           - '1.8.*'
           - '1.9.*'
           - '1.10.*'
+          - '1.11.*'
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
@@ -66,7 +67,7 @@ jobs:
         with:
           go-version-file: 'go.mod'
           cache: true
-      - run: go test -v -cover ./...
+      - run: go test -v -cover -parallel=1 ./...
 
       # Run acceptance tests in a matrix with Terraform CLI versions
   acceptance-test:
@@ -82,6 +83,7 @@ jobs:
           - '1.8.*'
           - '1.9.*'
           - '1.10.*'
+          - '1.11.*'
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
       - uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
