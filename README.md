@@ -1,3 +1,6 @@
+| :memo:        | This provider is no longer maintained by HashiCorp.       |
+|---------------|:------------------------|
+
 # Terraform Provider: Assert
 
 The [Assert Terraform provider]((https://registry.terraform.io/providers/hashicorp/assert/latest/docs)) is intended for use when writing [Terraform Tests](https://developer.hashicorp.com/terraform/language/tests), [Variable Validation](https://developer.hashicorp.com/terraform/language/values/variables#custom-validation-rules), [Preconditions and Postconditions](https://developer.hashicorp.com/terraform/language/expressions/custom-conditions#preconditions-and-postconditions), or [Continuous Validation](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/health#continuous-validation). It serves as a way to verify that the values in your Terraform configuration meet specific criteria. The provider only contains functions to assert values, and does not manage any resources.
